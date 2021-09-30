@@ -1,0 +1,24 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.kahzerx.kahzerxmod.mixin",
+  "compatibilityLevel": "JAVA_16",
+  "mixins": [
+    "blockInfoExtension.BlockBreakingLoggingMixin",
+    "blockInfoExtension.BlockInteractionLoggingMixin",
+    "blockInfoExtension.BlockPlacingLoggingMixin",
+    "blockInfoExtension.ContainerInteractionLoggingMixin",
+    "seedExtension.seedCommandMixin",
+    "server.ChatEventsMixin",
+    "server.CommandEventsMixin",
+    "server.PlayerEventsMixins$PlayerAdvancement",
+    "server.PlayerEventsMixins$PlayerDied",
+    "server.PlayerEventsMixins$PlayerJoined",
+    "server.PlayerEventsMixins$PlayerLeft",
+    "server.ServerEventsMixin"
+  ],
+  "client": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

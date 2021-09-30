@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "kahzerx",
+  "version": "${version}",
+
+  "name": "Kahzerx",
+  "description": "",
+  "authors": [
+    "Kahzerx"
+  ],
+  "contact": {
+    "homepage": "",
+    "sources": ""
+  },
+
+  "license": "CC0-1.0",
+  "icon": "assets/kahzerx/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [ ]
+  },
+  "mixins": [
+    "kahzerx.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.11.3",
+    "minecraft": "1.17.x",
+    "java": ">=16"
+  },
+  "suggests": { }
+}
