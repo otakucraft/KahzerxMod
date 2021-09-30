@@ -11,13 +11,17 @@ import com.kahzerx.kahzerxmod.extensions.discordExtension.commands.RemoveCommand
 import com.kahzerx.kahzerxmod.extensions.discordExtension.discordExtension.DiscordExtension;
 import com.kahzerx.kahzerxmod.utils.DiscordChatUtils;
 import com.kahzerx.kahzerxmod.utils.DiscordUtils;
+import com.mojang.authlib.GameProfile;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.requests.restaction.MessageAction;
-import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.*;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.TranslatableText;
 
 import java.awt.*;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 public class DiscordWhitelistExtension extends GenericExtension implements Extensions, DiscordCommandsExtension {
@@ -44,7 +48,7 @@ public class DiscordWhitelistExtension extends GenericExtension implements Exten
         this.conn = conn;
         try {
             String createDiscordDatabase = "CREATE TABLE IF NOT EXISTS `discord`(" +
-                    "`uuid` VARCHAR(50) NOT NULL," +
+                    "`uuid` VARCHAR(50) UNIQUE NOT NULL," +
                     "`discordID` NUMERIC NOT NULL," +
                     "FOREIGN KEY(uuid) REFERENCES player(uuid)," +
                     "PRIMARY KEY (uuid, discordID));";
@@ -175,6 +179,55 @@ public class DiscordWhitelistExtension extends GenericExtension implements Exten
         }
     }
 
+    public long getDiscordID(String uuid) {
+        long id = 0L;
+        try {
+            String getPlayers = "SELECT discordID FROM discord WHERE uuid = ?;";
+            PreparedStatement ps = conn.prepareStatement(getPlayers);
+            ps.setString(1, uuid);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                id = rs.getLong("discordID");
+            }
+            rs.close();
+            ps.close();
+            return id;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return id;
+        }
+    }
+
+    public void banDiscord(long discordID) {
+        try {
+            String insertPlayer = "INSERT OR IGNORE INTO discord_banned (discordID) VALUES (?);";
+            PreparedStatement ps = conn.prepareStatement(insertPlayer);
+            ps.setLong(1, discordID);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public ArrayList<String> getWhitelistedPlayers(long discordID) {
+        ArrayList<String> players = new ArrayList<>();
+        try {
+            String q = "SELECT uuid FROM discord WHERE discordID = ?;";
+            PreparedStatement ps = this.conn.prepareStatement(q);
+            ps.setLong(1, discordID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                players.add(rs.getString("uuid"));
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return players;
+    }
+
     public void deletePlayer(long discordID, String uuid) {
         try {
             String delete = "DELETE FROM discord WHERE uuid = ? AND discordID = ?;";
@@ -201,6 +254,28 @@ public class DiscordWhitelistExtension extends GenericExtension implements Exten
             ps.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void tryVanillaBan(BannedPlayerList banList, GameProfile profile, MinecraftServer server) {
+        if (!banList.contains(profile)) {
+            BannedPlayerEntry playerEntry = new BannedPlayerEntry(profile, null, "DiscordBan", null, null);
+            banList.add(playerEntry);
+            ServerPlayerEntity serverPlayerEntity = server.getPlayerManager().getPlayer(profile.getId());
+            if (serverPlayerEntity != null) {
+                serverPlayerEntity.networkHandler.disconnect(new TranslatableText("Te han baneado :)"));
+            }
+        }
+    }
+
+    public void tryVanillaWhitelistRemove(Whitelist whitelist, GameProfile profile, MinecraftServer server) {
+        if (whitelist.isAllowed(profile)) {
+            WhitelistEntry whitelistEntry = new WhitelistEntry(profile);
+            whitelist.remove(profile);
+            ServerPlayerEntity serverPlayerEntity = server.getPlayerManager().getPlayer(profile.getId());
+            if (serverPlayerEntity != null) {
+                serverPlayerEntity.networkHandler.disconnect(new TranslatableText("Byee~"));
+            }
         }
     }
 
