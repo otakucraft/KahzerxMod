@@ -13,13 +13,18 @@ public class DiscordExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onServerRun(MinecraftServer minecraftServer) {
+        if (!extensionSettings().isEnabled()) {
+            return;
+        }
         DiscordListener.start(minecraftServer, extensionSettings().getToken(), String.valueOf(extensionSettings().getChatChannelID()), this);
         DiscordListener.sendDiscordMessage("\\o/");
     }
 
     @Override
     public void onServerStop() {
-        DiscordListener.stop();
+        if (extensionSettings().isRunning()) {
+            DiscordListener.stop();
+        }
     }
 
     @Override
