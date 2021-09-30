@@ -61,10 +61,10 @@ public class HomeExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onPlayerLeft(ServerPlayerEntity player) {
-        String playerUUID = player.getUuidAsString();
         if (!this.getSettings().isEnabled()) {
             return;
         }
+        String playerUUID = player.getUuidAsString();
         if (this.playerHomes.containsKey(playerUUID)) {
             playerHomes.remove(playerUUID);
         }

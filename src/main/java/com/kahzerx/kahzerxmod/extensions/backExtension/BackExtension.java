@@ -31,6 +31,9 @@ public class BackExtension extends GenericExtension implements Extensions {
         if (!this.getSettings().isEnabled()) {
             return;
         }
+        if (!permsExtension.getSettings().isEnabled()) {
+            return;
+        }
         this.conn = conn;
         try {
             String createBackDatabase = "CREATE TABLE IF NOT EXISTS `back` (" +
@@ -50,10 +53,13 @@ public class BackExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onPlayerJoined(ServerPlayerEntity player) {
-        String playerUUID = player.getUuidAsString();
         if (!this.getSettings().isEnabled()) {
             return;
         }
+        if (!permsExtension.getSettings().isEnabled()) {
+            return;
+        }
+        String playerUUID = player.getUuidAsString();
         if (this.playerBack.containsKey(playerUUID)) {
             playerBack.remove(playerUUID);
         }
@@ -62,10 +68,13 @@ public class BackExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onPlayerLeft(ServerPlayerEntity player) {
-        String playerUUID = player.getUuidAsString();
         if (!this.getSettings().isEnabled()) {
             return;
         }
+        if (!permsExtension.getSettings().isEnabled()) {
+            return;
+        }
+        String playerUUID = player.getUuidAsString();
         if (this.playerBack.containsKey(playerUUID)) {
             playerBack.remove(playerUUID);
         }
@@ -74,6 +83,9 @@ public class BackExtension extends GenericExtension implements Extensions {
     @Override
     public void onPlayerDied(ServerPlayerEntity player) {
         if (!this.getSettings().isEnabled()) {
+            return;
+        }
+        if (!permsExtension.getSettings().isEnabled()) {
             return;
         }
         String playerUUID = player.getUuidAsString();
@@ -99,9 +111,13 @@ public class BackExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher) {
-        if (this.getSettings().isEnabled()) {
-            new BackCommand().register(dispatcher, this);
+        if (!this.getSettings().isEnabled()) {
+            return;
         }
+        if (!permsExtension.getSettings().isEnabled()) {
+            return;
+        }
+        new BackCommand().register(dispatcher, this);
     }
 
     private void updateDeathPos(ServerPlayerEntity player, BackPos pos) {

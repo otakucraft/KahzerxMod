@@ -24,9 +24,13 @@ public class CameraExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher) {
-        if (this.getSettings().isEnabled()) {
-            new CameraCommand().register(dispatcher, this);
+        if (!this.getSettings().isEnabled()) {
+            return;
         }
+        if (!permsExtension.getSettings().isEnabled()) {
+            return;
+        }
+        new CameraCommand().register(dispatcher, this);
     }
 
     @Override

@@ -28,11 +28,11 @@ public class AddCommand extends GenericCommand {
     @Override
     public void execute(MessageReceivedEvent event, MinecraftServer server, String serverPrefix, DiscordWhitelistExtension extension) {
         List<String> bannedResponses = new ArrayList<>();
-        bannedResponses.add("**Vete a tomar por culo, si estas ban piensa porque eres tan puta escoria que no te mereces entrar**");
+        // bannedResponses.add("**Vete a tomar por culo, si estas ban piensa porque eres tan puta escoria que no te mereces entrar**");
         bannedResponses.add("https://www.youtube.com/watch?v=eOhM3pYUkXE");
         bannedResponses.add("https://www.youtube.com/watch?v=O-U-8vpYMlo");
         bannedResponses.add("https://www.youtube.com/watch?v=44_VHjUlGdY");
-        bannedResponses.add("**Encerrado en bedrock, para salir picame esta 8===D**");
+        // bannedResponses.add("**Encerrado en bedrock, para salir picame esta 8===D**");
         long id = event.getAuthor().getIdLong();
         if (extension.isDiscordBanned(id)) {
             EmbedBuilder embed = DiscordChatUtils.generateEmbed(new String[]{bannedResponses.get(new Random().nextInt(bannedResponses.size()))}, serverPrefix, true, Color.RED, true);
