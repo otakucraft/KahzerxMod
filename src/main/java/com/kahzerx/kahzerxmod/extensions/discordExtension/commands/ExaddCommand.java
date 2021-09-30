@@ -45,15 +45,15 @@ public class ExaddCommand extends GenericCommand {
             event.getChannel().sendMessageEmbeds(embed.build()).queue();
             return;
         }
-        if (extension.alreadyAddedBySomeone(profile.get().getId().toString())) {
-            EmbedBuilder embed = DiscordChatUtils.generateEmbed(new String[]{"**Ya está añadido a la whitelist.**"}, serverPrefix, true, Color.RED, true);
+        WhitelistEntry whitelistEntry = new WhitelistEntry(profile.get());
+        if (extension.isPlayerBanned(profile.get().getId().toString())) {
+            EmbedBuilder embed = DiscordChatUtils.generateEmbed(new String[]{"**Parece que intentas añadir a alguien ya baneado.**"}, serverPrefix, true, Color.RED, true);
             assert embed != null;
             event.getChannel().sendMessageEmbeds(embed.build()).queue();
             return;
         }
-        WhitelistEntry whitelistEntry = new WhitelistEntry(profile.get());
-        if (extension.isPlayerBanned(profile.get().getId().toString())) {
-            EmbedBuilder embed = DiscordChatUtils.generateEmbed(new String[]{"**Parece que intentas añadir a alguien ya baneado.**"}, serverPrefix, true, Color.RED, true);
+        if (extension.alreadyAddedBySomeone(profile.get().getId().toString())) {
+            EmbedBuilder embed = DiscordChatUtils.generateEmbed(new String[]{"**Ya está añadido a la whitelist.**"}, serverPrefix, true, Color.RED, true);
             assert embed != null;
             event.getChannel().sendMessageEmbeds(embed.build()).queue();
             return;
@@ -63,12 +63,5 @@ public class ExaddCommand extends GenericCommand {
         EmbedBuilder embed = DiscordChatUtils.generateEmbed(new String[]{"**" + profile.get().getName() + " añadido :D**"}, serverPrefix, true, Color.GREEN, true);
         assert embed != null;
         event.getChannel().sendMessageEmbeds(embed.build()).queue();
-
-        Guild guild = event.getGuild();
-        Role role = guild.getRoleById(extension.extensionSettings().getDiscordRole());
-        Member member = event.getMember();
-        assert role != null;
-        assert member != null;
-        guild.addRoleToMember(member, role).queue();
     }
 }

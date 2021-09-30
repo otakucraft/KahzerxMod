@@ -6,9 +6,7 @@ import com.kahzerx.kahzerxmod.utils.DiscordChatUtils;
 import com.mojang.authlib.GameProfile;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.minecraft.server.*;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.server.MinecraftServer;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -51,8 +49,8 @@ public class BanCommand extends GenericCommand {
         }
         long discordID = extension.getDiscordID(profile.get().getId().toString());
         if (extension.isPlayerBanned(profile.get().getId().toString())) {
-            EmbedBuilder embed = DiscordChatUtils.generateEmbed(new String[]{"**Ya estaba baneado.**"}, serverPrefix, true, Color.YELLOW, true);
             onBanAction(extension, discordID, server);
+            EmbedBuilder embed = DiscordChatUtils.generateEmbed(new String[]{"**Ya estaba baneado.**"}, serverPrefix, true, Color.YELLOW, true);
             assert embed != null;
             event.getChannel().sendMessageEmbeds(embed.build()).queue();
             return;

@@ -210,6 +210,18 @@ public class DiscordWhitelistExtension extends GenericExtension implements Exten
         }
     }
 
+    public void pardonDiscord(long discordID) {
+        try {
+            String insertPlayer = "DELETE FROM discord_banned WHERE discordID = ?;";
+            PreparedStatement ps = conn.prepareStatement(insertPlayer);
+            ps.setLong(1, discordID);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public ArrayList<String> getWhitelistedPlayers(long discordID) {
         ArrayList<String> players = new ArrayList<>();
         try {
@@ -268,10 +280,16 @@ public class DiscordWhitelistExtension extends GenericExtension implements Exten
         }
     }
 
+    public void tryVanillaPardon(BannedPlayerList banList, GameProfile profile, MinecraftServer server) {
+        if (banList.contains(profile)) {
+            banList.remove(profile);
+        }
+    }
+
     public void tryVanillaWhitelistRemove(Whitelist whitelist, GameProfile profile, MinecraftServer server) {
         if (whitelist.isAllowed(profile)) {
             WhitelistEntry whitelistEntry = new WhitelistEntry(profile);
-            whitelist.remove(profile);
+            whitelist.remove(whitelistEntry);
             ServerPlayerEntity serverPlayerEntity = server.getPlayerManager().getPlayer(profile.getId());
             if (serverPlayerEntity != null) {
                 serverPlayerEntity.networkHandler.disconnect(new TranslatableText("Byee~"));

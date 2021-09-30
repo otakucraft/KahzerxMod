@@ -40,15 +40,15 @@ public class ExremoveCommand extends GenericCommand {
             event.getChannel().sendMessageEmbeds(embed.build()).queue();
             return;
         }
-        Whitelist whitelist = server.getPlayerManager().getWhitelist();
-        if (!whitelist.isAllowed(profile.get())) {
-            EmbedBuilder embed = DiscordChatUtils.generateEmbed(new String[]{"**" + playerName + " no está en whitelist.**"}, serverPrefix, true, Color.YELLOW, true);
+        if (!extension.canRemove(69420L, profile.get().getId().toString())) {
+            EmbedBuilder embed = DiscordChatUtils.generateEmbed(new String[]{"**No puedes eliminar a " + profile.get().getName() + ".**"}, serverPrefix, true, Color.RED, true);
             assert embed != null;
             event.getChannel().sendMessageEmbeds(embed.build()).queue();
             return;
         }
-        if (!extension.canRemove(69420L, profile.get().getId().toString())) {
-            EmbedBuilder embed = DiscordChatUtils.generateEmbed(new String[]{"**No puedes eliminar a " + profile.get().getName() + ".**"}, serverPrefix, true, Color.RED, true);
+        Whitelist whitelist = server.getPlayerManager().getWhitelist();
+        if (!whitelist.isAllowed(profile.get())) {
+            EmbedBuilder embed = DiscordChatUtils.generateEmbed(new String[]{"**" + playerName + " no está en whitelist.**"}, serverPrefix, true, Color.YELLOW, true);
             assert embed != null;
             event.getChannel().sendMessageEmbeds(embed.build()).queue();
             return;
@@ -63,13 +63,5 @@ public class ExremoveCommand extends GenericCommand {
         EmbedBuilder embed = DiscordChatUtils.generateEmbed(new String[]{"**" + profile.get().getName() + " eliminado D:**"}, serverPrefix, true, Color.GREEN, true);
         assert embed != null;
         event.getChannel().sendMessageEmbeds(embed.build()).queue();
-
-        // TODO comprobar si aun quitando el player de la whitelist, hay más de 1.
-        Guild guild = event.getGuild();
-        Role role = guild.getRoleById(extension.extensionSettings().getDiscordRole());
-        Member member = event.getMember();
-        assert role != null;
-        assert member != null;
-        guild.removeRoleFromMember(member, role).queue();
     }
 }
