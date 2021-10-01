@@ -71,12 +71,13 @@ public class RemoveCommand extends GenericCommand {
         assert embed != null;
         event.getChannel().sendMessageEmbeds(embed.build()).queue();
 
-        // TODO comprobar si aun quitando el player de la whitelist, hay más de 1.
-        Guild guild = event.getGuild();
-        Role role = guild.getRoleById(extension.extensionSettings().getDiscordRole());
-        Member member = event.getMember();
-        assert role != null;
-        assert member != null;
-        guild.removeRoleFromMember(member, role).queue();
+        if (extension.getWhitelistedPlayers(id).isEmpty()) {
+            Guild guild = event.getGuild();
+            Role role = guild.getRoleById(extension.extensionSettings().getDiscordRole());
+            Member member = event.getMember();
+            assert role != null;
+            assert member != null;
+            guild.removeRoleFromMember(member, role).queue();
+        }
     }
 }

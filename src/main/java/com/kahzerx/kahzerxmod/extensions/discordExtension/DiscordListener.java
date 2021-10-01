@@ -20,7 +20,7 @@ public class DiscordListener extends ListenerAdapter {
     public static List<DiscordCommandsExtension> discordExtensions = new ArrayList<>();
     public static final String commandPrefix = "!";
 
-    private static JDA jda = null;
+    public static JDA jda = null;
     private static String channelId = "";
     private static String token = "";
     private static boolean chatbridge = false;

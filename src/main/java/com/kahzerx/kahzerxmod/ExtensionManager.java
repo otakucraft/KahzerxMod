@@ -18,6 +18,9 @@ import com.kahzerx.kahzerxmod.extensions.discordExtension.discordExtension.Disco
 import com.kahzerx.kahzerxmod.extensions.discordExtension.discordWhitelistExtension.DiscordWhitelistExtension;
 import com.kahzerx.kahzerxmod.extensions.discordExtension.discordWhitelistExtension.DiscordWhitelistJsonSettings;
 import com.kahzerx.kahzerxmod.extensions.discordExtension.discordWhitelistExtension.DiscordWhitelistSettings;
+import com.kahzerx.kahzerxmod.extensions.discordExtension.discordWhitelistSyncExtension.DiscordWhitelistSyncExtension;
+import com.kahzerx.kahzerxmod.extensions.discordExtension.discordWhitelistSyncExtension.DiscordWhitelistSyncJsonSettings;
+import com.kahzerx.kahzerxmod.extensions.discordExtension.discordWhitelistSyncExtension.DiscordWhitelistSyncSettings;
 import com.kahzerx.kahzerxmod.extensions.fckPrivacyExtension.FckPrivacyExtension;
 import com.kahzerx.kahzerxmod.extensions.hereExtension.HereExtension;
 import com.kahzerx.kahzerxmod.extensions.homeExtension.HomeExtension;
@@ -226,6 +229,34 @@ public class ExtensionManager {
                         (found.get("discordWhitelist") != null ? found.get("discordWhitelist") : true) && (discordExtension.extensionSettings().isEnabled()) && (discordWhitelistExtension.extensionSettings().isEnabled()),
                         "Enables !ban, !pardon, !exadd, !exremove on discord AdminChats.",
                         adminChats
+                ),
+                discordExtension,
+                discordWhitelistExtension));
+
+        List<Long> validRoles = new ArrayList<>();
+        long notifyChannelID = 0L;
+        long groupID = 0L;
+        DiscordWhitelistSyncJsonSettings dwsjs = gson.fromJson(settings, DiscordWhitelistSyncJsonSettings.class);
+        if (dwsjs != null) {
+            for (DiscordWhitelistSyncSettings dwss : dwsjs.getSettings()) {
+                if (dwss == null) {
+                    continue;
+                }
+                if (dwss.getName().equals("discordWhitelistSync")) {
+                    validRoles = dwss.getValidRoles() != null ? dwss.getValidRoles() : new ArrayList<>();
+                    notifyChannelID = dwss.getNotifyChannelID();
+                    groupID = dwss.getGroupID();
+                }
+            }
+        }
+        KahzerxServer.extensions.add(new DiscordWhitelistSyncExtension(
+                new DiscordWhitelistSyncSettings(
+                        "discordWhitelistSync",
+                        (found.get("discordWhitelistSync") != null ? found.get("discordWhitelistSync") : true) && (discordExtension.extensionSettings().isEnabled()) && (discordWhitelistExtension.extensionSettings().isEnabled()),
+                        "Check if people that did !add have a given discord role, if not they will get automatically removed from whitelist, useful for sub twitch role. The groupID is the ID of the discord server/guild.",
+                        notifyChannelID,
+                        validRoles,
+                        groupID
                 ),
                 discordExtension,
                 discordWhitelistExtension));

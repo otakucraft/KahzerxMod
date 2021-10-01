@@ -47,8 +47,8 @@ public class KahzerxServer {
     }
 
     public static void onStopServer() {
-        db.close();
         extensions.forEach(Extensions::onServerStop);
+        db.close();
     }
 
     public static void onAutoSave() {

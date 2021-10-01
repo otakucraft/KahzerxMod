@@ -27,7 +27,6 @@ import java.util.concurrent.TimeUnit;
 public class DiscordAdminToolsExtension extends GenericExtension implements Extensions, DiscordCommandsExtension {
     private final DiscordExtension discordExtension;
     private final DiscordWhitelistExtension discordWhitelistExtension;
-    private Connection conn;
 
     private final BanCommand banCommand = new BanCommand(DiscordListener.commandPrefix);
     private final PardonCommand pardonCommand = new PardonCommand(DiscordListener.commandPrefix);
@@ -38,20 +37,6 @@ public class DiscordAdminToolsExtension extends GenericExtension implements Exte
         super(settings);
         this.discordExtension = discordExtension;
         this.discordWhitelistExtension = discordWhitelistExtension;
-    }
-
-    @Override
-    public void onCreateDatabase(Connection conn) {
-        if (!this.getSettings().isEnabled()) {
-            return;
-        }
-        if (!discordExtension.getSettings().isEnabled()) {
-            return;
-        }
-        if (!discordWhitelistExtension.getSettings().isEnabled()) {
-            return;
-        }
-        this.conn = conn;
     }
 
     @Override

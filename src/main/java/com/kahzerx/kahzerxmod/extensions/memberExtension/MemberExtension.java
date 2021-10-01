@@ -30,7 +30,6 @@ public class MemberExtension extends GenericExtension implements Extensions {
         }
         if (teamNames.contains("MIEMBRO")) {
             Team playerTeam = server.getScoreboard().getPlayerTeam(player.getName().getString());
-            System.out.println(playerTeam);
             if (playerTeam != null) {
                 return;
             }

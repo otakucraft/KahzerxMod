@@ -89,13 +89,7 @@ public class HereExtension extends GenericExtension implements Extensions {
                     Util.NIL_UUID
             );
         }
-        player.addStatusEffect(new StatusEffectInstance(
-                StatusEffects.GLOWING,
-                100,
-                0,
-                false,
-                false
-        ));
+        player.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 100, 0, false, false));
         return 1;
     }
 }

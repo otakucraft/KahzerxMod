@@ -63,7 +63,7 @@ public class PardonCommand extends GenericCommand {
             if (p.isEmpty()) {
                 continue;
             }
-            extension.tryVanillaPardon(server.getPlayerManager().getUserBanList(), p.get(), server);
+            extension.tryVanillaPardon(server.getPlayerManager().getUserBanList(), p.get());
             extension.deletePlayer(discordID, p.get().getId().toString());
         }
     }

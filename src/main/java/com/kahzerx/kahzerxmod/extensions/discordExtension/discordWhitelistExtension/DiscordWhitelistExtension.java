@@ -240,6 +240,26 @@ public class DiscordWhitelistExtension extends GenericExtension implements Exten
         return players;
     }
 
+    public ArrayList<Long> getDiscordIDs() {
+        ArrayList<Long> IDs = new ArrayList<>();
+        try {
+            String q = "SELECT discordID FROM discord;";
+            Statement stmt = this.conn.createStatement();
+            ResultSet rs = stmt.executeQuery(q);
+            while (rs.next()) {
+                long newID = rs.getLong("discordID");
+                if (!IDs.contains(newID)) {
+                    IDs.add(newID);
+                }
+            }
+            rs.close();
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return IDs;
+    }
+
     public void deletePlayer(long discordID, String uuid) {
         try {
             String delete = "DELETE FROM discord WHERE uuid = ? AND discordID = ?;";
@@ -280,7 +300,7 @@ public class DiscordWhitelistExtension extends GenericExtension implements Exten
         }
     }
 
-    public void tryVanillaPardon(BannedPlayerList banList, GameProfile profile, MinecraftServer server) {
+    public void tryVanillaPardon(BannedPlayerList banList, GameProfile profile) {
         if (banList.contains(profile)) {
             banList.remove(profile);
         }
