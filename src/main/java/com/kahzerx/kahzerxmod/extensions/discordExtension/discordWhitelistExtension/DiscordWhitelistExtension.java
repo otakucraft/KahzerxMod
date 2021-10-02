@@ -22,6 +22,7 @@ import net.minecraft.text.TranslatableText;
 import java.awt.*;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class DiscordWhitelistExtension extends GenericExtension implements Extensions, DiscordCommandsExtension {
@@ -129,11 +130,14 @@ public class DiscordWhitelistExtension extends GenericExtension implements Exten
             }
             rs.close();
             ps.close();
-            return added;
         } catch (SQLException e) {
             e.printStackTrace();
-            return added;
         }
+        return added;
+    }
+
+    public boolean alreadyAddedBySomeone(UUID uuid) {
+        return alreadyAddedBySomeone(uuid.toString());
     }
 
     public boolean userReachedMaxPlayers(long discordID) {

@@ -236,6 +236,7 @@ public class ExtensionManager {
         List<Long> validRoles = new ArrayList<>();
         long notifyChannelID = 0L;
         long groupID = 0L;
+        boolean aggressive = false;
         DiscordWhitelistSyncJsonSettings dwsjs = gson.fromJson(settings, DiscordWhitelistSyncJsonSettings.class);
         if (dwsjs != null) {
             for (DiscordWhitelistSyncSettings dwss : dwsjs.getSettings()) {
@@ -246,6 +247,7 @@ public class ExtensionManager {
                     validRoles = dwss.getValidRoles() != null ? dwss.getValidRoles() : new ArrayList<>();
                     notifyChannelID = dwss.getNotifyChannelID();
                     groupID = dwss.getGroupID();
+                    aggressive = dwss.isAggressive();
                 }
             }
         }
@@ -253,10 +255,11 @@ public class ExtensionManager {
                 new DiscordWhitelistSyncSettings(
                         "discordWhitelistSync",
                         (found.get("discordWhitelistSync") != null ? found.get("discordWhitelistSync") : true) && (discordExtension.extensionSettings().isEnabled()) && (discordWhitelistExtension.extensionSettings().isEnabled()),
-                        "Check if people that did !add have a given discord role, if not they will get automatically removed from whitelist, useful for sub twitch role. The groupID is the ID of the discord server/guild.",
+                        "Check if people that did !add have a given discord role, if not they will get automatically removed from whitelist, useful for sub twitch role. The groupID is the ID of the discord server/guild. The aggressive mode will force whitelist and discord database have the same users so any player added with /whitelist add will get removed on autosave.",
                         notifyChannelID,
                         validRoles,
-                        groupID
+                        groupID,
+                        aggressive
                 ),
                 discordExtension,
                 discordWhitelistExtension));

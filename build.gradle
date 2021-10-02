@@ -37,10 +37,12 @@ dependencies {
 	implementation 'org.xerial:sqlite-jdbc:3.36.0.1'
 	implementation 'com.google.code.gson:gson:2.8.8'
 	implementation 'net.dv8tion:JDA:4.3.0_324'
+	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 
 	include 'org.xerial:sqlite-jdbc:3.36.0.1'
 	include 'com.google.code.gson:gson:2.8.8'
 	include 'net.dv8tion:JDA:4.3.0_324'
+	include 'com.googlecode.json-simple:json-simple:1.1.1'
 }
 
 processResources {

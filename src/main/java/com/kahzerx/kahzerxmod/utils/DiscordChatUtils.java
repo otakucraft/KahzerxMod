@@ -43,7 +43,9 @@ public class DiscordChatUtils {
         try {
             EmbedBuilder emb = new EmbedBuilder();
             emb.setColor(color);
-            emb.setTitle(serverPrefix.replace("`", ""));
+            if (!serverPrefix.equals("")) {
+                emb.setTitle(serverPrefix.replace("`", ""));
+            }
             if (hasOne) {
                 emb.setDescription(msg[0]);
             } else {

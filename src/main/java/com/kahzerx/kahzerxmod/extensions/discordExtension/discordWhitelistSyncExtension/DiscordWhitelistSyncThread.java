@@ -9,11 +9,20 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.requests.RestAction;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.Whitelist;
+import net.minecraft.server.WhitelistEntry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.awt.*;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -37,6 +46,17 @@ public class DiscordWhitelistSyncThread extends Thread {
         if (DiscordListener.jda == null) {
             return;
         }
+        LOGGER.info("STARTING WHITELIST SYNC.");
+        database2WhitelistSync();
+        if (discordWhitelistSyncExtension.extensionSettings().isAggressive()) {
+            server.getPlayerManager().reloadWhitelist();
+            whitelist2Database();
+            database2Whitelist();
+        }
+        LOGGER.info("WHITELIST SYNC FINISHED.");
+    }
+
+    private void database2WhitelistSync() {
         ArrayList<Long> discordIDs = discordWhitelistExtension.getDiscordIDs();
         List<Long> validRoles = discordWhitelistSyncExtension.extensionSettings().getValidRoles();
         if (validRoles.isEmpty()) {
@@ -46,7 +66,6 @@ public class DiscordWhitelistSyncThread extends Thread {
         if (guild == null) {
             return;
         }
-        LOGGER.info("STARTING WHITELIST SYNC.");
         for (long discordID : discordIDs) {
             if (discordWhitelistExtension.isDiscordBanned(discordID)) {
                 continue;
@@ -54,7 +73,8 @@ public class DiscordWhitelistSyncThread extends Thread {
             if (discordID == 69420L) {
                 continue;
             }
-            Member member = guild.getMemberById(discordID);
+            RestAction<Member> restMember = guild.retrieveMemberById(discordID);
+            Member member = restMember.complete();
             if (member == null) {
                 onSyncAction(discordWhitelistExtension.getWhitelistedPlayers(discordID), discordID, guild);
                 continue;
@@ -76,7 +96,6 @@ public class DiscordWhitelistSyncThread extends Thread {
             }
             onSyncAction(discordWhitelistExtension.getWhitelistedPlayers(discordID), discordID, guild);
         }
-        LOGGER.info("WHITELIST SYNC FINISHED.");
     }
 
     private void onSyncAction(ArrayList<String> whitelistedPlayers, long discordID, Guild guild) {
@@ -93,6 +112,54 @@ public class DiscordWhitelistSyncThread extends Thread {
             TextChannel channel = guild.getTextChannelById(discordWhitelistSyncExtension.extensionSettings().getNotifyChannelID());
             assert channel != null;
             channel.sendMessageEmbeds(embed.build()).queue();
+        }
+    }
+
+    private void whitelist2Database() {
+        List<String> whitelistedUUIDs = new ArrayList<>();
+        try {
+            JSONParser parser = new JSONParser();
+            Object obj = parser.parse(new FileReader(server.getPlayerManager().getWhitelist().getFile()));
+            JSONArray jsonArray = (JSONArray) obj;
+            for (JSONObject jsonObject : (Iterable<JSONObject>) jsonArray) {
+                whitelistedUUIDs.add((String) jsonObject.get("uuid"));
+            }
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        Whitelist whitelist = server.getPlayerManager().getWhitelist();
+        for (String uuid : whitelistedUUIDs) {
+            Optional<GameProfile> profile = server.getUserCache().getByUuid(UUID.fromString(uuid));
+            if (profile.isEmpty()) {
+                continue;
+            }
+            GameProfile p = profile.get();
+            if (discordWhitelistExtension.alreadyAddedBySomeone(p.getId())) {
+                continue;
+            }
+            discordWhitelistExtension.tryVanillaWhitelistRemove(whitelist, p, server);
+        }
+    }
+
+    private void database2Whitelist() {
+        ArrayList<Long> discordIDs = discordWhitelistExtension.getDiscordIDs();
+        for (long discordID : discordIDs) {
+            ArrayList<String> whitelistedUUID = discordWhitelistExtension.getWhitelistedPlayers(discordID);
+            for (String playerUUID : whitelistedUUID) {
+                Optional<GameProfile> profile = server.getUserCache().getByUuid(UUID.fromString(playerUUID));
+                if (profile.isEmpty()) {
+                    discordWhitelistExtension.deletePlayer(discordID, playerUUID);
+                    continue;
+                }
+                Whitelist whitelist = server.getPlayerManager().getWhitelist();
+                if (whitelist.isAllowed(profile.get())) {
+                    continue;
+                }
+                WhitelistEntry entry = new WhitelistEntry(profile.get());
+                whitelist.add(entry);
+            }
         }
     }
 }
