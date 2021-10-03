@@ -21,22 +21,22 @@ public abstract class ContainerInteractionLoggingMixin extends LockableContainer
 
     @Inject(method = "setStack", at = @At("HEAD"))
     private void onSetItems(int slot, ItemStack stack, CallbackInfo ci) {
-        if (stack.getItem() != Items.AIR) {
-            System.out.println("setItems");
-            System.out.println(getPos());
-            System.out.println(getName().getString().toLowerCase());
-            System.out.println(stack);
-        }
+//        if (stack.getItem() != Items.AIR) {
+//            System.out.println("setItems");
+//            System.out.println(getPos());
+//            System.out.println(getName().getString().toLowerCase());
+//            System.out.println(stack);
+//        }
     }
 
     @Inject(method = "removeStack(II)Lnet/minecraft/item/ItemStack;", at = @At("RETURN"))
     private void onRemoveItems(int slot, int amount, CallbackInfoReturnable<ItemStack> cir) {
-        ItemStack stack = cir.getReturnValue();
-        if (stack.getItem() != Items.AIR) {
-            System.out.println("removeItems");
-            System.out.println(getPos());
-            System.out.println(getName().getString().toLowerCase());
-            System.out.println(cir.getReturnValue());
-        }
+//        ItemStack stack = cir.getReturnValue();
+//        if (stack.getItem() != Items.AIR) {
+//            System.out.println("removeItems");
+//            System.out.println(getPos());
+//            System.out.println(getName().getString().toLowerCase());
+//            System.out.println(cir.getReturnValue());
+//        }
     }
 }
