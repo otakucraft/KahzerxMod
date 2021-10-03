@@ -7,8 +7,6 @@ import com.kahzerx.kahzerxmod.extensions.discordExtension.discordExtension.Disco
 import com.kahzerx.kahzerxmod.extensions.discordExtension.discordWhitelistExtension.DiscordWhitelistExtension;
 import net.minecraft.server.MinecraftServer;
 
-import java.sql.Connection;
-
 public class DiscordWhitelistSyncExtension extends GenericExtension implements Extensions {
     private final DiscordExtension discordExtension;
     private final DiscordWhitelistExtension discordWhitelistExtension;

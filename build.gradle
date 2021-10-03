@@ -15,6 +15,7 @@ repositories {
 		name 'm2-dv8tion'
 		url 'https://m2.dv8tion.net/releases'
 	}
+	mavenCentral()
 	// Add repositories to retrieve artifacts from in here.
 	// You should only use this when depending on other mods because
 	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
@@ -34,15 +35,28 @@ dependencies {
 	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
 	// You may need to force-disable transitiveness on them.
 
-	implementation 'org.xerial:sqlite-jdbc:3.36.0.1'
+	implementation 'org.xerial:sqlite-jdbc:3.36.0.2'
 	implementation 'com.google.code.gson:gson:2.8.8'
 	implementation 'net.dv8tion:JDA:4.3.0_324'
 	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 
-	include 'org.xerial:sqlite-jdbc:3.36.0.1'
+	include 'org.xerial:sqlite-jdbc:3.36.0.2'
 	include 'com.google.code.gson:gson:2.8.8'
 	include 'net.dv8tion:JDA:4.3.0_324'
 	include 'com.googlecode.json-simple:json-simple:1.1.1'
+
+	include 'com.squareup.okhttp3:okhttp:3.13.0'
+	include 'com.squareup.okio:okio:1.17.2'
+	include 'org.slf4j:slf4j-api:1.7.25'
+	include 'com.neovisionaries:nv-websocket-client:2.14'
+	include 'club.minnced:opus-java:1.1.0'
+	include 'club.minnced:opus-java-api:1.1.0'
+	include 'club.minnced:opus-java-natives:1.1.0'
+	include 'org.apache.commons:commons-collections4:4.1'
+	include 'com.fasterxml.jackson.core:jackson-databind:2.10.1'
+	include 'com.fasterxml.jackson.core:jackson-annotations:2.10.1'
+	include 'com.fasterxml.jackson.core:jackson-core:2.10.1'
+	include 'net.sf.trove4j:trove4j:3.0.3'
 }
 
 processResources {

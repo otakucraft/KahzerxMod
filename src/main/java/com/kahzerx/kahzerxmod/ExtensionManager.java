@@ -170,7 +170,7 @@ public class ExtensionManager {
         DiscordExtension discordExtension = new DiscordExtension(
                 new DiscordSettings(
                         "discord",
-                        found.get("discord") != null ? found.get("discord") : true,
+                        found.get("discord") != null ? found.get("discord") : false,
                         "Connects minecraft chat + some events with a discord chat (chatbridge). Prefix is necessary if you want crossServerChat to work properly and not having duplicated messages.",
                         token,
                         crossServerChat,
