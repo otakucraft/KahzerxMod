@@ -19,9 +19,6 @@ import net.dv8tion.jda.api.requests.restaction.MessageAction;
 import net.minecraft.server.MinecraftServer;
 
 import java.awt.*;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.concurrent.TimeUnit;
 
 public class DiscordAdminToolsExtension extends GenericExtension implements Extensions, DiscordCommandsExtension {

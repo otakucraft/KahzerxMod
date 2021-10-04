@@ -5,9 +5,6 @@ import com.kahzerx.kahzerxmod.extensions.discordExtension.discordWhitelistExtens
 import com.kahzerx.kahzerxmod.utils.DiscordChatUtils;
 import com.mojang.authlib.GameProfile;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.Whitelist;

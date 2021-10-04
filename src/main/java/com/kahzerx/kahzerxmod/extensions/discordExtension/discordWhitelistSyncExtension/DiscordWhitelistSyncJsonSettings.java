@@ -1,7 +1,5 @@
 package com.kahzerx.kahzerxmod.extensions.discordExtension.discordWhitelistSyncExtension;
 
-import com.kahzerx.kahzerxmod.extensions.discordExtension.discordWhitelistExtension.DiscordWhitelistJsonSettings;
-
 import java.util.List;
 
 public class DiscordWhitelistSyncJsonSettings {

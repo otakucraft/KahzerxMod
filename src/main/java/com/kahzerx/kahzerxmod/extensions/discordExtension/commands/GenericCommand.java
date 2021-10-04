@@ -1,7 +1,6 @@
 package com.kahzerx.kahzerxmod.extensions.discordExtension.commands;
 
 import com.kahzerx.kahzerxmod.extensions.discordExtension.DiscordPermission;
-import com.kahzerx.kahzerxmod.extensions.discordExtension.discordAdminToolsExtension.DiscordAdminToolsExtension;
 import com.kahzerx.kahzerxmod.extensions.discordExtension.discordWhitelistExtension.DiscordWhitelistExtension;
 import com.kahzerx.kahzerxmod.utils.DiscordChatUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
