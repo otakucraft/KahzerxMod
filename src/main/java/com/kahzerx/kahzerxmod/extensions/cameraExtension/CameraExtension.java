@@ -15,7 +15,7 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.world.GameMode;
 
 public class CameraExtension extends GenericExtension implements Extensions {
-    private final PermsExtension permsExtension;
+    public final PermsExtension permsExtension;
 
     public CameraExtension(ExtensionSettings settings, PermsExtension permsExtension) {
         super(settings);

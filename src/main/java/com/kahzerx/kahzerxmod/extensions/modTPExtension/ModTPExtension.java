@@ -12,7 +12,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
 
 public class ModTPExtension extends GenericExtension implements Extensions {
-    private final PermsExtension permsExtension;
+    public final PermsExtension permsExtension;
     public ModTPExtension(ExtensionSettings settings, PermsExtension perms) {
         super(settings);
         this.permsExtension = perms;

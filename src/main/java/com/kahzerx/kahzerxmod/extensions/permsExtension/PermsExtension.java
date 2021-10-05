@@ -4,6 +4,7 @@ import com.kahzerx.kahzerxmod.Extensions;
 import com.kahzerx.kahzerxmod.extensions.ExtensionSettings;
 import com.kahzerx.kahzerxmod.extensions.GenericExtension;
 import com.mojang.brigadier.CommandDispatcher;
+import net.minecraft.server.ServerTask;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
@@ -94,16 +95,21 @@ public class PermsExtension extends GenericExtension implements Extensions {
         }
     }
 
-    private PermsLevels getDBPlayerPerms(String playerUUID) {
+    public PermsLevels getDBPlayerPerms(String playerUUID) {
         try {
             String query = "SELECT level FROM perms WHERE uuid = ?;";
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, playerUUID);
             ResultSet rs = ps.executeQuery();
-            int level = rs.getInt("level");
+            int level = -1;
+            if (rs.next()) {
+                level = rs.getInt("level");
+            }
             rs.close();
             ps.close();
-            return PermsLevels.getValue(level);
+            if (level != -1) {
+                return PermsLevels.getValue(level);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -132,6 +138,10 @@ public class PermsExtension extends GenericExtension implements Extensions {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        source.getServer().send(new ServerTask(source.getServer().getTicks(), () -> {
+            source.getServer().getCommandManager().sendCommandTree(playerEntity);
+        }));
+
         return 1;
     }
 

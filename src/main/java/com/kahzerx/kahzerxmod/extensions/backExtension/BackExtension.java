@@ -19,7 +19,7 @@ import java.util.HashMap;
 public class BackExtension extends GenericExtension implements Extensions {
     private final HashMap<String, BackPos> playerBack = new HashMap<>();
     private Connection conn;
-    private final PermsExtension permsExtension;
+    public final PermsExtension permsExtension;
 
     public BackExtension(ExtensionSettings settings, PermsExtension perms) {
         super(settings);

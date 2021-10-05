@@ -18,7 +18,7 @@ public class PermsCommand {
                 then(literal("give").
                         then(argument("player", word()).
                                 suggests((c, b) -> suggestMatching(PlayerUtils.getPlayers(c.getSource()), b)).
-                                then(argument("level", IntegerArgumentType.integer(1, 3)).
+                                then(argument("level", IntegerArgumentType.integer(1, 2)).
                                         executes(context -> perms.updatePerms(
                                                 context.getSource(),
                                                 StringArgumentType.getString(context, "player"),
