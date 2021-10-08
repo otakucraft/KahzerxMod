@@ -35,8 +35,9 @@ public class ModTPExtension extends GenericExtension implements Extensions {
             source.sendFeedback(new LiteralText("No está conectado XD."), false);
             return 1;
         }
-        if (permsExtension.getPlayerPerms().containsKey(player.getUuidAsString())) {
-            if (permsExtension.getPlayerPerms().get(player.getUuidAsString()).getId() == PermsLevels.MEMBER.getId()) {
+        ServerPlayerEntity sourcePlayer = source.getPlayer();
+        if (permsExtension.getPlayerPerms().containsKey(sourcePlayer.getUuidAsString())) {
+            if (permsExtension.getPlayerPerms().get(sourcePlayer.getUuidAsString()).getId() == PermsLevels.MEMBER.getId()) {
                 source.sendFeedback(new LiteralText("No tienes permisos para ejecutar este comando."), false);
                 return 1;
             }
@@ -44,7 +45,6 @@ public class ModTPExtension extends GenericExtension implements Extensions {
             source.sendFeedback(new LiteralText("Error al ejecutar, intenta reconectarte o contacta con un admin."), false);
             return 1;
         }
-        ServerPlayerEntity sourcePlayer = source.getPlayer();
         sourcePlayer.teleport(player.getServerWorld(), player.getX(), player.getY(), player.getZ(), sourcePlayer.getYaw(), sourcePlayer.getPitch());
         return 1;
     }
