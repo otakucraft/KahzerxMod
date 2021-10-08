@@ -57,7 +57,7 @@ public class ExtensionManager {
                 new ExtensionSettings(
                         "perms",
                         found.get("perms") != null ? found.get("perms") : true,
-                        "Permission levels for other commands like /back, /c or /modTP. Enables /perms command."));
+                        "Permission levels for other commands like /back, /c or /modTP. Enables /kPerms command."));
         KahzerxServer.extensions.add(permsExtension);
         KahzerxServer.extensions.add(new HomeExtension(
                 new ExtensionSettings(

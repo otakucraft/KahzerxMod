@@ -138,9 +138,7 @@ public class PermsExtension extends GenericExtension implements Extensions {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        source.getServer().send(new ServerTask(source.getServer().getTicks(), () -> {
-            source.getServer().getCommandManager().sendCommandTree(playerEntity);
-        }));
+        source.getServer().send(new ServerTask(source.getServer().getTicks(), () -> source.getServer().getCommandManager().sendCommandTree(playerEntity)));
 
         return 1;
     }

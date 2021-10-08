@@ -78,6 +78,7 @@ public class DiscordListener extends ListenerAdapter {
         String message = event.getMessage().getContentRaw();
         if (message.equals(commandPrefix + onlineCommand.getBody())) {
             onlineCommand.execute(event, server, discordSettings.getPrefix(), discordSettings.getAllowedChats());
+            return;
         }
 
         for (DiscordCommandsExtension extension : discordExtensions) {
