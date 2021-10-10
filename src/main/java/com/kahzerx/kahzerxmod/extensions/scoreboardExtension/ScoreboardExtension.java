@@ -156,7 +156,7 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
                 if (gameProfile.isEmpty()) {
                     continue;
                 }
-                playerName = getSettings().getName();
+                playerName = gameProfile.get().getName();
             }
             if (value == 0) {
                 continue;
