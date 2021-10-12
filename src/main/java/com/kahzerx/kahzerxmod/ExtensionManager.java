@@ -122,7 +122,7 @@ public class ExtensionManager {
                 new ExtensionSettings(
                         "member",
                         found.get("member") != null ? found.get("member") : true,
-                        "Gives member role on player first joined.")));
+                        "Gives member role on player first joined, it also creates member, mod and admin teams if not exist.")));
         KahzerxServer.extensions.add(new SeedExtension(
                 new ExtensionSettings(
                         "seed",
