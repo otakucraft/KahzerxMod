@@ -77,7 +77,7 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
         return 1;
     }
 
-    public int showSideBar(ServerCommandSource source, ItemStackArgument item, String type) {
+    public void showSideBar(ServerCommandSource source, ItemStackArgument item, String type) {
         Scoreboard scoreboard = source.getServer().getScoreboard();
         Item minecraftItem = item.getItem();
         String objectiveName = type + "." + Item.getRawId(minecraftItem);
@@ -100,7 +100,7 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
             String displayName = capitalize + " " + minecraftItem.toString().replaceAll("_", " ");
             Optional<ScoreboardCriterion> opCriteria = ScoreboardCriterion.getOrCreateStatCriterion(criteriaName);
             if (opCriteria.isEmpty()) {
-                return 1;
+                return;
             }
             ScoreboardCriterion criteria = opCriteria.get();
 
@@ -115,7 +115,7 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
                 assert entity != null;
                 source.getServer().getPlayerManager().broadcastChatMessage(text, MessageType.CHAT, Util.NIL_UUID);
 
-                return 1;
+                return;
 
             }
             scoreboard.setObjectiveSlot(1, newScoreboardObjective);
@@ -125,7 +125,6 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
         }
         assert entity != null;
         source.getServer().getPlayerManager().broadcastChatMessage(text, MessageType.CHAT, Util.NIL_UUID);
-        return 1;
     }
 
     public void initScoreboard(ServerCommandSource source, ScoreboardObjective scoreboardObjective, Item item, String type) {

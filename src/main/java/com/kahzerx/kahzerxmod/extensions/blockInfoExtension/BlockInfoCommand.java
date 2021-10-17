@@ -12,10 +12,10 @@ public class BlockInfoCommand {
     public void register(CommandDispatcher<ServerCommandSource> dispatcher, BlockInfoExtension blockInfo) {
         dispatcher.register(literal("blockInfo").
                 then(argument("coords", BlockPosArgumentType.blockPos()).
-                        executes(context -> blockInfo.getInfo(
+                        executes(context -> blockInfo.threadedGetInfo(
                                 context.getSource(), BlockPosArgumentType.getBlockPos(context, "coords"), 1)).
                         then(argument("int", IntegerArgumentType.integer(1)).
-                                executes(context -> blockInfo.getInfo(
+                                executes(context -> blockInfo.threadedGetInfo(
                                         context.getSource(),
                                         BlockPosArgumentType.getBlockPos(context, "coords"),
                                         IntegerArgumentType.getInteger(context, "int"))))));

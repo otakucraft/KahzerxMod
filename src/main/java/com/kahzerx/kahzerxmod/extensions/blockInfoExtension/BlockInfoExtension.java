@@ -197,7 +197,12 @@ public class BlockInfoExtension extends GenericExtension implements Extensions {
         return lines;
     }
 
-    public int getInfo(ServerCommandSource source, BlockPos pos, int page) {
+    public int threadedGetInfo(ServerCommandSource source, BlockPos pos, int page) {
+        new Thread(() -> getInfo(source, pos, page)).start();
+        return 1;
+    }
+
+    public void getInfo(ServerCommandSource source, BlockPos pos, int page) {
         int x = pos.getX();
         int y = pos.getY();
         int z = pos.getZ();
@@ -212,7 +217,7 @@ public class BlockInfoExtension extends GenericExtension implements Extensions {
         }
 
         if (page > nLine) {  // No pages.
-            return 1;
+            return;
         } else if (page == nLine && page == 1) {  // There is only 1 page.
             source.sendFeedback(new LiteralText(String.format("%d/%d.", page, nLine)), false);
         } else if (page == 1) {  // First page but there are more
@@ -229,6 +234,5 @@ public class BlockInfoExtension extends GenericExtension implements Extensions {
             MutableText next = BlockInfoUtils.getNext(x, y, z, page);
             source.sendFeedback(new LiteralText("").append(prev).append(pages).append(next).append(BlockInfoUtils.getHelp(x, y, z)), false);
         }
-        return 1;
     }
 }
