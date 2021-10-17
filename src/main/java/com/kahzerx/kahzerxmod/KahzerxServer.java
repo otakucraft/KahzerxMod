@@ -5,13 +5,17 @@ import com.kahzerx.kahzerxmod.database.ServerDatabase;
 import com.kahzerx.kahzerxmod.extensions.ExtensionSettings;
 import com.kahzerx.kahzerxmod.utils.FileUtils;
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.LiteralText;
 import net.minecraft.util.WorldSavePath;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static net.minecraft.server.command.CommandManager.literal;
 
 public class KahzerxServer {
     public static MinecraftServer minecraftServer;
@@ -25,14 +29,52 @@ public class KahzerxServer {
 
         extensions.forEach(e -> e.onServerRun(minecraftServer));
 
-        List<ExtensionSettings> settingsArray = new ArrayList<>();
-        for (Extensions ex : extensions) {
-            settingsArray.add(ex.extensionSettings());
-        }
-        KSettings settings = new KSettings(settingsArray);
-        FileUtils.createConfig(minecraftServer.getSavePath(WorldSavePath.ROOT).toString(), settings);
+        ExtensionManager.saveSettings();
 
         extensions.forEach(e -> e.onRegisterCommands(dispatcher));
+
+        LiteralArgumentBuilder<ServerCommandSource> settingsCommand = literal("KSettings").
+                requires(serverCommandSource -> serverCommandSource.hasPermissionLevel(2));
+        for (Extensions ex : extensions) {
+            settingsCommand.then(literal(ex.extensionSettings().getName()).
+                    then(literal("enable").
+                            executes(context -> {
+                                if (ex.extensionSettings().isEnabled()) {
+                                    context.getSource().sendFeedback(new LiteralText("Already enabled!"), false);
+                                    return 1;
+                                }
+                                ex.extensionSettings().setEnabled(true);
+                                ex.onExtensionEnabled();
+                                ExtensionManager.saveSettings();
+                                context.getSource().sendFeedback(new LiteralText("Extension enabled!"), false);
+                                return 1;
+                            })).
+                    then(literal("disable").
+                            executes(context -> {
+                                if (!ex.extensionSettings().isEnabled()) {
+                                    context.getSource().sendFeedback(new LiteralText("Already disabled!"), false);
+                                    return 1;
+                                }
+                                ex.extensionSettings().setEnabled(false);
+                                ex.onExtensionDisabled();
+                                ExtensionManager.saveSettings();
+                                context.getSource().sendFeedback(new LiteralText("Extension disabled!"), false);
+                                return 1;
+                            })).
+                    // then(ex.settingsCommand()).  // Otros ajustes por si fueran necesarios para las extensiones más complejas
+                    executes(context -> {
+                                context.getSource().sendFeedback(
+                                        new LiteralText(String.format(
+                                                "[%s] > %s\n%s",
+                                                ex.extensionSettings().getName(),
+                                                ex.extensionSettings().isEnabled(),
+                                                ex.extensionSettings().getDescription()
+                                        )), false
+                                );
+                                return 1;
+                            }));
+        }
+        dispatcher.register(settingsCommand);
     }
 
     public static void onCreateDatabase() {

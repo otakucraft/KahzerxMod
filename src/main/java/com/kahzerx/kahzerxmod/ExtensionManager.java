@@ -33,12 +33,24 @@ import com.kahzerx.kahzerxmod.extensions.scoreboardExtension.ScoreboardExtension
 import com.kahzerx.kahzerxmod.extensions.seedExtension.SeedExtension;
 import com.kahzerx.kahzerxmod.extensions.spoofExtension.SpoofExtension;
 import com.kahzerx.kahzerxmod.extensions.survivalExtension.SurvivalExtension;
+import com.kahzerx.kahzerxmod.utils.FileUtils;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.WorldSavePath;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class ExtensionManager {
+    public static void saveSettings() {
+        List<ExtensionSettings> settingsArray = new ArrayList<>();
+        for (Extensions ex : KahzerxServer.extensions) {
+            settingsArray.add(ex.extensionSettings());
+        }
+        KSettings settings = new KSettings(settingsArray);
+        FileUtils.createConfig(KahzerxServer.minecraftServer.getSavePath(WorldSavePath.ROOT).toString(), settings);
+    }
+
     public static void manageExtensions(String settings) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         KSettings ks = gson.fromJson(settings, KSettings.class);
