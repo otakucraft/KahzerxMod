@@ -44,7 +44,7 @@ public class DiscordExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onChatMessage(ServerPlayerEntity player, String chatMessage) {
-        if (!chatMessage.startsWith("/")) {
+        if (chatMessage.startsWith("/me ") || !chatMessage.startsWith("/")) {
             DiscordListener.sendDiscordMessage("`<" + player.getName().getString() + ">` " + chatMessage);
         }
     }
