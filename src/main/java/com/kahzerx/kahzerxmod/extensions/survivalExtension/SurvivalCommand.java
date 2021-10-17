@@ -8,6 +8,7 @@ import static net.minecraft.server.command.CommandManager.literal;
 public class SurvivalCommand {
     public void register(CommandDispatcher<ServerCommandSource> dispatcher, SurvivalExtension survival) {
         dispatcher.register(literal("s").
+                requires(server -> survival.extensionSettings().isEnabled()).
                 executes(context -> survival.setSurvivalMode(context.getSource())));
     }
 }

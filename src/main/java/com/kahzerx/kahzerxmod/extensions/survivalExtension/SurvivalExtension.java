@@ -17,24 +17,12 @@ public class SurvivalExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher) {
-        if (this.getSettings().isEnabled()) {
-            new SurvivalCommand().register(dispatcher, this);
-        }
+        new SurvivalCommand().register(dispatcher, this);
     }
 
     @Override
     public ExtensionSettings extensionSettings() {
         return this.getSettings();
-    }
-
-    @Override
-    public void onExtensionEnabled() {
-
-    }
-
-    @Override
-    public void onExtensionDisabled() {
-
     }
 
     public int setSurvivalMode(ServerCommandSource src) throws CommandSyntaxException {

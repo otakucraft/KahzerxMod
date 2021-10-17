@@ -1,6 +1,7 @@
 package com.kahzerx.kahzerxmod;
 
 import com.kahzerx.kahzerxmod.extensions.ExtensionSettings;
+import com.kahzerx.kahzerxmod.utils.PlayerUtils;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.server.MinecraftServer;
@@ -23,8 +24,12 @@ public interface Extensions {
         return null;
     }
 
+    default void onExtensionEnabled() {
+        PlayerUtils.reloadCommands();
+    }
+    default void onExtensionDisabled() {
+        PlayerUtils.reloadCommands();
+    }
     default void onAdvancement(String advancement) {}
     ExtensionSettings extensionSettings();
-    void onExtensionEnabled();
-    void onExtensionDisabled();
 }

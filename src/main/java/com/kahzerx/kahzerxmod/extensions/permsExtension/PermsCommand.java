@@ -14,7 +14,7 @@ import static net.minecraft.server.command.CommandManager.literal;
 public class PermsCommand {
     public void register(CommandDispatcher<ServerCommandSource> dispatcher, PermsExtension perms) {
         dispatcher.register(literal("kPerms").
-                requires(serverCommandSource -> serverCommandSource.hasPermissionLevel(2)).
+                requires(serverCommandSource -> serverCommandSource.hasPermissionLevel(2) && perms.extensionSettings().isEnabled()).
                 then(literal("give").
                         then(argument("player", word()).
                                 suggests((c, b) -> suggestMatching(PlayerUtils.getPlayers(c.getSource()), b)).

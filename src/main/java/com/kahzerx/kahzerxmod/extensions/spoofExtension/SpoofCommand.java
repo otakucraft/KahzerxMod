@@ -12,7 +12,7 @@ import static net.minecraft.server.command.CommandManager.literal;
 public class SpoofCommand {
     public void register(CommandDispatcher<ServerCommandSource> dispatcher, SpoofExtension spoof) {
         dispatcher.register(literal("spoof").
-                requires(serverCommandSource -> serverCommandSource.hasPermissionLevel(2)).
+                requires(serverCommandSource -> serverCommandSource.hasPermissionLevel(2) && spoof.extensionSettings().isEnabled()).
                 then(CommandManager.argument("player", StringArgumentType.word()).
                         suggests((c, b) -> suggestMatching(PlayerUtils.getPlayers(c.getSource()), b)).
                         then(CommandManager.literal("enderChest").

@@ -11,6 +11,7 @@ import static net.minecraft.server.command.CommandManager.literal;
 public class BlockInfoCommand {
     public void register(CommandDispatcher<ServerCommandSource> dispatcher, BlockInfoExtension blockInfo) {
         dispatcher.register(literal("blockInfo").
+                requires(server -> blockInfo.extensionSettings().isEnabled()).
                 then(argument("coords", BlockPosArgumentType.blockPos()).
                         executes(context -> blockInfo.threadedGetInfo(
                                 context.getSource(), BlockPosArgumentType.getBlockPos(context, "coords"), 1)).

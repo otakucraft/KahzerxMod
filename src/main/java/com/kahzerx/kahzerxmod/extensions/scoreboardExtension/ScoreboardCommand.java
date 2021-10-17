@@ -10,6 +10,7 @@ import static net.minecraft.server.command.CommandManager.literal;
 public class ScoreboardCommand {
     public void register(CommandDispatcher<ServerCommandSource> dispatcher, ScoreboardExtension scoreboard) {
         dispatcher.register(literal("sb").
+                requires(server -> scoreboard.extensionSettings().isEnabled()).
                 then(literal("broken").
                         then(argument("item", ItemStackArgumentType.itemStack()).
                                 executes(context -> scoreboard.startThreadedShowSideBar(context.getSource(), ItemStackArgumentType.getItemStackArgument(context, "item"), "broken")))).

@@ -28,12 +28,6 @@ public class BackExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onCreateDatabase(Connection conn) {
-        if (!this.getSettings().isEnabled()) {
-            return;
-        }
-        if (!permsExtension.getSettings().isEnabled()) {
-            return;
-        }
         this.conn = conn;
         try {
             String createBackDatabase = "CREATE TABLE IF NOT EXISTS `back` (" +
@@ -53,12 +47,6 @@ public class BackExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onPlayerJoined(ServerPlayerEntity player) {
-        if (!this.getSettings().isEnabled()) {
-            return;
-        }
-        if (!permsExtension.getSettings().isEnabled()) {
-            return;
-        }
         String playerUUID = player.getUuidAsString();
         if (this.playerBack.containsKey(playerUUID)) {
             playerBack.remove(playerUUID);
@@ -68,12 +56,6 @@ public class BackExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onPlayerLeft(ServerPlayerEntity player) {
-        if (!this.getSettings().isEnabled()) {
-            return;
-        }
-        if (!permsExtension.getSettings().isEnabled()) {
-            return;
-        }
         String playerUUID = player.getUuidAsString();
         if (this.playerBack.containsKey(playerUUID)) {
             playerBack.remove(playerUUID);
@@ -82,12 +64,6 @@ public class BackExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onPlayerDied(ServerPlayerEntity player) {
-        if (!this.getSettings().isEnabled()) {
-            return;
-        }
-        if (!permsExtension.getSettings().isEnabled()) {
-            return;
-        }
         String playerUUID = player.getUuidAsString();
         BackPos backPos = new BackPos(player.getX(), player.getY(), player.getZ(), DimUtils.getDim(player.world));
         playerBack.put(playerUUID, backPos);
@@ -100,23 +76,7 @@ public class BackExtension extends GenericExtension implements Extensions {
     }
 
     @Override
-    public void onExtensionEnabled() {
-
-    }
-
-    @Override
-    public void onExtensionDisabled() {
-
-    }
-
-    @Override
     public void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher) {
-        if (!this.getSettings().isEnabled()) {
-            return;
-        }
-        if (!permsExtension.getSettings().isEnabled()) {
-            return;
-        }
         new BackCommand().register(dispatcher, this);
     }
 
@@ -162,9 +122,6 @@ public class BackExtension extends GenericExtension implements Extensions {
     }
 
     public int tpBack(ServerCommandSource src) throws CommandSyntaxException {
-        if (!permsExtension.extensionSettings().isEnabled()) {
-            return 1;
-        }
         ServerPlayerEntity player = src.getPlayer();
         if (player == null) {
             return 1;

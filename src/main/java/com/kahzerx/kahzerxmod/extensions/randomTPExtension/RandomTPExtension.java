@@ -20,24 +20,12 @@ public class RandomTPExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher) {
-        if (this.getSettings().isEnabled()) {
-            new RandomTPCommand().register(dispatcher, this);
-        }
+        new RandomTPCommand().register(dispatcher, this);
     }
 
     @Override
     public ExtensionSettings extensionSettings() {
         return this.getSettings();
-    }
-
-    @Override
-    public void onExtensionEnabled() {
-
-    }
-
-    @Override
-    public void onExtensionDisabled() {
-
     }
 
     public int tpAndSpawnPoint(ServerCommandSource source) throws CommandSyntaxException {

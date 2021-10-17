@@ -27,9 +27,6 @@ public class HomeExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onCreateDatabase(Connection conn) {
-        if (!this.getSettings().isEnabled()) {
-            return;
-        }
         this.conn = conn;
         try {
             String createBackDatabase = "CREATE TABLE IF NOT EXISTS `home` (" +
@@ -49,9 +46,6 @@ public class HomeExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onPlayerJoined(ServerPlayerEntity player) {
-        if (!this.getSettings().isEnabled()) {
-            return;
-        }
         String playerUUID = player.getUuidAsString();
         if (this.playerHomes.containsKey(playerUUID)) {
             playerHomes.remove(playerUUID);
@@ -61,9 +55,6 @@ public class HomeExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onPlayerLeft(ServerPlayerEntity player) {
-        if (!this.getSettings().isEnabled()) {
-            return;
-        }
         String playerUUID = player.getUuidAsString();
         if (this.playerHomes.containsKey(playerUUID)) {
             playerHomes.remove(playerUUID);
@@ -76,21 +67,9 @@ public class HomeExtension extends GenericExtension implements Extensions {
     }
 
     @Override
-    public void onExtensionEnabled() {
-
-    }
-
-    @Override
-    public void onExtensionDisabled() {
-
-    }
-
-    @Override
     public void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher) {
-        if (this.getSettings().isEnabled()) {
-            new HomeCommand().register(dispatcher, this);
-            new SetHomeCommand().register(dispatcher, this);
-        }
+        new HomeCommand().register(dispatcher, this);
+        new SetHomeCommand().register(dispatcher, this);
     }
 
     private void updateHomePos(ServerPlayerEntity player, HomePos pos) {

@@ -16,24 +16,12 @@ public class AFKExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher) {
-        if (this.getSettings().isEnabled()) {
-            new AFKCommand().register(dispatcher, this);
-        }
+        new AFKCommand().register(dispatcher, this);
     }
 
     @Override
     public ExtensionSettings extensionSettings() {
         return this.getSettings();
-    }
-
-    @Override
-    public void onExtensionEnabled() {
-
-    }
-
-    @Override
-    public void onExtensionDisabled() {
-
     }
 
     public int onAFK(ServerCommandSource src) throws CommandSyntaxException {

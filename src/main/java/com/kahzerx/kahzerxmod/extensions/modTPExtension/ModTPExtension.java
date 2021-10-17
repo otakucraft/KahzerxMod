@@ -20,12 +20,6 @@ public class ModTPExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher) {
-        if (!this.getSettings().isEnabled()) {
-            return;
-        }
-        if (!permsExtension.getSettings().isEnabled()) {
-            return;
-        }
         new ModTPCommand().register(dispatcher, this);
     }
 
@@ -52,15 +46,5 @@ public class ModTPExtension extends GenericExtension implements Extensions {
     @Override
     public ExtensionSettings extensionSettings() {
         return this.getSettings();
-    }
-
-    @Override
-    public void onExtensionEnabled() {
-
-    }
-
-    @Override
-    public void onExtensionDisabled() {
-
     }
 }

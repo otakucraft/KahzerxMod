@@ -26,27 +26,12 @@ public class PermsExtension extends GenericExtension implements Extensions {
     }
 
     @Override
-    public void onExtensionEnabled() {
-
-    }
-
-    @Override
-    public void onExtensionDisabled() {
-
-    }
-
-    @Override
     public void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher) {
-        if (this.getSettings().isEnabled()) {
-            new PermsCommand().register(dispatcher, this);
-        }
+        new PermsCommand().register(dispatcher, this);
     }
 
     @Override
     public void onCreateDatabase(Connection conn) {
-        if (!this.getSettings().isEnabled()) {
-            return;
-        }
         this.conn = conn;
         try {
             String createBackDatabase = "CREATE TABLE IF NOT EXISTS `perms` (" +
@@ -63,9 +48,6 @@ public class PermsExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onPlayerJoined(ServerPlayerEntity player) {
-        if (!this.getSettings().isEnabled()) {
-            return;
-        }
         String playerUUID = player.getUuidAsString();
         try {
             String query = "INSERT OR IGNORE INTO perms(uuid, level) VALUES (?, ?);";
@@ -86,9 +68,6 @@ public class PermsExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onPlayerLeft(ServerPlayerEntity player) {
-        if (!this.getSettings().isEnabled()) {
-            return;
-        }
         String playerUUID = player.getUuidAsString();
         if (this.playerPerms.containsKey(playerUUID)) {
             playerPerms.remove(playerUUID);

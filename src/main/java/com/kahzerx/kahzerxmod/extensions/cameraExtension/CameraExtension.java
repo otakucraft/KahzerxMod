@@ -24,12 +24,6 @@ public class CameraExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher) {
-        if (!this.getSettings().isEnabled()) {
-            return;
-        }
-        if (!permsExtension.getSettings().isEnabled()) {
-            return;
-        }
         new CameraCommand().register(dispatcher, this);
     }
 
@@ -38,20 +32,7 @@ public class CameraExtension extends GenericExtension implements Extensions {
         return this.getSettings();
     }
 
-    @Override
-    public void onExtensionEnabled() {
-
-    }
-
-    @Override
-    public void onExtensionDisabled() {
-
-    }
-
     public int setCameraMode(ServerCommandSource src) throws CommandSyntaxException {
-        if (!permsExtension.extensionSettings().isEnabled()) {
-            return 1;
-        }
         ServerPlayerEntity player = src.getPlayer();
         if (player == null) {
             return 1;

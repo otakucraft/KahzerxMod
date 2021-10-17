@@ -23,14 +23,4 @@ public class SeedExtension extends GenericExtension implements Extensions {
     public ExtensionSettings extensionSettings() {
         return this.getSettings();
     }
-
-    @Override
-    public void onExtensionEnabled() {
-
-    }
-
-    @Override
-    public void onExtensionDisabled() {
-
-    }
 }

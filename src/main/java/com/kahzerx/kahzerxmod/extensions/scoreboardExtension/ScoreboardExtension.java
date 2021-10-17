@@ -38,24 +38,12 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
 
     @Override
     public void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher) {
-        if (this.getSettings().isEnabled()) {
-            new ScoreboardCommand().register(dispatcher, this);
-        }
+        new ScoreboardCommand().register(dispatcher, this);
     }
 
     @Override
     public ExtensionSettings extensionSettings() {
         return this.getSettings();
-    }
-
-    @Override
-    public void onExtensionEnabled() {
-
-    }
-
-    @Override
-    public void onExtensionDisabled() {
-
     }
 
     public int hideSidebar(ServerCommandSource source) {
