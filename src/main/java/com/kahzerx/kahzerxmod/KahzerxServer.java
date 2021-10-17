@@ -1,8 +1,6 @@
 package com.kahzerx.kahzerxmod;
 
-import com.kahzerx.kahzerxmod.config.KSettings;
 import com.kahzerx.kahzerxmod.database.ServerDatabase;
-import com.kahzerx.kahzerxmod.extensions.ExtensionSettings;
 import com.kahzerx.kahzerxmod.utils.FileUtils;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;

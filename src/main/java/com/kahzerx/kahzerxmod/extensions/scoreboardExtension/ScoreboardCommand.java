@@ -12,16 +12,16 @@ public class ScoreboardCommand {
         dispatcher.register(literal("sb").
                 then(literal("broken").
                         then(argument("item", ItemStackArgumentType.itemStack()).
-                                executes(context -> scoreboard.showSideBar(context.getSource(), ItemStackArgumentType.getItemStackArgument(context, "item"), "broken")))).
+                                executes(context -> scoreboard.startThreadedShowSideBar(context.getSource(), ItemStackArgumentType.getItemStackArgument(context, "item"), "broken")))).
                 then(literal("crafted").
                         then(argument("item", ItemStackArgumentType.itemStack()).
-                                executes(context -> scoreboard.showSideBar(context.getSource(), ItemStackArgumentType.getItemStackArgument(context, "item"), "crafted")))).
+                                executes(context -> scoreboard.startThreadedShowSideBar(context.getSource(), ItemStackArgumentType.getItemStackArgument(context, "item"), "crafted")))).
                 then(literal("mined").
                         then(argument("item", ItemStackArgumentType.itemStack()).
-                                executes(context -> scoreboard.showSideBar(context.getSource(), ItemStackArgumentType.getItemStackArgument(context, "item"), "mined")))).
+                                executes(context -> scoreboard.startThreadedShowSideBar(context.getSource(), ItemStackArgumentType.getItemStackArgument(context, "item"), "mined")))).
                 then(literal("used").
                         then(argument("item", ItemStackArgumentType.itemStack()).
-                                executes(context -> scoreboard.showSideBar(context.getSource(), ItemStackArgumentType.getItemStackArgument(context, "item"), "used")))).
+                                executes(context -> scoreboard.startThreadedShowSideBar(context.getSource(), ItemStackArgumentType.getItemStackArgument(context, "item"), "used")))).
                 then(literal("remove").
                         executes(context -> scoreboard.hideSidebar(context.getSource()))));
     }

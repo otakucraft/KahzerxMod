@@ -25,6 +25,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Util;
 import net.minecraft.world.level.ServerWorldProperties;
+import org.apache.logging.log4j.core.jmx.Server;
 
 import java.io.File;
 import java.util.Optional;
@@ -68,6 +69,11 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
             assert entity != null;
             source.getServer().getPlayerManager().broadcastChatMessage(new LiteralText(entity.getEntityName() + " ha eliminado la scoreboard."), MessageType.CHAT, Util.NIL_UUID);
         }
+        return 1;
+    }
+
+    public int startThreadedShowSideBar(ServerCommandSource source, ItemStackArgument item, String type) {
+        new Thread(() -> showSideBar(source, item, type)).start();
         return 1;
     }
 
