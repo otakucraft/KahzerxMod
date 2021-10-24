@@ -8,8 +8,10 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.block.Blocks;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.LiteralText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Heightmap;
+import net.minecraft.world.World;
 
 import java.util.Random;
 
@@ -33,6 +35,10 @@ public class RandomTPExtension extends GenericExtension implements Extensions {
         if (player == null) {
             return 1;
         }
+        if (player.getEntityWorld().getRegistryKey() != World.OVERWORLD) {
+            source.sendFeedback(new LiteralText("Solo puedes usar este comando en el Overworld"), false);
+            return 1;
+        }
         final int min = -10000;
         final int max = 10000;
 
@@ -42,7 +48,7 @@ public class RandomTPExtension extends GenericExtension implements Extensions {
         final double y = 255;
 
         player.teleport(x, y, z);
-        BlockPos pos1 = source.getWorld().getTopPosition(Heightmap.Type.WORLD_SURFACE, new BlockPos(x, y, z));
+        BlockPos pos1 = source.getWorld().getTopPosition(Heightmap.Type.WORLD_SURFACE_WG, new BlockPos(x, y, z));
         BlockPos posBelow = new BlockPos(pos1.getX(), pos1.getY() - 1, pos1.getZ());
         if (source.getWorld().getBlockState(posBelow).getBlock().equals(Blocks.WATER) ||
                 source.getWorld().getBlockState(posBelow).getBlock().equals(Blocks.LAVA)) {

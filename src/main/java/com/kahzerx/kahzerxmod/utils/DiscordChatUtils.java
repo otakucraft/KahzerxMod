@@ -47,7 +47,7 @@ public class DiscordChatUtils {
                 emb.setTitle(serverPrefix.replace("`", ""));
             }
             if (hasOne) {
-                emb.setDescription(msg[0]);
+                emb.setDescription(msg[0].replace("_", "\\_"));
             } else {
                 String[] names = new String[] {"Jugadores", "en", "Whitelist"};
                 HashMap<String, List<String>> columns = new HashMap<>();
