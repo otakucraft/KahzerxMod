@@ -36,7 +36,7 @@ public class RandomTPExtension extends GenericExtension implements Extensions {
             return 1;
         }
         if (player.getEntityWorld().getRegistryKey() != World.OVERWORLD) {
-            source.sendFeedback(new LiteralText("Solo puedes usar este comando en el Overworld"), false);
+            source.sendFeedback(new LiteralText("Solo puedes usar este comando en el Overworld."), false);
             return 1;
         }
         final int min = -10000;

@@ -1,8 +1,6 @@
 package com.kahzerx.kahzerxmod.extensions.permsExtension;
 
-import com.kahzerx.kahzerxmod.utils.PlayerUtils;
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 
@@ -17,11 +15,12 @@ public class PermsCommand {
                 requires(serverCommandSource -> serverCommandSource.hasPermissionLevel(2) && perms.extensionSettings().isEnabled()).
                 then(literal("give").
                         then(argument("player", word()).
-                                suggests((c, b) -> suggestMatching(PlayerUtils.getPlayers(c.getSource()), b)).
-                                then(argument("level", IntegerArgumentType.integer(1, 2)).
+                                suggests((c, b) -> suggestMatching(perms.getPlayers(), b)).
+                                then(argument("level", word()).
+                                        suggests((c, b) -> suggestMatching(PermsLevels.permNames(), b)).
                                         executes(context -> perms.updatePerms(
                                                 context.getSource(),
                                                 StringArgumentType.getString(context, "player"),
-                                                IntegerArgumentType.getInteger(context, "level")))))));
+                                                StringArgumentType.getString(context, "level")))))));
     }
 }
