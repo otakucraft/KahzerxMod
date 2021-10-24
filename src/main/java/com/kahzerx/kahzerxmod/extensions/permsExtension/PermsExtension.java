@@ -109,6 +109,8 @@ public class PermsExtension extends GenericExtension implements Extensions {
             if (rs.next()) {
                 playerUUID = rs.getString("uuid");
             }
+            rs.close();
+            ps.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -134,7 +136,7 @@ public class PermsExtension extends GenericExtension implements Extensions {
             ps.setInt(3, level);
             ps.executeUpdate();
             ps.close();
-            source.sendFeedback(new LiteralText(String.format("Player %s > %s", player, value.toLowerCase(Locale.ROOT))), false);
+            source.sendFeedback(new LiteralText(String.format("Player %s > %s", player, value)), false);
             if (this.playerPerms.containsKey(playerUUID)) {
                 playerPerms.remove(playerUUID);
             }
