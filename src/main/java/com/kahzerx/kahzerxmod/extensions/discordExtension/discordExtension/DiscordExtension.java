@@ -1,9 +1,14 @@
 package com.kahzerx.kahzerxmod.extensions.discordExtension.discordExtension;
 
 import com.kahzerx.kahzerxmod.Extensions;
+import com.kahzerx.kahzerxmod.KahzerxServer;
 import com.kahzerx.kahzerxmod.extensions.GenericExtension;
+import com.kahzerx.kahzerxmod.extensions.discordExtension.DiscordCommand;
 import com.kahzerx.kahzerxmod.extensions.discordExtension.DiscordListener;
+import com.kahzerx.kahzerxmod.utils.PlayerUtils;
+import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 public class DiscordExtension extends GenericExtension implements Extensions {
@@ -60,12 +65,27 @@ public class DiscordExtension extends GenericExtension implements Extensions {
     }
 
     @Override
-    public void onExtensionEnabled() {
+    public void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher) {
+        new DiscordCommand().register(dispatcher, this);
+    }
 
+
+    @Override
+    public void onExtensionEnabled() {
+        if (!extensionSettings().isEnabled()) {
+            return;
+        }
+        DiscordListener.start(KahzerxServer.minecraftServer, extensionSettings().getToken(), String.valueOf(extensionSettings().getChatChannelID()), this);
+        DiscordListener.sendDiscordMessage("\\o/");
+        PlayerUtils.reloadCommands();
     }
 
     @Override
     public void onExtensionDisabled() {
-
+        if (extensionSettings().isRunning()) {
+            DiscordListener.stop();
+        }
+        // TODO lo que afecta apagar el bot de discord...
+        PlayerUtils.reloadCommands();
     }
 }
