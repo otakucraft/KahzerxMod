@@ -57,12 +57,14 @@ public class DiscordAdminToolsExtension extends GenericExtension implements Exte
 
     @Override
     public void onExtensionEnabled() {
-
+        if (!DiscordListener.discordExtensions.contains(this)) {
+            DiscordListener.discordExtensions.add(this);
+        }
     }
 
     @Override
     public void onExtensionDisabled() {
-
+        DiscordListener.discordExtensions.remove(this);
     }
 
     @Override

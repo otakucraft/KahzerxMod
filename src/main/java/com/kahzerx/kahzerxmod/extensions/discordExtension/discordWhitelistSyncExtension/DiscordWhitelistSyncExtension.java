@@ -20,15 +20,6 @@ public class DiscordWhitelistSyncExtension extends GenericExtension implements E
 
     @Override
     public void onServerRun(MinecraftServer minecraftServer) {
-        if (!this.getSettings().isEnabled()) {
-            return;
-        }
-        if (!discordExtension.getSettings().isEnabled()) {
-            return;
-        }
-        if (!discordWhitelistExtension.getSettings().isEnabled()) {
-            return;
-        }
         this.server = minecraftServer;
     }
 
@@ -76,12 +67,8 @@ public class DiscordWhitelistSyncExtension extends GenericExtension implements E
     }
 
     @Override
-    public void onExtensionEnabled() {
-
-    }
+    public void onExtensionEnabled() { }
 
     @Override
-    public void onExtensionDisabled() {
-
-    }
+    public void onExtensionDisabled() { }
 }

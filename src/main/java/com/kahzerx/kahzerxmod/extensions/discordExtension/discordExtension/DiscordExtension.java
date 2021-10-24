@@ -85,7 +85,6 @@ public class DiscordExtension extends GenericExtension implements Extensions {
         if (extensionSettings().isRunning()) {
             DiscordListener.stop();
         }
-        // TODO lo que afecta apagar el bot de discord...
         PlayerUtils.reloadCommands();
     }
 }

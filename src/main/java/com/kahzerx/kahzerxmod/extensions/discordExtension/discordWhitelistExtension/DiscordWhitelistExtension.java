@@ -40,13 +40,13 @@ public class DiscordWhitelistExtension extends GenericExtension implements Exten
 
     @Override
     public void onCreateDatabase(Connection conn) {
+        this.conn = conn;
         if (!this.getSettings().isEnabled()) {
             return;
         }
         if (!discordExtension.getSettings().isEnabled()) {
             return;
         }
-        this.conn = conn;
         try {
             String createDiscordDatabase = "CREATE TABLE IF NOT EXISTS `discord`(" +
                     "`uuid` VARCHAR(50) UNIQUE NOT NULL," +
@@ -328,12 +328,15 @@ public class DiscordWhitelistExtension extends GenericExtension implements Exten
 
     @Override
     public void onExtensionEnabled() {
-
+        if (!DiscordListener.discordExtensions.contains(this)) {
+            DiscordListener.discordExtensions.add(this);
+        }
+        this.onCreateDatabase(this.conn);
     }
 
     @Override
     public void onExtensionDisabled() {
-
+        DiscordListener.discordExtensions.remove(this);
     }
 
     @Override
