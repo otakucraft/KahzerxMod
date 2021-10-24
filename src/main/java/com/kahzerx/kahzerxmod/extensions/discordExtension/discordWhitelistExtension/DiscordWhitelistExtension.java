@@ -9,6 +9,7 @@ import com.kahzerx.kahzerxmod.extensions.discordExtension.commands.AddCommand;
 import com.kahzerx.kahzerxmod.extensions.discordExtension.commands.ListCommand;
 import com.kahzerx.kahzerxmod.extensions.discordExtension.commands.RemoveCommand;
 import com.kahzerx.kahzerxmod.extensions.discordExtension.discordExtension.DiscordExtension;
+import com.kahzerx.kahzerxmod.mixin.discordWhitelistExtension.PlayerManagerWLMixin;
 import com.kahzerx.kahzerxmod.utils.DiscordChatUtils;
 import com.kahzerx.kahzerxmod.utils.DiscordUtils;
 import com.mojang.authlib.GameProfile;
@@ -28,6 +29,8 @@ import java.util.concurrent.TimeUnit;
 public class DiscordWhitelistExtension extends GenericExtension implements Extensions, DiscordCommandsExtension {
     private final DiscordExtension discordExtension;
     private Connection conn;
+
+    public static boolean isExtensionEnabled = false;
 
     private final AddCommand addCommand = new AddCommand(DiscordListener.commandPrefix);
     private final RemoveCommand removeCommand = new RemoveCommand(DiscordListener.commandPrefix);
@@ -77,6 +80,7 @@ public class DiscordWhitelistExtension extends GenericExtension implements Exten
             return;
         }
         DiscordListener.discordExtensions.add(this);
+        isExtensionEnabled = true;
     }
 
     public boolean isDiscordBanned(long discordID) {
@@ -332,11 +336,13 @@ public class DiscordWhitelistExtension extends GenericExtension implements Exten
             DiscordListener.discordExtensions.add(this);
         }
         this.onCreateDatabase(this.conn);
+        isExtensionEnabled = true;
     }
 
     @Override
     public void onExtensionDisabled() {
         DiscordListener.discordExtensions.remove(this);
+        isExtensionEnabled = false;
     }
 
     @Override

@@ -8,6 +8,7 @@
     "blockInfoExtension.BlockInteractionLoggingMixin",
     "blockInfoExtension.BlockPlacingLoggingMixin",
     "blockInfoExtension.ContainerInteractionLoggingMixin",
+    "discordWhitelistExtension.PlayerManagerWLMixin$PlayerNotWhitelisted",
     "seedExtension.seedCommandMixin",
     "server.ChatEventsMixin",
     "server.CommandEventsMixin",
