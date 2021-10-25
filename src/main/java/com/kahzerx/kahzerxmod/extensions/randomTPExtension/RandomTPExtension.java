@@ -48,7 +48,7 @@ public class RandomTPExtension extends GenericExtension implements Extensions {
         final double y = 255;
 
         player.teleport(x, y, z);
-        BlockPos pos1 = source.getWorld().getTopPosition(Heightmap.Type.WORLD_SURFACE_WG, new BlockPos(x, y, z));
+        BlockPos pos1 = source.getWorld().getTopPosition(Heightmap.Type.WORLD_SURFACE, new BlockPos(x, y, z));
         BlockPos posBelow = new BlockPos(pos1.getX(), pos1.getY() - 1, pos1.getZ());
         if (source.getWorld().getBlockState(posBelow).getBlock().equals(Blocks.WATER) ||
                 source.getWorld().getBlockState(posBelow).getBlock().equals(Blocks.LAVA)) {

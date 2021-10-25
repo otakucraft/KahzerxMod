@@ -61,16 +61,15 @@ public class KahzerxServer {
                             })).
                     // then(ex.settingsCommand()).  // Otros ajustes por si fueran necesarios para las extensiones más complejas
                     executes(context -> {
-                                context.getSource().sendFeedback(
-                                        new LiteralText(String.format(
-                                                "[%s] > %s\n%s",
-                                                ex.extensionSettings().getName(),
-                                                ex.extensionSettings().isEnabled(),
-                                                ex.extensionSettings().getDescription()
-                                        )), false
-                                );
-                                return 1;
-                            }));
+                        context.getSource().sendFeedback(
+                                new LiteralText(String.format(
+                                        "[%s] > %s\n%s",
+                                        ex.extensionSettings().getName(),
+                                        ex.extensionSettings().isEnabled(),
+                                        ex.extensionSettings().getDescription()
+                                )), false);
+                        return 1;
+                    }));
         }
         dispatcher.register(settingsCommand);
     }
