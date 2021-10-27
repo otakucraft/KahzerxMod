@@ -3,6 +3,7 @@ package com.kahzerx.kahzerxmod;
 import com.kahzerx.kahzerxmod.extensions.ExtensionSettings;
 import com.kahzerx.kahzerxmod.utils.PlayerUtils;
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
@@ -20,9 +21,7 @@ public interface Extensions {
     default void onPlayerLeft(ServerPlayerEntity player) {}
     default void onPlayerDied(ServerPlayerEntity player) {}
     default void onChatMessage(ServerPlayerEntity player, String chatMessage) {}
-    default LiteralArgumentBuilder<ServerCommandSource> settingsCommand() {
-        return null;
-    }
+    default void onAdvancement(String advancement) {}
 
     default void onExtensionEnabled() {
         PlayerUtils.reloadCommands();
@@ -30,6 +29,6 @@ public interface Extensions {
     default void onExtensionDisabled() {
         PlayerUtils.reloadCommands();
     }
-    default void onAdvancement(String advancement) {}
+    default void settingsCommand(LiteralArgumentBuilder<ServerCommandSource> builder) {}
     ExtensionSettings extensionSettings();
 }

@@ -23,7 +23,7 @@ public class DiscordListener extends ListenerAdapter {
     public static JDA jda = null;
     private static String channelId = "";
     private static String token = "";
-    private static boolean chatbridge = false;
+    public static boolean chatbridge = false;
     private static DiscordSettings discordSettings = null;
 
     private final MinecraftServer server;
@@ -47,6 +47,7 @@ public class DiscordListener extends ListenerAdapter {
             chatbridge = true;
         } catch (LoginException | InterruptedException e) {
             e.printStackTrace();
+            System.err.println("REMEMBER TO SET A BOT CORRECTLY!");
         }
     }
 

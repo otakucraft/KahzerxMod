@@ -48,4 +48,28 @@ public class DiscordSettings extends ExtensionSettings {
     public List<Long> getAllowedChats() {
         return allowedChats;
     }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public void setChatChannelID(long chatChannelID) {
+        this.chatChannelID = chatChannelID;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
+
+    public void setCrossServerChat(boolean crossServerChat) {
+        this.crossServerChat = crossServerChat;
+    }
+
+    public void addAllowedChatID(long chatID) {
+        this.allowedChats.add(chatID);
+    }
+
+    public void removeAllowedChatID(long chatID) {
+        this.allowedChats.remove(chatID);
+    }
 }

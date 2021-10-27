@@ -3,6 +3,7 @@ package com.kahzerx.kahzerxmod;
 import com.kahzerx.kahzerxmod.database.ServerDatabase;
 import com.kahzerx.kahzerxmod.utils.FileUtils;
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
@@ -34,7 +35,8 @@ public class KahzerxServer {
         LiteralArgumentBuilder<ServerCommandSource> settingsCommand = literal("KSettings").
                 requires(serverCommandSource -> serverCommandSource.hasPermissionLevel(2));
         for (Extensions ex : extensions) {
-            settingsCommand.then(literal(ex.extensionSettings().getName()).
+            LiteralArgumentBuilder<ServerCommandSource> extensionSubCommand = literal(ex.extensionSettings().getName());
+            extensionSubCommand.
                     then(literal("enable").
                             executes(context -> {
                                 if (ex.extensionSettings().isEnabled()) {
@@ -59,7 +61,6 @@ public class KahzerxServer {
                                 context.getSource().sendFeedback(new LiteralText("Extension disabled!"), false);
                                 return 1;
                             })).
-                    // then(ex.settingsCommand()).  // Otros ajustes por si fueran necesarios para las extensiones más complejas
                     executes(context -> {
                         context.getSource().sendFeedback(
                                 new LiteralText(String.format(
@@ -69,7 +70,9 @@ public class KahzerxServer {
                                         ex.extensionSettings().getDescription()
                                 )), false);
                         return 1;
-                    }));
+                    });
+            ex.settingsCommand(extensionSubCommand);  // Otros ajustes por si fueran necesarios para las extensiones más complejas.
+            settingsCommand.then(extensionSubCommand);
         }
         dispatcher.register(settingsCommand);
     }
