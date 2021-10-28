@@ -1,5 +1,6 @@
 package com.kahzerx.kahzerxmod.extensions.discordExtension.discordAdminToolsExtension;
 
+import com.kahzerx.kahzerxmod.ExtensionManager;
 import com.kahzerx.kahzerxmod.Extensions;
 import com.kahzerx.kahzerxmod.extensions.ExtensionSettings;
 import com.kahzerx.kahzerxmod.extensions.GenericExtension;
@@ -13,13 +14,20 @@ import com.kahzerx.kahzerxmod.extensions.discordExtension.discordExtension.Disco
 import com.kahzerx.kahzerxmod.extensions.discordExtension.discordWhitelistExtension.DiscordWhitelistExtension;
 import com.kahzerx.kahzerxmod.utils.DiscordChatUtils;
 import com.kahzerx.kahzerxmod.utils.DiscordUtils;
+import com.mojang.brigadier.arguments.LongArgumentType;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.requests.restaction.MessageAction;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.text.LiteralText;
 
 import java.awt.*;
 import java.util.concurrent.TimeUnit;
+
+import static net.minecraft.server.command.CommandManager.argument;
+import static net.minecraft.server.command.CommandManager.literal;
 
 public class DiscordAdminToolsExtension extends GenericExtension implements Extensions, DiscordCommandsExtension {
     private final DiscordExtension discordExtension;
@@ -111,5 +119,45 @@ public class DiscordAdminToolsExtension extends GenericExtension implements Exte
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void settingsCommand(LiteralArgumentBuilder<ServerCommandSource> builder) {
+        builder.
+                then(literal("adminChats").
+                        then(literal("add").
+                                then(argument("chatID", LongArgumentType.longArg()).
+                                        executes(context -> {
+                                            if (extensionSettings().getAdminChats().contains(LongArgumentType.getLong(context, "chatID"))) {
+                                                context.getSource().sendFeedback(new LiteralText("Este ID ya está añadido."), false);
+                                            } else {
+                                                extensionSettings().addAdminChatID(LongArgumentType.getLong(context, "chatID"));
+                                                context.getSource().sendFeedback(new LiteralText("ID añadido."), false);
+                                                ExtensionManager.saveSettings();
+                                            }
+                                            return 1;
+                                        }))).
+                        then(literal("remove").
+                                then(argument("chatID", LongArgumentType.longArg()).
+                                        executes(context -> {
+                                            if (extensionSettings().getAdminChats().contains(LongArgumentType.getLong(context, "chatID"))) {
+                                                extensionSettings().removeAdminChatID(LongArgumentType.getLong(context, "chatID"));
+                                                context.getSource().sendFeedback(new LiteralText("ID eliminado."), false);
+                                                ExtensionManager.saveSettings();
+                                            } else {
+                                                context.getSource().sendFeedback(new LiteralText("Este ID no estaba añadido."), false);
+                                            }
+                                            return 1;
+                                        }))).
+                        then(literal("list").
+                                executes(context -> {
+                                    context.getSource().sendFeedback(new LiteralText(extensionSettings().getAdminChats().toString()), false);
+                                    return 1;
+                                })).
+                        executes(context -> {
+                            String help = "Lista de ChatIDs en los que el comando !ban, !pardon, !exadd y !exremove funcionan.";
+                            context.getSource().sendFeedback(new LiteralText(help), false);
+                            return 1;
+                        }));
     }
 }

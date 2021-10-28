@@ -121,7 +121,7 @@ public class HomeExtension extends GenericExtension implements Extensions {
         String playerUUID = player.getUuidAsString();
         if (player.getVelocity().getY() < -1 || player.isOnFire() || player.isSubmergedInWater() || player.getDamageTracker().wasRecentlyAttacked()) {
             player.sendMessage(
-                    new LiteralText("NOP").styled(style -> style.withColor(Formatting.DARK_RED)),
+                    new LiteralText("NOP").styled(style -> style.withColor(Formatting.DARK_RED).withBold(true)),
                     false
             );
             return 1;
