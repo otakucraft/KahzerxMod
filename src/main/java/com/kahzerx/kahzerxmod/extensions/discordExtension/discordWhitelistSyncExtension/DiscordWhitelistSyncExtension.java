@@ -157,7 +157,7 @@ public class DiscordWhitelistSyncExtension extends GenericExtension implements E
                                     return 1;
                                 })).
                         executes(context -> {
-                            String help = "Lista de roles que un member tiene que tener en discord (al menos 1) para que lo le saque de la whitelist(ej: rol de sub).";
+                            String help = "Lista de roles que un member tiene que tener en discord (al menos 1) para que no le saque de la whitelist(ej: rol de sub).";
                             context.getSource().sendFeedback(new LiteralText(help), false);
                             return 1;
                         }));
