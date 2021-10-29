@@ -23,7 +23,7 @@ public class ScoreboardCommand {
                 then(literal("used").
                         then(argument("item", ItemStackArgumentType.itemStack()).
                                 executes(context -> scoreboard.startThreadedShowSideBar(context.getSource(), ItemStackArgumentType.getItemStackArgument(context, "item"), "used")))).
-                then(literal("remove").
+                then(literal("clear").
                         executes(context -> scoreboard.hideSidebar(context.getSource()))));
     }
 }

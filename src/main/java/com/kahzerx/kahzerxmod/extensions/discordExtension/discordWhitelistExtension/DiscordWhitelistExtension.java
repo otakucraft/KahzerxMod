@@ -10,7 +10,6 @@ import com.kahzerx.kahzerxmod.extensions.discordExtension.commands.AddCommand;
 import com.kahzerx.kahzerxmod.extensions.discordExtension.commands.ListCommand;
 import com.kahzerx.kahzerxmod.extensions.discordExtension.commands.RemoveCommand;
 import com.kahzerx.kahzerxmod.extensions.discordExtension.discordExtension.DiscordExtension;
-import com.kahzerx.kahzerxmod.mixin.discordWhitelistExtension.PlayerManagerWLMixin;
 import com.kahzerx.kahzerxmod.utils.DiscordChatUtils;
 import com.kahzerx.kahzerxmod.utils.DiscordUtils;
 import com.mojang.authlib.GameProfile;
