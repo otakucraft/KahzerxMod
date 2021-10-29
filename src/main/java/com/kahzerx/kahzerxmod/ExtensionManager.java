@@ -31,6 +31,7 @@ import com.kahzerx.kahzerxmod.extensions.pitoExtension.PitoExtension;
 import com.kahzerx.kahzerxmod.extensions.randomTPExtension.RandomTPExtension;
 import com.kahzerx.kahzerxmod.extensions.scoreboardExtension.ScoreboardExtension;
 import com.kahzerx.kahzerxmod.extensions.seedExtension.SeedExtension;
+import com.kahzerx.kahzerxmod.extensions.spawnExtension.SpawnExtension;
 import com.kahzerx.kahzerxmod.extensions.spoofExtension.SpoofExtension;
 import com.kahzerx.kahzerxmod.extensions.survivalExtension.SurvivalExtension;
 import com.kahzerx.kahzerxmod.utils.FileUtils;
@@ -155,6 +156,11 @@ public class ExtensionManager {
                         "scoreboard",
                         found.get("scoreboard") != null ? found.get("scoreboard") : true,
                         "Enables /sb command.")));
+        KahzerxServer.extensions.add(new SpawnExtension(
+                new ExtensionSettings(
+                        "spawn",
+                        found.get("spawn") != null ? found.get("spawn") : true,
+                        "Enables /spawn.")));
 
         String token = "";
         boolean crossServerChat = false;

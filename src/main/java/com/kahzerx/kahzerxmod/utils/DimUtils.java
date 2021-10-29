@@ -1,5 +1,6 @@
 package com.kahzerx.kahzerxmod.utils;
 
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Formatting;
@@ -14,6 +15,14 @@ public class DimUtils {
             case "Overworld" -> Objects.requireNonNull(player.getServer()).getWorld(World.OVERWORLD);
             case "Nether" -> Objects.requireNonNull(player.getServer()).getWorld(World.NETHER);
             default -> Objects.requireNonNull(player.getServer()).getWorld(World.END);
+        };
+    }
+
+    public static ServerWorld getWorld(int dimID, MinecraftServer server) {
+        return switch (dimID) {
+            case 0 -> server.getWorld(World.OVERWORLD);
+            case 1 -> server.getWorld(World.NETHER);
+            default -> server.getWorld(World.END);
         };
     }
 
