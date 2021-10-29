@@ -34,6 +34,7 @@ import com.kahzerx.kahzerxmod.extensions.seedExtension.SeedExtension;
 import com.kahzerx.kahzerxmod.extensions.spawnExtension.SpawnExtension;
 import com.kahzerx.kahzerxmod.extensions.spoofExtension.SpoofExtension;
 import com.kahzerx.kahzerxmod.extensions.survivalExtension.SurvivalExtension;
+import com.kahzerx.kahzerxmod.extensions.whereExtension.WhereExtension;
 import com.kahzerx.kahzerxmod.utils.FileUtils;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.WorldSavePath;
@@ -161,6 +162,11 @@ public class ExtensionManager {
                         "spawn",
                         found.get("spawn") != null ? found.get("spawn") : true,
                         "Enables /spawn.")));
+        KahzerxServer.extensions.add(new WhereExtension(
+                new ExtensionSettings(
+                        "where",
+                        found.get("where") != null ? found.get("where") : true,
+                        "Enables /where.")));
 
         String token = "";
         boolean crossServerChat = false;
