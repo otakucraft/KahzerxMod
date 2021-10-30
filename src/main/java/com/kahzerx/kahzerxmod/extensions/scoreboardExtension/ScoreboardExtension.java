@@ -25,7 +25,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Util;
 import net.minecraft.world.level.ServerWorldProperties;
-import org.apache.logging.log4j.core.jmx.Server;
 
 import java.io.File;
 import java.util.Optional;

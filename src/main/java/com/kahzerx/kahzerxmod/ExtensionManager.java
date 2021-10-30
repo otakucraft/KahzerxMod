@@ -7,6 +7,7 @@ import com.kahzerx.kahzerxmod.extensions.ExtensionSettings;
 import com.kahzerx.kahzerxmod.extensions.afkExtension.AFKExtension;
 import com.kahzerx.kahzerxmod.extensions.backExtension.BackExtension;
 import com.kahzerx.kahzerxmod.extensions.blockInfoExtension.BlockInfoExtension;
+import com.kahzerx.kahzerxmod.extensions.bocaExtension.BocaExtension;
 import com.kahzerx.kahzerxmod.extensions.cameraExtension.CameraExtension;
 import com.kahzerx.kahzerxmod.extensions.deathMsgExtension.DeathMsgExtension;
 import com.kahzerx.kahzerxmod.extensions.discordExtension.discordAdminToolsExtension.DiscordAdminToolsExtension;
@@ -167,6 +168,11 @@ public class ExtensionManager {
                         "where",
                         found.get("where") != null ? found.get("where") : true,
                         "Enables /where.")));
+        KahzerxServer.extensions.add(new BocaExtension(
+                new ExtensionSettings(
+                        "boca",
+                        found.get("boca") != null ? found.get("boca") : true,
+                        "Enables /boca & /boquita command.")));
 
         String token = "";
         boolean crossServerChat = false;
