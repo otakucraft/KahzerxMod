@@ -35,6 +35,7 @@ import com.kahzerx.kahzerxmod.extensions.seedExtension.SeedExtension;
 import com.kahzerx.kahzerxmod.extensions.spawnExtension.SpawnExtension;
 import com.kahzerx.kahzerxmod.extensions.spoofExtension.SpoofExtension;
 import com.kahzerx.kahzerxmod.extensions.survivalExtension.SurvivalExtension;
+import com.kahzerx.kahzerxmod.extensions.totopoExtension.TotopoExtension;
 import com.kahzerx.kahzerxmod.extensions.whereExtension.WhereExtension;
 import com.kahzerx.kahzerxmod.utils.FileUtils;
 import net.minecraft.server.MinecraftServer;
@@ -173,6 +174,11 @@ public class ExtensionManager {
                         "boca",
                         found.get("boca") != null ? found.get("boca") : true,
                         "Enables /boca & /boquita command.")));
+        KahzerxServer.extensions.add(new TotopoExtension(
+                new ExtensionSettings(
+                        "totopo",
+                        found.get("totopo") != null ? found.get("totopo") : true,
+                        "Enables /totopo command.")));
 
         String token = "";
         boolean crossServerChat = false;
