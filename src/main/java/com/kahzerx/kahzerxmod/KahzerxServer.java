@@ -3,7 +3,6 @@ package com.kahzerx.kahzerxmod;
 import com.kahzerx.kahzerxmod.database.ServerDatabase;
 import com.kahzerx.kahzerxmod.utils.FileUtils;
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
@@ -40,25 +39,25 @@ public class KahzerxServer {
                     then(literal("enable").
                             executes(context -> {
                                 if (ex.extensionSettings().isEnabled()) {
-                                    context.getSource().sendFeedback(new LiteralText("Already enabled!"), false);
+                                    context.getSource().sendFeedback(new LiteralText(ex.extensionSettings().getName() + " already enabled!"), false);
                                     return 1;
                                 }
                                 ex.extensionSettings().setEnabled(true);
                                 ex.onExtensionEnabled();
                                 ExtensionManager.saveSettings();
-                                context.getSource().sendFeedback(new LiteralText("Extension enabled!"), false);
+                                context.getSource().sendFeedback(new LiteralText(ex.extensionSettings().getName() + " extension enabled!"), false);
                                 return 1;
                             })).
                     then(literal("disable").
                             executes(context -> {
                                 if (!ex.extensionSettings().isEnabled()) {
-                                    context.getSource().sendFeedback(new LiteralText("Already disabled!"), false);
+                                    context.getSource().sendFeedback(new LiteralText(ex.extensionSettings().getName() + " already disabled!"), false);
                                     return 1;
                                 }
                                 ex.extensionSettings().setEnabled(false);
                                 ex.onExtensionDisabled();
                                 ExtensionManager.saveSettings();
-                                context.getSource().sendFeedback(new LiteralText("Extension disabled!"), false);
+                                context.getSource().sendFeedback(new LiteralText(ex.extensionSettings().getName() + " extension disabled!"), false);
                                 return 1;
                             })).
                     executes(context -> {

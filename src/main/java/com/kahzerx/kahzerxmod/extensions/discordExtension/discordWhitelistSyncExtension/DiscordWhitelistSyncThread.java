@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.requests.RestAction;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.Whitelist;
@@ -74,7 +75,12 @@ public class DiscordWhitelistSyncThread extends Thread {
                 continue;
             }
             RestAction<Member> restMember = guild.retrieveMemberById(discordID);
-            Member member = restMember.complete();
+            Member member = null;
+            try {
+                member = restMember.complete();
+            } catch (ErrorResponseException responseException) {
+                LOGGER.error("Unable to find Member, removing from whitelist...");
+            }
             if (member == null) {
                 onSyncAction(discordWhitelistExtension.getWhitelistedPlayers(discordID), discordID, guild);
                 continue;
