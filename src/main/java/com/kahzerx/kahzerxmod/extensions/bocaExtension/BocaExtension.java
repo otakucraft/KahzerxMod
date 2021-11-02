@@ -14,6 +14,7 @@ public class BocaExtension extends GenericExtension implements Extensions {
     @Override
     public void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher) {
         new BocaCommand().register(dispatcher, this);
+        new BoquitaCommand().register(dispatcher, this);
     }
 
     @Override

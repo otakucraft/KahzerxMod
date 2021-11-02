@@ -8,9 +8,9 @@ import net.minecraft.util.Util;
 
 import static net.minecraft.server.command.CommandManager.literal;
 
-public class BocaCommand {
+public class BoquitaCommand {
     public void register(CommandDispatcher<ServerCommandSource> dispatcher, BocaExtension boca) {
-        dispatcher.register(literal("boca").
+        dispatcher.register(literal("boquita").
                 requires(server -> boca.extensionSettings().isEnabled()).
                 executes(context -> {
                     context.getSource().getServer().getPlayerManager().broadcastChatMessage(new LiteralText(
