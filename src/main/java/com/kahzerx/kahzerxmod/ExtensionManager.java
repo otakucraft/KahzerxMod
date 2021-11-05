@@ -38,7 +38,6 @@ import com.kahzerx.kahzerxmod.extensions.survivalExtension.SurvivalExtension;
 import com.kahzerx.kahzerxmod.extensions.totopoExtension.TotopoExtension;
 import com.kahzerx.kahzerxmod.extensions.whereExtension.WhereExtension;
 import com.kahzerx.kahzerxmod.utils.FileUtils;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.WorldSavePath;
 
 import java.util.ArrayList;
@@ -177,7 +176,7 @@ public class ExtensionManager {
         KahzerxServer.extensions.add(new TotopoExtension(
                 new ExtensionSettings(
                         "totopo",
-                        found.get("totopo") != null ? found.get("totopo") : true,
+                        found.get("totopo") != null ? found.get("totopo") : false,
                         "Enables /totopo command.")));
 
         String token = "";
