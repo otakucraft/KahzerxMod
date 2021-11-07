@@ -3,7 +3,6 @@ package com.kahzerx.kahzerxmod.mixin.server;
 import com.kahzerx.kahzerxmod.KahzerxServer;
 import net.minecraft.server.MinecraftServer;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -12,8 +11,6 @@ import java.util.function.BooleanSupplier;
 
 @Mixin(MinecraftServer.class)
 public abstract class ServerEventsMixin {
-    @Shadow public abstract int getTicks();
-
     @Inject(method = "runServer", at = @At("HEAD"))
     private void onRun(CallbackInfo ci) {
         KahzerxServer.onRunServer((MinecraftServer) (Object) this);
