@@ -21,6 +21,7 @@ public interface Extensions {
     default void onPlayerDied(ServerPlayerEntity player) {}
     default void onChatMessage(ServerPlayerEntity player, String chatMessage) {}
     default void onAdvancement(String advancement) {}
+    default void onTick(MinecraftServer server) {}
 
     default void onExtensionEnabled() {
         PlayerUtils.reloadCommands();

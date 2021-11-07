@@ -116,4 +116,8 @@ public class KahzerxServer {
     public static void onAdvancement(String advancement) {
         extensions.forEach(e -> e.onAdvancement(advancement));
     }
+
+    public static void onTick(MinecraftServer server) {
+        extensions.forEach(e -> e.onTick(server));
+    }
 }
