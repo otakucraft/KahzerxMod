@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.function.BooleanSupplier;
 
 @Mixin(MinecraftServer.class)
-public abstract class ServerEventsMixin {
+public class ServerEventsMixin {
     @Inject(method = "runServer", at = @At("HEAD"))
     private void onRun(CallbackInfo ci) {
         KahzerxServer.onRunServer((MinecraftServer) (Object) this);

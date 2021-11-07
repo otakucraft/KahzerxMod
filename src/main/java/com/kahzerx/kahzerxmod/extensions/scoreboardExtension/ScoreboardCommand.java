@@ -23,6 +23,12 @@ public class ScoreboardCommand {
                 then(literal("used").
                         then(argument("item", ItemStackArgumentType.itemStack()).
                                 executes(context -> scoreboard.startThreadedShowSideBar(context.getSource(), ItemStackArgumentType.getItemStackArgument(context, "item"), "used")))).
+                then(literal("picked_up").
+                        then(argument("item", ItemStackArgumentType.itemStack()).
+                                executes(context -> scoreboard.startThreadedShowSideBar(context.getSource(), ItemStackArgumentType.getItemStackArgument(context, "item"), "picked_up")))).
+                then(literal("dropped").
+                        then(argument("item", ItemStackArgumentType.itemStack()).
+                                executes(context -> scoreboard.startThreadedShowSideBar(context.getSource(), ItemStackArgumentType.getItemStackArgument(context, "item"), "dropped")))).
                 then(literal("remove").
                         executes(context -> scoreboard.hideSidebar(context.getSource()))));
     }

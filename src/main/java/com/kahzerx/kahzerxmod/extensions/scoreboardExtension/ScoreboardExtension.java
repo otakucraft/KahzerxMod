@@ -134,6 +134,10 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
                 finalStat = Stats.MINED.getOrCreateStat(Block.getBlockFromItem(item));
             } else if (type.equalsIgnoreCase("used")) {
                 finalStat = Stats.USED.getOrCreateStat(item);
+            } else if (type.equalsIgnoreCase("picked_up")) {
+                finalStat = Stats.PICKED_UP.getOrCreateStat(item);
+            } else if (type.equalsIgnoreCase("dropped")) {
+                finalStat = Stats.DROPPED.getOrCreateStat(item);
             }
             int value;
             String playerName;
