@@ -10,7 +10,7 @@ import net.minecraft.util.Util;
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 
-public class DiscordCommand {
+public class DiscordSendCommand {
     public void register(CommandDispatcher<ServerCommandSource> dispatcher, DiscordExtension discordExtension) {
         dispatcher.register(literal("discordSend").
                 requires(serverCommandSource -> serverCommandSource.hasPermissionLevel(2) && discordExtension.extensionSettings().isEnabled()).

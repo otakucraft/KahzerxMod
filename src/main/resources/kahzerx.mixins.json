@@ -9,6 +9,7 @@
     "blockInfoExtension.BlockPlacingLoggingMixin",
     "blockInfoExtension.ContainerInteractionLoggingMixin",
     "discordWhitelistExtension.PlayerManagerWLMixin$PlayerNotWhitelisted",
+    "endermanNoGriefExtension.EndermanEntityMixin",
     "seedExtension.seedCommandMixin",
     "server.ChatEventsMixin",
     "server.CommandEventsMixin",

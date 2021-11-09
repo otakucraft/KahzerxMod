@@ -119,13 +119,13 @@ public class HomeExtension extends GenericExtension implements Extensions {
             return 1;
         }
         String playerUUID = player.getUuidAsString();
-        if (player.getVelocity().getY() < -1 || player.isOnFire() || player.isSubmergedInWater() || player.getDamageTracker().wasRecentlyAttacked()) {
-            player.sendMessage(
-                    new LiteralText("NOP").styled(style -> style.withColor(Formatting.DARK_RED).withBold(true)),
-                    false
-            );
-            return 1;
-        }
+//        if (player.getVelocity().getY() < -1 || player.isOnFire() || player.isSubmergedInWater() || player.getDamageTracker().wasRecentlyAttacked()) {
+//            player.sendMessage(
+//                    new LiteralText("NOP").styled(style -> style.withColor(Formatting.DARK_RED).withBold(true)),
+//                    false
+//            );
+//            return 1;
+//        }
         if (!this.playerHomes.containsKey(playerUUID)) {
             player.sendMessage(
                     new LiteralText("Error al ejecutar, intenta reconectarte o contacta con un admin."),

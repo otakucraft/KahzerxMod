@@ -4,7 +4,7 @@ import com.kahzerx.kahzerxmod.ExtensionManager;
 import com.kahzerx.kahzerxmod.Extensions;
 import com.kahzerx.kahzerxmod.KahzerxServer;
 import com.kahzerx.kahzerxmod.extensions.GenericExtension;
-import com.kahzerx.kahzerxmod.extensions.discordExtension.DiscordCommand;
+import com.kahzerx.kahzerxmod.extensions.discordExtension.DiscordSendCommand;
 import com.kahzerx.kahzerxmod.extensions.discordExtension.DiscordListener;
 import com.kahzerx.kahzerxmod.utils.PlayerUtils;
 import com.mojang.brigadier.CommandDispatcher;
@@ -75,7 +75,7 @@ public class DiscordExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher) {
-        new DiscordCommand().register(dispatcher, this);
+        new DiscordSendCommand().register(dispatcher, this);
     }
 
 
