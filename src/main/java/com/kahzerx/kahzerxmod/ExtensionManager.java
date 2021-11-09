@@ -184,7 +184,7 @@ public class ExtensionManager {
                 new ExtensionSettings(
                         "hat",
                         found.get("hat") != null ? found.get("hat") : false,
-                        "Places whatever item you have in the main hand on your head.")));
+                        "Puts whatever item you have in the main hand on your head.")));
         KahzerxServer.extensions.add(new EndermanNoGriefExtension(
                 new ExtensionSettings(
                         "endermanNoGrief",
