@@ -20,10 +20,6 @@ public class HatCommand {
                         context.getSource().sendFeedback(new LiteralText("Tienes que tener algo en la mano."), false);
                         return 1;
                     }
-                    if (player.getMainHandStack().getCount() != 1) {
-                        context.getSource().sendFeedback(new LiteralText("Solo 1 item mejor"), false);
-                        return 1;
-                    }
                     int mainHandStack = player.getInventory().getSlotWithStack(player.getMainHandStack());
                     ItemStack mainHand = player.getInventory().getStack(mainHandStack);
                     ItemStack head = player.getEquippedStack(EquipmentSlot.HEAD);
