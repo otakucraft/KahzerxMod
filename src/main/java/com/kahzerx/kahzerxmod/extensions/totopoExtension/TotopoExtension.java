@@ -33,30 +33,45 @@ public class TotopoExtension extends GenericExtension implements Extensions {
         float rows = 6;
         pY += abovePlayer;
         float playerYaw = player.getYaw();
-        spawnDustParticle(world, pX, pY, pZ);
-        spawnDustParticle(world, pX, pY - ((rows - 1) - (rows - 1) / 8), pZ);
-        boolean n = (playerYaw < 45 && playerYaw >= -45) || (playerYaw > 135 || playerYaw <= -135);
-        for (float i = 1; i < rows; i++) {
-            double x = n ? pX + (i * 0.5) : pX;
-            double z = n ? pZ : pZ + (i * 0.5);
-            spawnDustParticle(world, x, pY - (i - i / 8), z);
-            spawnDustParticle(world, x, pY - ((rows - 1) - (rows - 1) / 8), z);
+        double finalPY = pY;
+        new Thread(() -> {
+            for (int k = 0; k < 5; k++) {
+                spawnDustParticle(world, pX, finalPY, pZ);
+                spawnDustParticle(world, pX, finalPY - ((rows - 1) - (rows - 1) / 8), pZ);
+                boolean n = (playerYaw < 45 && playerYaw >= -45) || (playerYaw > 135 || playerYaw <= -135);
+                for (float i = 1; i < rows; i++) {
+                    try {
+                        Thread.sleep(50L);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    double x = n ? pX + (i * 0.5) : pX;
+                    double z = n ? pZ : pZ + (i * 0.5);
+                    spawnDustParticle(world, x, finalPY - (i - i / 8), z);
+                    spawnDustParticle(world, x, finalPY - ((rows - 1) - (rows - 1) / 8), z);
 
-            float j = i - 0.5F;
+                    float j = i - 0.5F;
 
-            x = n ? pX + (j * 0.5) : pX;
-            z = n ? pZ : pZ + (j * 0.5);
-            spawnDustParticle(world, x, pY - (j - j / 8), z);
+                    x = n ? pX + (j * 0.5) : pX;
+                    z = n ? pZ : pZ + (j * 0.5);
+                    spawnDustParticle(world, x, finalPY - (j - j / 8), z);
 
-            double x1 = n ? pX - (i * 0.5) : pX;
-            double z1 = n ? pZ : pZ - (i * 0.5);
-            spawnDustParticle(world, x1, pY - (i - i / 8), z1);
-            spawnDustParticle(world, x1, pY - ((rows - 1) - (rows - 1) / 8), z1);
+                    double x1 = n ? pX - (i * 0.5) : pX;
+                    double z1 = n ? pZ : pZ - (i * 0.5);
+                    spawnDustParticle(world, x1, finalPY - (i - i / 8), z1);
+                    spawnDustParticle(world, x1, finalPY - ((rows - 1) - (rows - 1) / 8), z1);
 
-            x1 = n ? pX - (j * 0.5) : pX;
-            z1 = n ? pZ : pZ - (j * 0.5);
-            spawnDustParticle(world, x1, pY - (j - j / 8), z1);
-        }
+                    x1 = n ? pX - (j * 0.5) : pX;
+                    z1 = n ? pZ : pZ - (j * 0.5);
+                    spawnDustParticle(world, x1, finalPY - (j - j / 8), z1);
+                }
+                try {
+                    Thread.sleep(600L);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     private void spawnDustParticle(ServerWorld world, double x, double y, double z) {
@@ -71,7 +86,7 @@ public class TotopoExtension extends GenericExtension implements Extensions {
                 x,
                 y,
                 z,
-                75,
+                50,
                 0,
                 0,
                 0,
