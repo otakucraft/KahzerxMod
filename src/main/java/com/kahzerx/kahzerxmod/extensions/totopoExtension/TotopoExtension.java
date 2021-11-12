@@ -29,8 +29,8 @@ public class TotopoExtension extends GenericExtension implements Extensions {
     }
 
     public void totopoShape(ServerPlayerEntity player, ServerWorld world, double pX, double pY, double pZ) {
-        int abovePlayer = 11;
-        float rows = 10;
+        int abovePlayer = 7;
+        float rows = 6;
         pY += abovePlayer;
         float playerYaw = player.getYaw();
         spawnDustParticle(world, pX, pY, pZ);
@@ -42,10 +42,20 @@ public class TotopoExtension extends GenericExtension implements Extensions {
             spawnDustParticle(world, x, pY - (i - i / 8), z);
             spawnDustParticle(world, x, pY - ((rows - 1) - (rows - 1) / 8), z);
 
+            float j = i - 0.5F;
+
+            x = n ? pX + (j * 0.5) : pX;
+            z = n ? pZ : pZ + (j * 0.5);
+            spawnDustParticle(world, x, pY - (j - j / 8), z);
+
             double x1 = n ? pX - (i * 0.5) : pX;
             double z1 = n ? pZ : pZ - (i * 0.5);
             spawnDustParticle(world, x1, pY - (i - i / 8), z1);
             spawnDustParticle(world, x1, pY - ((rows - 1) - (rows - 1) / 8), z1);
+
+            x1 = n ? pX - (j * 0.5) : pX;
+            z1 = n ? pZ : pZ - (j * 0.5);
+            spawnDustParticle(world, x1, pY - (j - j / 8), z1);
         }
     }
 
@@ -61,7 +71,7 @@ public class TotopoExtension extends GenericExtension implements Extensions {
                 x,
                 y,
                 z,
-                50,
+                75,
                 0,
                 0,
                 0,
