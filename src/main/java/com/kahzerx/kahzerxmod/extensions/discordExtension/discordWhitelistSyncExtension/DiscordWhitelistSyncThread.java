@@ -75,15 +75,15 @@ public class DiscordWhitelistSyncThread extends Thread {
                 continue;
             }
             RestAction<Member> restMember = guild.retrieveMemberById(discordID);
-            Member member;
+            Member member = null;
             try {
                 member = restMember.complete();
             } catch (ErrorResponseException responseException) {
                 if (responseException.isServerError() || (400 < responseException.getErrorCode() && responseException.getErrorCode() < 500)) {
                     responseException.printStackTrace();
+                    continue;
                 }
                 LOGGER.error("Unable to find Member, removing from whitelist...");
-                continue;
             }
             if (member == null) {
                 onSyncAction(discordWhitelistExtension.getWhitelistedPlayers(discordID), discordID, guild);
