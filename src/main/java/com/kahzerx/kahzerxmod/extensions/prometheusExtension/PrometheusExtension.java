@@ -13,7 +13,7 @@ public class PrometheusExtension extends GenericExtension implements Extensions 
     private HTTPServer httpServer;
     private static final Logger LOGGER = LogManager.getLogger();
     private MinecraftServer server = null;
-    private MetricReg metricReg = new MetricReg(this);
+    private final MetricReg metricReg = new MetricReg(this);
 
     public PrometheusExtension(PrometheusSettings settings) {
         super(settings);
@@ -27,6 +27,7 @@ public class PrometheusExtension extends GenericExtension implements Extensions 
     @Override
     public void onServerRun(MinecraftServer minecraftServer) {
         this.server = minecraftServer;
+        this.metricReg.registerMetrics();
         if (this.getSettings().isEnabled()) {
             this.startPrometheusEndpoint();
         }
@@ -63,7 +64,9 @@ public class PrometheusExtension extends GenericExtension implements Extensions 
     }
 
     private void stopPrometheusEndpoint() {
-        this.httpServer.close();
+        if (this.httpServer != null) {
+            this.httpServer.close();
+        }
         this.metricReg.getTimer().cancel();
     }
 

@@ -24,4 +24,8 @@ public class MetricUpdater extends TimerTask {
     public void addMetric(AbstractMetric metric) {
         this.metrics.add(metric);
     }
+
+    public List<AbstractMetric> getMetrics() {
+        return metrics;
+    }
 }
