@@ -1,9 +1,6 @@
 package com.kahzerx.kahzerxmod.extensions.prometheusExtension;
 
-import com.kahzerx.kahzerxmod.extensions.prometheusExtension.metrics.AbstractMetric;
-import com.kahzerx.kahzerxmod.extensions.prometheusExtension.metrics.EntitiesMetrics;
-import com.kahzerx.kahzerxmod.extensions.prometheusExtension.metrics.LoadedChunksMetrics;
-import com.kahzerx.kahzerxmod.extensions.prometheusExtension.metrics.MSPTMetric;
+import com.kahzerx.kahzerxmod.extensions.prometheusExtension.metrics.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +24,13 @@ public class MetricReg {
         EntitiesMetrics entitiesMetrics = new EntitiesMetrics("entities", "Amount of entities.");
         entitiesMetrics.getGauge().register();
 
+        BlockEntitiesMetrics blockEntitiesMetrics = new BlockEntitiesMetrics("block_entities", "Amount of block entities");
+        blockEntitiesMetrics.getGauge().register();
+
         metrics.add(msptMetric);
         metrics.add(loadedChunksMetrics);
         metrics.add(entitiesMetrics);
+        metrics.add(blockEntitiesMetrics);
     }
 
     public void runUpdater() {

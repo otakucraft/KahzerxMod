@@ -17,6 +17,7 @@ public class MetricUpdater extends TimerTask {
     @Override
     public void run() {
         for (AbstractMetric metric : this.metrics) {
+            metric.getGauge().clear();
             metric.update(this.extension.getServer());
         }
     }
