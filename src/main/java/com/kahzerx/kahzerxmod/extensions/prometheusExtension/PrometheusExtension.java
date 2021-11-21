@@ -67,7 +67,9 @@ public class PrometheusExtension extends GenericExtension implements Extensions 
         if (this.httpServer != null) {
             this.httpServer.close();
         }
-        this.metricReg.getTimer().cancel();
+        if (this.metricReg.getTimer() != null) {
+            this.metricReg.getTimer().cancel();
+        }
     }
 
     public MinecraftServer getServer() {

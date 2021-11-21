@@ -4,8 +4,8 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.MathHelper;
 
 public class MSPTMetric extends AbstractMetric {
-    public MSPTMetric(String name, String help, String... labels) {
-        super(name, help, labels);
+    public MSPTMetric(String name, String help) {
+        super(name, help);
     }
 
     @Override
