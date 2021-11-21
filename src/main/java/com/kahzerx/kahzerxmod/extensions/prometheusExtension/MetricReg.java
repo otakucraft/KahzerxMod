@@ -1,6 +1,7 @@
 package com.kahzerx.kahzerxmod.extensions.prometheusExtension;
 
 import com.kahzerx.kahzerxmod.extensions.prometheusExtension.metrics.AbstractMetric;
+import com.kahzerx.kahzerxmod.extensions.prometheusExtension.metrics.EntitiesMetrics;
 import com.kahzerx.kahzerxmod.extensions.prometheusExtension.metrics.LoadedChunksMetrics;
 import com.kahzerx.kahzerxmod.extensions.prometheusExtension.metrics.MSPTMetric;
 
@@ -20,11 +21,15 @@ public class MetricReg {
         MSPTMetric msptMetric = new MSPTMetric("mspt", "Current MSPT on server.");
         msptMetric.getGauge().register();
 
-        LoadedChunksMetrics loadedChunksMetrics = new LoadedChunksMetrics("loaded_chunks", "amount of loaded chunks.");
+        LoadedChunksMetrics loadedChunksMetrics = new LoadedChunksMetrics("loaded_chunks", "Amount of loaded chunks.");
         loadedChunksMetrics.getGauge().register();
+
+        EntitiesMetrics entitiesMetrics = new EntitiesMetrics("entities", "Amount of entities.");
+        entitiesMetrics.getGauge().register();
 
         metrics.add(msptMetric);
         metrics.add(loadedChunksMetrics);
+        metrics.add(entitiesMetrics);
     }
 
     public void runUpdater() {

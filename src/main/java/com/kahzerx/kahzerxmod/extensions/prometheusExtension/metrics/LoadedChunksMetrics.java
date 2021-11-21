@@ -11,7 +11,7 @@ public class LoadedChunksMetrics extends AbstractMetric {
     @Override
     public void update(MinecraftServer server) {
         for (ServerWorld world : server.getWorlds()) {
-            this.getGauge().labels(world.getRegistryKey().getValue().getPath()).set(world.getChunkManager().getTotalChunksLoadedCount());
+            this.getGauge().labels(world.getRegistryKey().getValue().getPath()).set(world.getChunkManager().getLoadedChunkCount());
         }
     }
 }
