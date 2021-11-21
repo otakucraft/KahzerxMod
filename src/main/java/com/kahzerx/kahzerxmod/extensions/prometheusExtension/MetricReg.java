@@ -30,11 +30,15 @@ public class MetricReg {
         RamMetric ramMetric = new RamMetric("ram", "Usage of RAM.");
         ramMetric.getGauge().register();
 
+        OnlinePlayersMetrics onlinePlayersMetrics = new OnlinePlayersMetrics("online_players", "Connected players");
+        onlinePlayersMetrics.getGauge().register();
+
         metrics.add(msptMetric);
         metrics.add(loadedChunksMetrics);
         metrics.add(entitiesMetrics);
         metrics.add(blockEntitiesMetrics);
         metrics.add(ramMetric);
+        metrics.add(onlinePlayersMetrics);
     }
 
     public void runUpdater() {
