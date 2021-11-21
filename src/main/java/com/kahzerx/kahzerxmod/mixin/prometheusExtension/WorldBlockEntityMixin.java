@@ -31,25 +31,32 @@ public abstract class WorldBlockEntityMixin {
     private void onTick(CallbackInfo ci) {
         HashMap<String, HashMap<String, Integer>> worldBlockEntities = new HashMap<>();
         blockEntityTickers.forEach(ticker -> {
-            if (!ticker.isRemoved()) {
-                if (getWorldChunk(ticker.getPos()).getLevelType() == ChunkHolder.LevelType.BORDER) {
-                    return;
-                }
-                if (getWorldChunk(ticker.getPos()).getLevelType() == ChunkHolder.LevelType.INACCESSIBLE) {
-                    return;
-                }
-                Identifier id = BlockEntityType.getId(getBlockEntity(ticker.getPos()).getType());
-                assert id != null;
-                String world = ((World) (Object) this).getRegistryKey().getValue().getPath();
-                if (!worldBlockEntities.containsKey(world)) {
-                    worldBlockEntities.put(world, new HashMap<>());
-                }
-                worldBlockEntities.get(world).put(
-                        id.getPath(),
-                        worldBlockEntities.get(world).getOrDefault(id.getPath(), 0) + 1
-                );
+            if (ticker.isRemoved()) {
+                return;
             }
+            if (getWorldChunk(ticker.getPos()).getLevelType() == ChunkHolder.LevelType.BORDER) {
+                return;
+            }
+            if (getWorldChunk(ticker.getPos()).getLevelType() == ChunkHolder.LevelType.INACCESSIBLE) {
+                return;
+            }
+            BlockEntity be = getBlockEntity(ticker.getPos());
+            if (be == null) {
+                return;
+            }
+            Identifier id = BlockEntityType.getId(be.getType());
+            if (id == null) {
+                return;
+            }
+            String world = ((World) (Object) this).getRegistryKey().getValue().getPath();
+            if (!worldBlockEntities.containsKey(world)) {
+                worldBlockEntities.put(world, new HashMap<>());
+            }
+            worldBlockEntities.get(world).put(
+                    id.getPath(),
+                    worldBlockEntities.get(world).getOrDefault(id.getPath(), 0) + 1
+            );
+            BlockEntitiesMetrics.worldBlockEntities = worldBlockEntities;
         });
-        BlockEntitiesMetrics.worldBlockEntities = worldBlockEntities;
     }
 }

@@ -27,10 +27,14 @@ public class MetricReg {
         BlockEntitiesMetrics blockEntitiesMetrics = new BlockEntitiesMetrics("block_entities", "Amount of block entities");
         blockEntitiesMetrics.getGauge().register();
 
+        RamMetric ramMetric = new RamMetric("ram", "Usage of RAM.");
+        ramMetric.getGauge().register();
+
         metrics.add(msptMetric);
         metrics.add(loadedChunksMetrics);
         metrics.add(entitiesMetrics);
         metrics.add(blockEntitiesMetrics);
+        metrics.add(ramMetric);
     }
 
     public void runUpdater() {
