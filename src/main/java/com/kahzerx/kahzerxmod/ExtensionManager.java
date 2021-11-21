@@ -31,6 +31,9 @@ import com.kahzerx.kahzerxmod.extensions.memberExtension.MemberExtension;
 import com.kahzerx.kahzerxmod.extensions.modTPExtension.ModTPExtension;
 import com.kahzerx.kahzerxmod.extensions.permsExtension.PermsExtension;
 import com.kahzerx.kahzerxmod.extensions.pitoExtension.PitoExtension;
+import com.kahzerx.kahzerxmod.extensions.prometheusExtension.PrometheusExtension;
+import com.kahzerx.kahzerxmod.extensions.prometheusExtension.PrometheusJsonSettings;
+import com.kahzerx.kahzerxmod.extensions.prometheusExtension.PrometheusSettings;
 import com.kahzerx.kahzerxmod.extensions.randomTPExtension.RandomTPExtension;
 import com.kahzerx.kahzerxmod.extensions.scoreboardExtension.ScoreboardExtension;
 import com.kahzerx.kahzerxmod.extensions.seedExtension.SeedExtension;
@@ -218,5 +221,25 @@ public class ExtensionManager {
                 ),
                 discordExtension,
                 discordWhitelistExtension));
+
+        int port = 25678;
+        PrometheusJsonSettings prometheusJsonSettings = gson.fromJson(settings, PrometheusJsonSettings.class);
+        if (prometheusJsonSettings != null) {
+            for (PrometheusSettings prometheusSettings : prometheusJsonSettings.getSettings()) {
+                if (prometheusSettings == null) {
+                    continue;
+                }
+                if (prometheusSettings.getName().equals("prometheus")) {
+                    port = prometheusSettings.getPort() != 0 ? prometheusSettings.getPort() : port;
+                }
+            }
+        }
+        KahzerxServer.extensions.add(new PrometheusExtension(
+                new PrometheusSettings(
+                        "prometheus",
+                        isEnabled(found, "prometheus"),
+                        "Enables prometheus endpoint.",
+                        port
+                )));
     }
 }
