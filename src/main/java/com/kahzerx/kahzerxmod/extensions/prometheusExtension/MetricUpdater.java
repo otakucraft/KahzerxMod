@@ -18,7 +18,11 @@ public class MetricUpdater extends TimerTask {
     public void run() {
         for (AbstractMetric metric : this.metrics) {
             metric.getGauge().clear();
-            metric.update(this.extension);
+            try {
+                metric.update(this.extension);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
         }
     }
 

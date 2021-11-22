@@ -12,13 +12,9 @@ public class BlockEntitiesMetrics extends AbstractMetric {
 
     @Override
     public void update(PrometheusExtension extension) {
-        worldBlockEntities.forEach((world, blockEntities) -> {
-            blockEntities.forEach((beName, count) -> {
-                this.getGauge().labels(
-                        world,
-                        beName
-                ).set(count);
-            });
-        });
+        HashMap<String, HashMap<String, Integer>> worldBlockEntitiesCopy = worldBlockEntities;
+        worldBlockEntitiesCopy.forEach((world, blockEntities) ->
+                blockEntities.forEach((beName, count) ->
+                        this.getGauge().labels(world, beName).set(count)));
     }
 }
