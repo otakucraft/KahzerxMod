@@ -18,6 +18,9 @@ public class MetricReg {
         MSPTMetric msptMetric = new MSPTMetric("mspt", "Current MSPT on server.");
         msptMetric.getGauge().register();
 
+        TPSMetric tpsMetric = new TPSMetric("tps", "Average TPS on server.");
+        tpsMetric.getGauge().register();
+
         LoadedChunksMetrics loadedChunksMetrics = new LoadedChunksMetrics("loaded_chunks", "Amount of loaded chunks.");
         loadedChunksMetrics.getGauge().register();
 
@@ -34,6 +37,7 @@ public class MetricReg {
         onlinePlayersMetrics.getGauge().register();
 
         metrics.add(msptMetric);
+        metrics.add(tpsMetric);
         metrics.add(loadedChunksMetrics);
         metrics.add(entitiesMetrics);
         metrics.add(blockEntitiesMetrics);

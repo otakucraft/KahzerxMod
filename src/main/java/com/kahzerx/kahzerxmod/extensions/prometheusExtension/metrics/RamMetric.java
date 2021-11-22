@@ -1,6 +1,6 @@
 package com.kahzerx.kahzerxmod.extensions.prometheusExtension.metrics;
 
-import net.minecraft.server.MinecraftServer;
+import com.kahzerx.kahzerxmod.extensions.prometheusExtension.PrometheusExtension;
 
 public class RamMetric extends AbstractMetric {
     public RamMetric(String name, String help) {
@@ -8,7 +8,7 @@ public class RamMetric extends AbstractMetric {
     }
 
     @Override
-    public void update(MinecraftServer server) {
+    public void update(PrometheusExtension extension) {
         Runtime runtime = Runtime.getRuntime();
         long maxMemory = runtime.maxMemory() / 1024;
         long allocatedMemory = runtime.totalMemory() / 1024;

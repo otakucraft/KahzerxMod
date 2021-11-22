@@ -1,7 +1,7 @@
 package com.kahzerx.kahzerxmod.extensions.prometheusExtension.metrics;
 
+import com.kahzerx.kahzerxmod.extensions.prometheusExtension.PrometheusExtension;
 import io.prometheus.client.Gauge;
-import net.minecraft.server.MinecraftServer;
 
 public abstract class AbstractMetric {
     private final Gauge gauge;
@@ -16,7 +16,7 @@ public abstract class AbstractMetric {
                 create();
     }
 
-    public abstract void update(MinecraftServer server);
+    public abstract void update(PrometheusExtension extension);
 
     public Gauge getGauge() {
         return gauge;

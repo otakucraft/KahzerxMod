@@ -1,6 +1,6 @@
 package com.kahzerx.kahzerxmod.extensions.prometheusExtension.metrics;
 
-import net.minecraft.server.MinecraftServer;
+import com.kahzerx.kahzerxmod.extensions.prometheusExtension.PrometheusExtension;
 
 import java.util.HashMap;
 
@@ -11,7 +11,7 @@ public class BlockEntitiesMetrics extends AbstractMetric {
     }
 
     @Override
-    public void update(MinecraftServer server) {
+    public void update(PrometheusExtension extension) {
         worldBlockEntities.forEach((world, blockEntities) -> {
             blockEntities.forEach((beName, count) -> {
                 this.getGauge().labels(

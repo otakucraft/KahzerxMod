@@ -1,6 +1,6 @@
 package com.kahzerx.kahzerxmod.extensions.prometheusExtension.metrics;
 
-import net.minecraft.server.MinecraftServer;
+import com.kahzerx.kahzerxmod.extensions.prometheusExtension.PrometheusExtension;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -13,8 +13,8 @@ public class EntitiesMetrics extends AbstractMetric {
     }
 
     @Override
-    public void update(MinecraftServer server) {
-        for (ServerWorld world : server.getWorlds()) {
+    public void update(PrometheusExtension extension) {
+        for (ServerWorld world : extension.getServer().getWorlds()) {
             HashMap<String, Integer> worldEntities = new HashMap<>();
             world.iterateEntities().forEach(e -> worldEntities.put(
                     Registry.ENTITY_TYPE.getId(e.getType()).getPath(),
