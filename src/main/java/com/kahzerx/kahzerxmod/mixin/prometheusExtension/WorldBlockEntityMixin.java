@@ -34,10 +34,7 @@ public abstract class WorldBlockEntityMixin {
             if (ticker.isRemoved()) {
                 return;
             }
-            if (getWorldChunk(ticker.getPos()).getLevelType() == ChunkHolder.LevelType.BORDER) {
-                return;
-            }
-            if (getWorldChunk(ticker.getPos()).getLevelType() == ChunkHolder.LevelType.INACCESSIBLE) {
+            if (!getWorldChunk(ticker.getPos()).getLevelType().isAfter(ChunkHolder.LevelType.TICKING)) {
                 return;
             }
             BlockEntity be = getBlockEntity(ticker.getPos());
