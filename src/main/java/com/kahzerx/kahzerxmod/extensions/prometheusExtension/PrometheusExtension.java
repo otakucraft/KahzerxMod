@@ -169,7 +169,7 @@ public class PrometheusExtension extends GenericExtension implements Extensions 
         }
 
         public double getAverage() {
-            return Math.min(this.total.divide(new BigDecimal(this.time), 30, RoundingMode.HALF_UP).doubleValue(), TPS);
+            return Math.min(this.total.divide(new BigDecimal(this.time), 1, RoundingMode.HALF_UP).doubleValue(), TPS);
         }
     }
 }
