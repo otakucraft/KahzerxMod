@@ -7,6 +7,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.function.BooleanSupplier;
+
 @Mixin(MinecraftServer.class)
 public class ServerEventsMixin {
     @Inject(method = "runServer", at = @At("HEAD"))
@@ -23,5 +25,10 @@ public class ServerEventsMixin {
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/PlayerManager;saveAllPlayerData()V"))
     private void onSave(CallbackInfo ci) {
         KahzerxServer.onAutoSave();
+    }
+
+    @Inject(method = "tick", at = @At("HEAD"))
+    private void onTick(BooleanSupplier shouldKeepTicking, CallbackInfo ci) {
+        KahzerxServer.onTick((MinecraftServer) (Object) this);
     }
 }

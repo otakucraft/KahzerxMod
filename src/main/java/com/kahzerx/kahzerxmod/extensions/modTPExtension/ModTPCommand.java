@@ -17,7 +17,9 @@ public class ModTPCommand {
         dispatcher.register(literal("modTP").
                 requires(serverCommandSource -> {
                     try {
-                        return modTPExtension.permsExtension.getDBPlayerPerms(serverCommandSource.getPlayer().getUuidAsString()).getId() > PermsLevels.MEMBER.getId();
+                        if (modTPExtension.extensionSettings().isEnabled() && modTPExtension.permsExtension.extensionSettings().isEnabled()) {
+                            return modTPExtension.permsExtension.getDBPlayerPerms(serverCommandSource.getPlayer().getUuidAsString()).getId() > PermsLevels.MEMBER.getId();
+                        }
                     } catch (CommandSyntaxException e) {
                         e.printStackTrace();
                     }

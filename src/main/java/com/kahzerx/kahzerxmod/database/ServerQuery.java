@@ -13,10 +13,13 @@ public record ServerQuery(Connection connection) {
             insertPlayer.setString(2, name);
             insertPlayer.executeUpdate();
             insertPlayer.close();
+            updateName(uuid, name);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
 
+    private void updateName(String uuid, String name) {
         try {
             String updateName = "UPDATE player SET name = ? WHERE uuid = ?";
             PreparedStatement updatePlayerName = connection.prepareStatement(updateName);

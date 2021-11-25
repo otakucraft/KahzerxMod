@@ -28,12 +28,6 @@ public class BackExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onCreateDatabase(Connection conn) {
-        if (!this.getSettings().isEnabled()) {
-            return;
-        }
-        if (!permsExtension.getSettings().isEnabled()) {
-            return;
-        }
         this.conn = conn;
         try {
             String createBackDatabase = "CREATE TABLE IF NOT EXISTS `back` (" +
@@ -53,12 +47,6 @@ public class BackExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onPlayerJoined(ServerPlayerEntity player) {
-        if (!this.getSettings().isEnabled()) {
-            return;
-        }
-        if (!permsExtension.getSettings().isEnabled()) {
-            return;
-        }
         String playerUUID = player.getUuidAsString();
         if (this.playerBack.containsKey(playerUUID)) {
             playerBack.remove(playerUUID);
@@ -68,12 +56,6 @@ public class BackExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onPlayerLeft(ServerPlayerEntity player) {
-        if (!this.getSettings().isEnabled()) {
-            return;
-        }
-        if (!permsExtension.getSettings().isEnabled()) {
-            return;
-        }
         String playerUUID = player.getUuidAsString();
         if (this.playerBack.containsKey(playerUUID)) {
             playerBack.remove(playerUUID);
@@ -82,12 +64,6 @@ public class BackExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onPlayerDied(ServerPlayerEntity player) {
-        if (!this.getSettings().isEnabled()) {
-            return;
-        }
-        if (!permsExtension.getSettings().isEnabled()) {
-            return;
-        }
         String playerUUID = player.getUuidAsString();
         BackPos backPos = new BackPos(player.getX(), player.getY(), player.getZ(), DimUtils.getDim(player.world));
         playerBack.put(playerUUID, backPos);
@@ -100,23 +76,7 @@ public class BackExtension extends GenericExtension implements Extensions {
     }
 
     @Override
-    public void onExtensionEnabled() {
-
-    }
-
-    @Override
-    public void onExtensionDisabled() {
-
-    }
-
-    @Override
     public void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher) {
-        if (!this.getSettings().isEnabled()) {
-            return;
-        }
-        if (!permsExtension.getSettings().isEnabled()) {
-            return;
-        }
         new BackCommand().register(dispatcher, this);
     }
 
@@ -162,9 +122,6 @@ public class BackExtension extends GenericExtension implements Extensions {
     }
 
     public int tpBack(ServerCommandSource src) throws CommandSyntaxException {
-        if (!permsExtension.extensionSettings().isEnabled()) {
-            return 1;
-        }
         ServerPlayerEntity player = src.getPlayer();
         if (player == null) {
             return 1;
@@ -172,29 +129,29 @@ public class BackExtension extends GenericExtension implements Extensions {
         if (permsExtension.getPlayerPerms().containsKey(player.getUuidAsString())) {
             if (permsExtension.getPlayerPerms().get(player.getUuidAsString()).getId() == PermsLevels.MEMBER.getId()) {
                 player.sendMessage(
-                        new LiteralText("No tienes permisos para ejecutar este comando."),
+                        new LiteralText("You don't have permission to run this command."),
                         false
                 );
                 return 1;
             }
         } else {
             player.sendMessage(
-                    new LiteralText("Error al ejecutar, intenta reconectarte o contacta con un admin."),
+                    new LiteralText("Error."),
                     false
             );
             return 1;
         }
         String playerUUID = player.getUuidAsString();
-        if (player.getVelocity().getY() < -1 || player.isOnFire() || player.isSubmergedInWater() || player.getDamageTracker().wasRecentlyAttacked()) {
-            player.sendMessage(
-                    new LiteralText("NOP").styled(style -> style.withColor(Formatting.DARK_RED)),
-                    false
-            );
-            return 1;
-        }
+//        if (player.getVelocity().getY() < -1 || player.isOnFire() || player.isSubmergedInWater() || player.getDamageTracker().wasRecentlyAttacked()) {
+//            player.sendMessage(
+//                    new LiteralText("NOP").styled(style -> style.withColor(Formatting.DARK_RED)),
+//                    false
+//            );
+//            return 1;
+//        }
         if (!this.playerBack.containsKey(playerUUID)) {
             player.sendMessage(
-                    new LiteralText("Error al ejecutar, intenta reconectarte o contacta con un admin."),
+                    new LiteralText("Error."),
                     false
             );
             return 1;
@@ -212,7 +169,7 @@ public class BackExtension extends GenericExtension implements Extensions {
             player.addExperience(0);  // xp resets when you tp from other dimension and needs to update smh, mojang pls.
         } else {
             player.sendMessage(
-                    new LiteralText("Aun no has muerto :("),
+                    new LiteralText("You haven't died yet :("),
                     false
             );
         }

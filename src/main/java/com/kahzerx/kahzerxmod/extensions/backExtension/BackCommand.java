@@ -12,7 +12,9 @@ public class BackCommand {
         dispatcher.register(literal("back").
                 requires(serverCommandSource -> {
                     try {
-                        return back.permsExtension.getDBPlayerPerms(serverCommandSource.getPlayer().getUuidAsString()).getId() > PermsLevels.MEMBER.getId();
+                        if (back.extensionSettings().isEnabled() && back.permsExtension.extensionSettings().isEnabled()) {
+                            return back.permsExtension.getDBPlayerPerms(serverCommandSource.getPlayer().getUuidAsString()).getId() > PermsLevels.MEMBER.getId();
+                        }
                     } catch (CommandSyntaxException e) {
                         e.printStackTrace();
                     }

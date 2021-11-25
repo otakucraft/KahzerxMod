@@ -48,9 +48,10 @@ public class GenericCommand {
         return exampleCommand;
     }
 
-    public void sendHelpCommand(String serverPrefix, MessageChannel channel) {
-        EmbedBuilder embed = DiscordChatUtils.generateEmbed(new String[]{this.getExampleCommand()}, serverPrefix, true, Color.CYAN, true);
-        assert embed != null;
-        channel.sendMessageEmbeds(embed.build()).queue(m -> m.delete().queueAfter(2, TimeUnit.SECONDS));
+    public void sendHelpCommand(String serverPrefix, MessageChannel channel, boolean should) {
+        EmbedBuilder embed = DiscordChatUtils.generateEmbed(new String[]{this.getExampleCommand()}, serverPrefix, true, Color.CYAN, true, should);
+        if (embed != null) {
+            channel.sendMessageEmbeds(embed.build()).queue(m -> m.delete().queueAfter(2, TimeUnit.SECONDS));
+        }
     }
 }

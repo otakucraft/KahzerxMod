@@ -8,6 +8,7 @@ import static net.minecraft.server.command.CommandManager.literal;
 public class SetHomeCommand {
     public void register(CommandDispatcher<ServerCommandSource> dispatcher, HomeExtension home) {
         dispatcher.register(literal("setHome").
+                requires(server -> home.extensionSettings().isEnabled()).
                 executes(context -> home.saveHome(context.getSource())));
     }
 }

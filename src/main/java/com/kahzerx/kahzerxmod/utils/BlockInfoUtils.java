@@ -35,13 +35,13 @@ public class BlockInfoUtils {
         block = block.split("\\.")[block.split("\\.").length - 1];
         MutableText fDate = getDateWithHover(date);
         return switch (rs.getInt("action")) {
-            case 0 -> fDate.append(String.format(" <%s> ha roto '%s'.",
+            case 0 -> fDate.append(String.format(" <%s> has broken '%s'.",
                     Formatting.WHITE + playerName,
                     Formatting.DARK_PURPLE + block + Formatting.WHITE));
-            case 1 -> fDate.append(String.format(" <%s> ha puesto '%s'.",
+            case 1 -> fDate.append(String.format(" <%s> has put '%s'.",
                     Formatting.WHITE + playerName,
                     Formatting.DARK_PURPLE + block + Formatting.WHITE));
-            default -> fDate.append(String.format(" <%s> ha usado '%s'.",
+            default -> fDate.append(String.format(" <%s> has used '%s'.",
                     Formatting.WHITE + playerName,
                     Formatting.DARK_PURPLE + block + Formatting.WHITE));
         };
@@ -63,7 +63,7 @@ public class BlockInfoUtils {
                         ClickEvent.Action.RUN_COMMAND,
                         String.format("/blockInfo %d %d %d %d", x, y, z, page + 1))).
                 withHoverEvent(new HoverEvent(
-                        HoverEvent.Action.SHOW_TEXT, new LiteralText("Página siguiente"))));
+                        HoverEvent.Action.SHOW_TEXT, new LiteralText("Next"))));
     }
 
     public static MutableText getPrev(int x, int y, int z, int page) {
@@ -72,12 +72,12 @@ public class BlockInfoUtils {
                         ClickEvent.Action.RUN_COMMAND,
                         String.format("/blockInfo %d %d %d %d", x, y, z, page - 1))).
                 withHoverEvent(new HoverEvent(
-                        HoverEvent.Action.SHOW_TEXT, new LiteralText("Página anterior"))));
+                        HoverEvent.Action.SHOW_TEXT, new LiteralText("Prev"))));
     }
 
     public static MutableText getHelp(int x, int y, int z) {
         return new LiteralText(
-                String.format(". Página con /blockInfo %d %d %d <página>.", x, y, z))
+                String.format(". Page with /blockInfo %d %d %d <página>.", x, y, z))
                 .styled(style -> style.withColor(Formatting.WHITE));
     }
 }

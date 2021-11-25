@@ -12,7 +12,9 @@ public class CameraCommand {
         dispatcher.register(literal("c").
                 requires(serverCommandSource -> {
                     try {
-                        return camera.permsExtension.getDBPlayerPerms(serverCommandSource.getPlayer().getUuidAsString()).getId() > PermsLevels.MEMBER.getId();
+                        if (camera.extensionSettings().isEnabled() && camera.permsExtension.extensionSettings().isEnabled()) {
+                            return camera.permsExtension.getDBPlayerPerms(serverCommandSource.getPlayer().getUuidAsString()).getId() > PermsLevels.MEMBER.getId();
+                        }
                     } catch (CommandSyntaxException e) {
                         e.printStackTrace();
                     }

@@ -1,16 +1,20 @@
 package com.kahzerx.kahzerxmod.extensions.permsExtension;
 
+import com.google.common.collect.Sets;
 import com.kahzerx.kahzerxmod.Extensions;
 import com.kahzerx.kahzerxmod.extensions.ExtensionSettings;
 import com.kahzerx.kahzerxmod.extensions.GenericExtension;
+import com.kahzerx.kahzerxmod.utils.PlayerUtils;
 import com.mojang.brigadier.CommandDispatcher;
-import net.minecraft.server.ServerTask;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
 
 import java.sql.*;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Locale;
+import java.util.Set;
 
 public class PermsExtension extends GenericExtension implements Extensions {
     private final HashMap<String, PermsLevels> playerPerms = new HashMap<>();
@@ -26,27 +30,12 @@ public class PermsExtension extends GenericExtension implements Extensions {
     }
 
     @Override
-    public void onExtensionEnabled() {
-
-    }
-
-    @Override
-    public void onExtensionDisabled() {
-
-    }
-
-    @Override
     public void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher) {
-        if (this.getSettings().isEnabled()) {
-            new PermsCommand().register(dispatcher, this);
-        }
+        new PermsCommand().register(dispatcher, this);
     }
 
     @Override
     public void onCreateDatabase(Connection conn) {
-        if (!this.getSettings().isEnabled()) {
-            return;
-        }
         this.conn = conn;
         try {
             String createBackDatabase = "CREATE TABLE IF NOT EXISTS `perms` (" +
@@ -63,9 +52,6 @@ public class PermsExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onPlayerJoined(ServerPlayerEntity player) {
-        if (!this.getSettings().isEnabled()) {
-            return;
-        }
         String playerUUID = player.getUuidAsString();
         try {
             String query = "INSERT OR IGNORE INTO perms(uuid, level) VALUES (?, ?);";
@@ -86,9 +72,6 @@ public class PermsExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onPlayerLeft(ServerPlayerEntity player) {
-        if (!this.getSettings().isEnabled()) {
-            return;
-        }
         String playerUUID = player.getUuidAsString();
         if (this.playerPerms.containsKey(playerUUID)) {
             playerPerms.remove(playerUUID);
@@ -116,34 +99,74 @@ public class PermsExtension extends GenericExtension implements Extensions {
         return PermsLevels.MEMBER;
     }
 
-    public int updatePerms(ServerCommandSource source, String player, int value) {
-        ServerPlayerEntity playerEntity = source.getServer().getPlayerManager().getPlayer(player);
-        if (playerEntity == null) {
+    private String getPlayerUUID(String name) {
+        String playerUUID = null;
+        try {
+            String query = "SELECT uuid FROM player WHERE name = ?;";
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, name);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                playerUUID = rs.getString("uuid");
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return playerUUID;
+    }
+
+    public int updatePerms(ServerCommandSource source, String player, String value) {
+        String playerUUID = getPlayerUUID(player);
+        if (playerUUID == null) {
+            return 1;
+        }
+        int level = PermsLevels.getLevel(value);
+        if (level == -1) {
+            source.sendFeedback(new LiteralText("Not a valid level!"), false);
             return 1;
         }
         try {
             String query = "INSERT INTO perms (uuid, level) VALUES (?, ?)" +
                     "ON CONFLICT (uuid) DO UPDATE SET level = ?;";
             PreparedStatement ps = conn.prepareStatement(query);
-            ps.setString(1, playerEntity.getUuidAsString());
-            ps.setInt(2, value);
-            ps.setInt(3, value);
+            ps.setString(1, playerUUID);
+            ps.setInt(2, level);
+            ps.setInt(3, level);
             ps.executeUpdate();
             ps.close();
-            source.sendFeedback(new LiteralText(String.format("Player %s > %d", player, value)), false);
-            if (this.playerPerms.containsKey(playerEntity.getUuidAsString())) {
-                playerPerms.remove(playerEntity.getUuidAsString());
+            source.sendFeedback(new LiteralText(String.format("Player %s > %s", player, value)), false);
+            if (this.playerPerms.containsKey(playerUUID)) {
+                playerPerms.remove(playerUUID);
             }
-            playerPerms.put(playerEntity.getUuidAsString(), getDBPlayerPerms(playerEntity.getUuidAsString()));
+            playerPerms.put(playerUUID, getDBPlayerPerms(playerUUID));
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        source.getServer().send(new ServerTask(source.getServer().getTicks(), () -> source.getServer().getCommandManager().sendCommandTree(playerEntity)));
+        PlayerUtils.reloadCommands();
 
         return 1;
     }
 
     public HashMap<String, PermsLevels> getPlayerPerms() {
         return playerPerms;
+    }
+
+    public Collection<String> getPlayers() {
+        Set<String> players = Sets.newLinkedHashSet();
+        try {
+            String query = "SELECT name FROM player;";
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                players.add(rs.getString("name"));
+            }
+            rs.close();
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return players;
     }
 }

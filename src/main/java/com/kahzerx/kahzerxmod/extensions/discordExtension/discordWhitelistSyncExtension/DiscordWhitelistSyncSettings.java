@@ -32,4 +32,24 @@ public class DiscordWhitelistSyncSettings extends ExtensionSettings {
     public boolean isAggressive() {
         return aggressive;
     }
+
+    public void setNotifyChannelID(long notifyChannelID) {
+        this.notifyChannelID = notifyChannelID;
+    }
+
+    public void setGroupID(long groupID) {
+        this.groupID = groupID;
+    }
+
+    public void setAggressive(boolean aggressive) {
+        this.aggressive = aggressive;
+    }
+
+    public void addValidRoleID(long chatID) {
+        this.validRoles.add(chatID);
+    }
+
+    public void removeValidRoleID(long chatID) {
+        this.validRoles.remove(chatID);
+    }
 }

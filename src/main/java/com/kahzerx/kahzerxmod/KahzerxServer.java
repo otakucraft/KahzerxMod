@@ -7,7 +7,8 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.*;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.WorldSavePath;
 
 import java.util.ArrayList;
@@ -34,44 +35,85 @@ public class KahzerxServer {
         LiteralArgumentBuilder<ServerCommandSource> settingsCommand = literal("KSettings").
                 requires(serverCommandSource -> serverCommandSource.hasPermissionLevel(2));
         for (Extensions ex : extensions) {
-            settingsCommand.then(literal(ex.extensionSettings().getName()).
+            LiteralArgumentBuilder<ServerCommandSource> extensionSubCommand = literal(ex.extensionSettings().getName());
+            extensionSubCommand.
                     then(literal("enable").
                             executes(context -> {
                                 if (ex.extensionSettings().isEnabled()) {
-                                    context.getSource().sendFeedback(new LiteralText("Already enabled!"), false);
+                                    context.getSource().sendFeedback(new LiteralText(ex.extensionSettings().getName() + " already enabled!"), false);
                                     return 1;
                                 }
                                 ex.extensionSettings().setEnabled(true);
                                 ex.onExtensionEnabled();
                                 ExtensionManager.saveSettings();
-                                context.getSource().sendFeedback(new LiteralText("Extension enabled!"), false);
+                                context.getSource().sendFeedback(new LiteralText(ex.extensionSettings().getName() + " extension enabled!"), false);
                                 return 1;
                             })).
                     then(literal("disable").
                             executes(context -> {
                                 if (!ex.extensionSettings().isEnabled()) {
-                                    context.getSource().sendFeedback(new LiteralText("Already disabled!"), false);
+                                    context.getSource().sendFeedback(new LiteralText(ex.extensionSettings().getName() + " already disabled!"), false);
                                     return 1;
                                 }
                                 ex.extensionSettings().setEnabled(false);
                                 ex.onExtensionDisabled();
                                 ExtensionManager.saveSettings();
-                                context.getSource().sendFeedback(new LiteralText("Extension disabled!"), false);
+                                context.getSource().sendFeedback(new LiteralText(ex.extensionSettings().getName() + " extension disabled!"), false);
                                 return 1;
                             })).
-                    // then(ex.settingsCommand()).  // Otros ajustes por si fueran necesarios para las extensiones más complejas
                     executes(context -> {
-                                context.getSource().sendFeedback(
-                                        new LiteralText(String.format(
-                                                "[%s] > %s\n%s",
-                                                ex.extensionSettings().getName(),
-                                                ex.extensionSettings().isEnabled(),
-                                                ex.extensionSettings().getDescription()
-                                        )), false
-                                );
-                                return 1;
-                            }));
+                        context.getSource().sendFeedback(
+                                new LiteralText(String.format(
+                                        "[%s] > %s\n%s",
+                                        ex.extensionSettings().getName(),
+                                        ex.extensionSettings().isEnabled(),
+                                        ex.extensionSettings().getDescription()
+                                )), false);
+                        return 1;
+                    });
+            ex.settingsCommand(extensionSubCommand);  // Otros ajustes por si fueran necesarios para las extensiones más complejas.
+            settingsCommand.then(extensionSubCommand);
         }
+        settingsCommand.executes(context -> {
+            List<MutableText> extensionNames = new ArrayList<>();
+            for (Extensions ex : extensions) {
+                MutableText exData = new LiteralText("[True]").styled(
+                        style -> style.
+                                withBold(ex.extensionSettings().isEnabled()).
+                                withUnderline(ex.extensionSettings().isEnabled()).
+                                withColor(Formatting.GREEN).
+                                withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new LiteralText(String.format("Enable %s", ex.extensionSettings().getName())))).
+                                withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, String.format("/KSettings %s enable", ex.extensionSettings().getName()))));
+                exData.append(new LiteralText(" ").styled(
+                        style -> style.
+                                withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new LiteralText(""))).
+                                withUnderline(false)));
+                exData.append(new LiteralText("[False]").styled(
+                        style -> style.
+                                withBold(!ex.extensionSettings().isEnabled()).
+                                withUnderline(!ex.extensionSettings().isEnabled()).
+                                withColor(Formatting.RED).
+                                withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new LiteralText(String.format("Disable %s", ex.extensionSettings().getName())))).
+                                withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, String.format("/KSettings %s disable", ex.extensionSettings().getName())))));
+                exData.append(new LiteralText(" < ").styled(
+                        style -> style.
+                                withBold(true).
+                                withUnderline(false).
+                                withColor(Formatting.BLACK).
+                                withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new LiteralText("")))));
+                exData.append(new LiteralText(ex.extensionSettings().getName()).styled(
+                        style -> style.
+                                withBold(true).
+                                withUnderline(false).
+                                withColor(Formatting.WHITE).
+                                withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new LiteralText(ex.extensionSettings().getDescription())))));
+                extensionNames.add(exData);
+            }
+            for (Text t : extensionNames) {
+                context.getSource().sendFeedback(t, false);
+            }
+            return 1;
+        });
         dispatcher.register(settingsCommand);
     }
 
@@ -114,5 +156,9 @@ public class KahzerxServer {
 
     public static void onAdvancement(String advancement) {
         extensions.forEach(e -> e.onAdvancement(advancement));
+    }
+
+    public static void onTick(MinecraftServer server) {
+        extensions.forEach(e -> e.onTick(server));
     }
 }

@@ -14,24 +14,12 @@ public class PitoExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher) {
-        if (this.getSettings().isEnabled()) {
-            new PitoCommand().register(dispatcher, this);
-        }
+        new PitoCommand().register(dispatcher, this);
     }
 
     @Override
     public ExtensionSettings extensionSettings() {
         return this.getSettings();
-    }
-
-    @Override
-    public void onExtensionEnabled() {
-
-    }
-
-    @Override
-    public void onExtensionDisabled() {
-
     }
 
     public int pitoResponse(ServerCommandSource src) {

@@ -27,6 +27,7 @@ public class AddCommand extends GenericCommand {
 
     @Override
     public void execute(MessageReceivedEvent event, MinecraftServer server, String serverPrefix, DiscordWhitelistExtension extension) {
+        boolean feedback = extension.getDiscordExtension().extensionSettings().isShouldFeedback();
         List<String> bannedResponses = new ArrayList<>();
         // bannedResponses.add("**Vete a tomar por culo, si estas ban piensa porque eres tan puta escoria que no te mereces entrar**");
         bannedResponses.add("https://www.youtube.com/watch?v=eOhM3pYUkXE");
@@ -35,56 +36,63 @@ public class AddCommand extends GenericCommand {
         // bannedResponses.add("**Encerrado en bedrock, para salir picame esta 8===D**");
         long id = event.getAuthor().getIdLong();
         if (extension.isDiscordBanned(id)) {
-            EmbedBuilder embed = DiscordChatUtils.generateEmbed(new String[]{bannedResponses.get(new Random().nextInt(bannedResponses.size()))}, serverPrefix, true, Color.RED, true);
-            assert embed != null;
-            event.getChannel().sendMessageEmbeds(embed.build()).queue();
+            EmbedBuilder embed = DiscordChatUtils.generateEmbed(new String[]{bannedResponses.get(new Random().nextInt(bannedResponses.size()))}, serverPrefix, true, Color.RED, true, feedback);
+            if (embed != null) {
+                event.getChannel().sendMessageEmbeds(embed.build()).queue();
+            }
             return;
         }
         String[] req = event.getMessage().getContentRaw().split(" ");
         String playerName = req[1];
         if (req.length != 2) {
             event.getMessage().delete().queueAfter(2, TimeUnit.SECONDS);
-            this.sendHelpCommand(serverPrefix, event.getChannel());
+            this.sendHelpCommand(serverPrefix, event.getChannel(), feedback);
             return;
         }
         Optional<GameProfile> profile = server.getUserCache().findByName(playerName);
         if (profile.isEmpty()) {
-            EmbedBuilder embed = DiscordChatUtils.generateEmbed(new String[]{"**No es premium.**"}, serverPrefix, true, Color.RED, true);
-            assert embed != null;
-            event.getChannel().sendMessageEmbeds(embed.build()).queue();
+            EmbedBuilder embed = DiscordChatUtils.generateEmbed(new String[]{"**Not premium.**"}, serverPrefix, true, Color.RED, true, feedback);
+            if (embed != null) {
+                event.getChannel().sendMessageEmbeds(embed.build()).queue();
+            }
             return;
         }
         if (!extension.userReachedMaxPlayers(id)) {
-            EmbedBuilder embed = DiscordChatUtils.generateEmbed(new String[]{"**No puedes añadir más jugadores, máximo " + extension.extensionSettings().getNPlayers() + ".**"}, serverPrefix, true, Color.RED, true);
-            assert embed != null;
-            event.getChannel().sendMessageEmbeds(embed.build()).queue();
+            EmbedBuilder embed = DiscordChatUtils.generateEmbed(new String[]{"**You can't add more players, max " + extension.extensionSettings().getNPlayers() + ".**"}, serverPrefix, true, Color.RED, true, feedback);
+            if (embed != null) {
+                event.getChannel().sendMessageEmbeds(embed.build()).queue();
+            }
             return;
         }
         Whitelist whitelist = server.getPlayerManager().getWhitelist();
         if (whitelist.isAllowed(profile.get())) {
-            EmbedBuilder embed = DiscordChatUtils.generateEmbed(new String[]{"**" + playerName + " ya estaba en whitelist.**"}, serverPrefix, true, Color.YELLOW, true);
-            assert embed != null;
-            event.getChannel().sendMessageEmbeds(embed.build()).queue();
+            EmbedBuilder embed = DiscordChatUtils.generateEmbed(new String[]{"**" + playerName + " already whitelisted.**"}, serverPrefix, true, Color.YELLOW, true, feedback);
+            if (embed != null) {
+                event.getChannel().sendMessageEmbeds(embed.build()).queue();
+            }
             return;
         }
         WhitelistEntry whitelistEntry = new WhitelistEntry(profile.get());
         if (extension.isPlayerBanned(profile.get().getId().toString())) {
-            EmbedBuilder embed = DiscordChatUtils.generateEmbed(new String[]{"**Parece que intentas añadir a alguien ya baneado.**"}, serverPrefix, true, Color.RED, true);
-            assert embed != null;
-            event.getChannel().sendMessageEmbeds(embed.build()).queue();
+            EmbedBuilder embed = DiscordChatUtils.generateEmbed(new String[]{"**Looks like that player is banned.**"}, serverPrefix, true, Color.RED, true, feedback);
+            if (embed != null) {
+                event.getChannel().sendMessageEmbeds(embed.build()).queue();
+            }
             return;
         }
         extension.addPlayer(id, profile.get().getId().toString(), profile.get().getName());
         whitelist.add(whitelistEntry);
-        EmbedBuilder embed = DiscordChatUtils.generateEmbed(new String[]{"**" + profile.get().getName() + " añadido :D**"}, serverPrefix, true, Color.GREEN, true);
-        assert embed != null;
-        event.getChannel().sendMessageEmbeds(embed.build()).queue();
 
         Guild guild = event.getGuild();
         Role role = guild.getRoleById(extension.extensionSettings().getDiscordRole());
         Member member = event.getMember();
-        assert role != null;
-        assert member != null;
-        guild.addRoleToMember(member, role).queue();
+        if (role != null && member != null) {
+            guild.addRoleToMember(member, role).queue();
+        }
+
+        EmbedBuilder embed = DiscordChatUtils.generateEmbed(new String[]{"**" + profile.get().getName() + " added :D**"}, serverPrefix, true, Color.GREEN, true, feedback);
+        if (embed != null) {
+            event.getChannel().sendMessageEmbeds(embed.build()).queue();
+        }
     }
 }

@@ -16,9 +16,7 @@ public class AFKExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher) {
-        if (this.getSettings().isEnabled()) {
-            new AFKCommand().register(dispatcher, this);
-        }
+        new AFKCommand().register(dispatcher, this);
     }
 
     @Override
@@ -26,22 +24,12 @@ public class AFKExtension extends GenericExtension implements Extensions {
         return this.getSettings();
     }
 
-    @Override
-    public void onExtensionEnabled() {
-
-    }
-
-    @Override
-    public void onExtensionDisabled() {
-
-    }
-
     public int onAFK(ServerCommandSource src) throws CommandSyntaxException {
         ServerPlayerEntity player = src.getPlayer();
         if (player == null) {
             return 1;
         }
-        player.networkHandler.disconnect(new LiteralText("Toma tu AFK."));
+        player.networkHandler.disconnect(new LiteralText(":D"));
         return 1;
     }
 }

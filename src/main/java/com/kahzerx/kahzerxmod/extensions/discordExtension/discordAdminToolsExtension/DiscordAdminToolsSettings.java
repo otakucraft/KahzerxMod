@@ -14,4 +14,12 @@ public class DiscordAdminToolsSettings extends ExtensionSettings {
     public List<Long> getAdminChats() {
         return adminChats;
     }
+
+    public void addAdminChatID(long chatID) {
+        this.adminChats.add(chatID);
+    }
+
+    public void removeAdminChatID(long chatID) {
+        this.adminChats.remove(chatID);
+    }
 }

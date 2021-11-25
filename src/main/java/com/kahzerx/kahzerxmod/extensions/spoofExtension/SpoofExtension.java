@@ -21,9 +21,7 @@ public class SpoofExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher) {
-        if (this.getSettings().isEnabled()) {
-            new SpoofCommand().register(dispatcher, this);
-        }
+        new SpoofCommand().register(dispatcher, this);
     }
 
     public int spoofEC(ServerCommandSource source, String playerE) throws CommandSyntaxException {
@@ -81,15 +79,5 @@ public class SpoofExtension extends GenericExtension implements Extensions {
     @Override
     public ExtensionSettings extensionSettings() {
         return this.getSettings();
-    }
-
-    @Override
-    public void onExtensionEnabled() {
-
-    }
-
-    @Override
-    public void onExtensionDisabled() {
-
     }
 }

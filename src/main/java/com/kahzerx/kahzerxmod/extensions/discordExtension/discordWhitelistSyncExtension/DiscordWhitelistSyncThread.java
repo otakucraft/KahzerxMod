@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.requests.RestAction;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.Whitelist;
@@ -74,7 +75,16 @@ public class DiscordWhitelistSyncThread extends Thread {
                 continue;
             }
             RestAction<Member> restMember = guild.retrieveMemberById(discordID);
-            Member member = restMember.complete();
+            Member member = null;
+            try {
+                member = restMember.complete();
+            } catch (ErrorResponseException responseException) {
+                if (responseException.isServerError() || (400 < responseException.getErrorCode() && responseException.getErrorCode() < 500)) {
+                    responseException.printStackTrace();
+                    continue;
+                }
+                LOGGER.error("Unable to find Member, removing from whitelist...");
+            }
             if (member == null) {
                 onSyncAction(discordWhitelistExtension.getWhitelistedPlayers(discordID), discordID, guild);
                 continue;
@@ -107,11 +117,12 @@ public class DiscordWhitelistSyncThread extends Thread {
             discordWhitelistExtension.tryVanillaWhitelistRemove(server.getPlayerManager().getWhitelist(), p.get(), server);
             discordWhitelistExtension.deletePlayer(discordID, whitelistedPlayerUUID);
 
-            EmbedBuilder embed = DiscordChatUtils.generateEmbed(new String[]{String.format("**F %s**", p.get().getName())}, "", true, Color.RED, true);
-            assert embed != null;
-            TextChannel channel = guild.getTextChannelById(discordWhitelistSyncExtension.extensionSettings().getNotifyChannelID());
-            assert channel != null;
-            channel.sendMessageEmbeds(embed.build()).queue();
+            EmbedBuilder embed = DiscordChatUtils.generateEmbed(new String[]{String.format("**F %s**", p.get().getName())}, "", true, Color.RED, true, discordWhitelistExtension.getDiscordExtension().extensionSettings().isShouldFeedback());
+            if (embed != null) {
+                TextChannel channel = guild.getTextChannelById(discordWhitelistSyncExtension.extensionSettings().getNotifyChannelID());
+                assert channel != null;
+                channel.sendMessageEmbeds(embed.build()).queue();
+            }
         }
     }
 

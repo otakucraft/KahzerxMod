@@ -21,16 +21,13 @@ import java.util.concurrent.ArrayBlockingQueue;
 public class BlockInfoExtension extends GenericExtension implements Extensions {
     private Connection conn;
     public static final ArrayBlockingQueue<BlockActionLog> queue = new ArrayBlockingQueue<>(10_000);
-    private final BlockInfoLoggerThread logger = new BlockInfoLoggerThread("BLOCKINFO", this);
+    private BlockInfoLoggerThread logger = new BlockInfoLoggerThread("BLOCKINFO", this);
     public BlockInfoExtension(ExtensionSettings settings) {
         super(settings);
     }
 
     @Override
     public void onCreateDatabase(Connection conn) {
-        if (!this.getSettings().isEnabled()) {
-            return;
-        }
         this.conn = conn;
         try {
             String createBlockInfoTable = "CREATE TABLE IF NOT EXISTS `action_logger` (" +
@@ -97,9 +94,7 @@ public class BlockInfoExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher) {
-        if (this.getSettings().isEnabled()) {
-            new BlockInfoCommand().register(dispatcher, this);
-        }
+        new BlockInfoCommand().register(dispatcher, this);
     }
 
     @Override
@@ -128,12 +123,23 @@ public class BlockInfoExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onExtensionEnabled() {
-
+        Extensions.super.onExtensionEnabled();
+        if (logger.isAlive()) {
+            return;
+        }
+        queue.clear();
+        logger = new BlockInfoLoggerThread("BLOCKINFO", this);
+        logger.start();
     }
 
     @Override
     public void onExtensionDisabled() {
-
+        Extensions.super.onExtensionDisabled();
+        if (!logger.isAlive()) {
+            return;
+        }
+        queue.clear();
+        logger.stopLogger();
     }
 
     public static void enqueue(BlockActionLog action) {
@@ -165,14 +171,14 @@ public class BlockInfoExtension extends GenericExtension implements Extensions {
                 i++;
             }
             if (msg.isEmpty()) {
-                msg.add(new LiteralText("No hay registros de este bloque :("));
+                msg.add(new LiteralText("No logs :("));
             }
             rs.close();
             ps.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             msg.clear();
-            msg.add(new LiteralText("Error al conectar con la base de datos."));
+            msg.add(new LiteralText("Error."));
         }
         return msg;
     }

@@ -18,16 +18,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class BlockBreakingLoggingMixin {
     @Inject(method = "onBreak", at = @At("HEAD"))
     private void onBroken(World world, BlockPos pos, BlockState state, PlayerEntity player, CallbackInfo ci) {
-        BlockActionLog actionLog = new BlockActionLog(
-                player.getName().getString(),
-                state.getBlock().getTranslationKey(),
-                pos.getX(),
-                pos.getY(),
-                pos.getZ(),
-                DimUtils.getWorldID(DimUtils.getDim(player.world)),
-                0,
-                DateUtils.getDate()
-        );
-        BlockInfoExtension.enqueue(actionLog);
+        if (!world.isClient) {
+            BlockActionLog actionLog = new BlockActionLog(
+                    player.getName().getString(),
+                    state.getBlock().getTranslationKey(),
+                    pos.getX(),
+                    pos.getY(),
+                    pos.getZ(),
+                    DimUtils.getWorldID(DimUtils.getDim(player.world)),
+                    0,
+                    DateUtils.getDate()
+            );
+            BlockInfoExtension.enqueue(actionLog);
+        }
     }
 }

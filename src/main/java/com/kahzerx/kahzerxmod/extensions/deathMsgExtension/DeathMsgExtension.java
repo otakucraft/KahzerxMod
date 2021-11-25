@@ -29,12 +29,8 @@ public class DeathMsgExtension extends GenericExtension implements Extensions {
     }
 
     @Override
-    public void onExtensionEnabled() {
-
-    }
+    public void onExtensionEnabled() { }
 
     @Override
-    public void onExtensionDisabled() {
-
-    }
+    public void onExtensionDisabled() { }
 }

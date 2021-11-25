@@ -8,8 +8,10 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.block.Blocks;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.LiteralText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Heightmap;
+import net.minecraft.world.World;
 
 import java.util.Random;
 
@@ -20,9 +22,7 @@ public class RandomTPExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher) {
-        if (this.getSettings().isEnabled()) {
-            new RandomTPCommand().register(dispatcher, this);
-        }
+        new RandomTPCommand().register(dispatcher, this);
     }
 
     @Override
@@ -30,19 +30,13 @@ public class RandomTPExtension extends GenericExtension implements Extensions {
         return this.getSettings();
     }
 
-    @Override
-    public void onExtensionEnabled() {
-
-    }
-
-    @Override
-    public void onExtensionDisabled() {
-
-    }
-
     public int tpAndSpawnPoint(ServerCommandSource source) throws CommandSyntaxException {
         ServerPlayerEntity player = source.getPlayer();
         if (player == null) {
+            return 1;
+        }
+        if (player.getEntityWorld().getRegistryKey() != World.OVERWORLD) {
+            source.sendFeedback(new LiteralText("You can only run this command in the overworld."), false);
             return 1;
         }
         final int min = -10000;

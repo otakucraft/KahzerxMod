@@ -27,9 +27,6 @@ public class HomeExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onCreateDatabase(Connection conn) {
-        if (!this.getSettings().isEnabled()) {
-            return;
-        }
         this.conn = conn;
         try {
             String createBackDatabase = "CREATE TABLE IF NOT EXISTS `home` (" +
@@ -49,9 +46,6 @@ public class HomeExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onPlayerJoined(ServerPlayerEntity player) {
-        if (!this.getSettings().isEnabled()) {
-            return;
-        }
         String playerUUID = player.getUuidAsString();
         if (this.playerHomes.containsKey(playerUUID)) {
             playerHomes.remove(playerUUID);
@@ -61,9 +55,6 @@ public class HomeExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onPlayerLeft(ServerPlayerEntity player) {
-        if (!this.getSettings().isEnabled()) {
-            return;
-        }
         String playerUUID = player.getUuidAsString();
         if (this.playerHomes.containsKey(playerUUID)) {
             playerHomes.remove(playerUUID);
@@ -76,21 +67,9 @@ public class HomeExtension extends GenericExtension implements Extensions {
     }
 
     @Override
-    public void onExtensionEnabled() {
-
-    }
-
-    @Override
-    public void onExtensionDisabled() {
-
-    }
-
-    @Override
     public void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher) {
-        if (this.getSettings().isEnabled()) {
-            new HomeCommand().register(dispatcher, this);
-            new SetHomeCommand().register(dispatcher, this);
-        }
+        new HomeCommand().register(dispatcher, this);
+        new SetHomeCommand().register(dispatcher, this);
     }
 
     private void updateHomePos(ServerPlayerEntity player, HomePos pos) {
@@ -140,16 +119,16 @@ public class HomeExtension extends GenericExtension implements Extensions {
             return 1;
         }
         String playerUUID = player.getUuidAsString();
-        if (player.getVelocity().getY() < -1 || player.isOnFire() || player.isSubmergedInWater() || player.getDamageTracker().wasRecentlyAttacked()) {
-            player.sendMessage(
-                    new LiteralText("NOP").styled(style -> style.withColor(Formatting.DARK_RED)),
-                    false
-            );
-            return 1;
-        }
+//        if (player.getVelocity().getY() < -1 || player.isOnFire() || player.isSubmergedInWater() || player.getDamageTracker().wasRecentlyAttacked()) {
+//            player.sendMessage(
+//                    new LiteralText("NOP").styled(style -> style.withColor(Formatting.DARK_RED).withBold(true)),
+//                    false
+//            );
+//            return 1;
+//        }
         if (!this.playerHomes.containsKey(playerUUID)) {
             player.sendMessage(
-                    new LiteralText("Error al ejecutar, intenta reconectarte o contacta con un admin."),
+                    new LiteralText("Error."),
                     false
             );
             return 1;
@@ -167,7 +146,7 @@ public class HomeExtension extends GenericExtension implements Extensions {
             player.addExperience(0);  // xp resets when you tp from other dimension and needs to update smh, mojang pls.
         } else {
             player.sendMessage(
-                    new LiteralText("Aun no has configurado tu casa, usa ").append(getClickableSetHomeCommand()),
+                    new LiteralText("You don't have a home yet, use ").append(getClickableSetHomeCommand()),
                     false
             );
         }
@@ -183,7 +162,7 @@ public class HomeExtension extends GenericExtension implements Extensions {
         String playerUUID = player.getUuidAsString();
         if (!this.playerHomes.containsKey(playerUUID)) {
             player.sendMessage(
-                    new LiteralText("Error al ejecutar, intenta reconectarte o contacta con un admin."),
+                    new LiteralText("Error."),
                     false
             );
             return 1;
@@ -191,7 +170,7 @@ public class HomeExtension extends GenericExtension implements Extensions {
         playerHomes.put(playerUUID, newHomePos);
         src.sendFeedback(
             new LiteralText(String.format(
-                "Casa en: %s %s",
+                "Home @: %s %s",
                 DimUtils.getDimensionWithColor(player.world),
                 DimUtils.formatCoords(player.getX(), player.getY(), player.getZ())
             )),

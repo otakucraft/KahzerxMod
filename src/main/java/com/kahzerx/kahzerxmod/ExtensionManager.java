@@ -7,6 +7,7 @@ import com.kahzerx.kahzerxmod.extensions.ExtensionSettings;
 import com.kahzerx.kahzerxmod.extensions.afkExtension.AFKExtension;
 import com.kahzerx.kahzerxmod.extensions.backExtension.BackExtension;
 import com.kahzerx.kahzerxmod.extensions.blockInfoExtension.BlockInfoExtension;
+import com.kahzerx.kahzerxmod.extensions.bocaExtension.BocaExtension;
 import com.kahzerx.kahzerxmod.extensions.cameraExtension.CameraExtension;
 import com.kahzerx.kahzerxmod.extensions.deathMsgExtension.DeathMsgExtension;
 import com.kahzerx.kahzerxmod.extensions.discordExtension.discordAdminToolsExtension.DiscordAdminToolsExtension;
@@ -21,20 +22,27 @@ import com.kahzerx.kahzerxmod.extensions.discordExtension.discordWhitelistExtens
 import com.kahzerx.kahzerxmod.extensions.discordExtension.discordWhitelistSyncExtension.DiscordWhitelistSyncExtension;
 import com.kahzerx.kahzerxmod.extensions.discordExtension.discordWhitelistSyncExtension.DiscordWhitelistSyncJsonSettings;
 import com.kahzerx.kahzerxmod.extensions.discordExtension.discordWhitelistSyncExtension.DiscordWhitelistSyncSettings;
+import com.kahzerx.kahzerxmod.extensions.endermanNoGriefExtension.EndermanNoGriefExtension;
 import com.kahzerx.kahzerxmod.extensions.fckPrivacyExtension.FckPrivacyExtension;
+import com.kahzerx.kahzerxmod.extensions.hatExtension.HatExtension;
 import com.kahzerx.kahzerxmod.extensions.hereExtension.HereExtension;
 import com.kahzerx.kahzerxmod.extensions.homeExtension.HomeExtension;
 import com.kahzerx.kahzerxmod.extensions.memberExtension.MemberExtension;
 import com.kahzerx.kahzerxmod.extensions.modTPExtension.ModTPExtension;
 import com.kahzerx.kahzerxmod.extensions.permsExtension.PermsExtension;
 import com.kahzerx.kahzerxmod.extensions.pitoExtension.PitoExtension;
+import com.kahzerx.kahzerxmod.extensions.prometheusExtension.PrometheusExtension;
+import com.kahzerx.kahzerxmod.extensions.prometheusExtension.PrometheusJsonSettings;
+import com.kahzerx.kahzerxmod.extensions.prometheusExtension.PrometheusSettings;
 import com.kahzerx.kahzerxmod.extensions.randomTPExtension.RandomTPExtension;
 import com.kahzerx.kahzerxmod.extensions.scoreboardExtension.ScoreboardExtension;
 import com.kahzerx.kahzerxmod.extensions.seedExtension.SeedExtension;
+import com.kahzerx.kahzerxmod.extensions.spawnExtension.SpawnExtension;
 import com.kahzerx.kahzerxmod.extensions.spoofExtension.SpoofExtension;
 import com.kahzerx.kahzerxmod.extensions.survivalExtension.SurvivalExtension;
+import com.kahzerx.kahzerxmod.extensions.totopoExtension.TotopoExtension;
+import com.kahzerx.kahzerxmod.extensions.whereExtension.WhereExtension;
 import com.kahzerx.kahzerxmod.utils.FileUtils;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.WorldSavePath;
 
 import java.util.ArrayList;
@@ -51,6 +59,10 @@ public class ExtensionManager {
         FileUtils.createConfig(KahzerxServer.minecraftServer.getSavePath(WorldSavePath.ROOT).toString(), settings);
     }
 
+    private static boolean isEnabled(HashMap<String, Boolean> found, String extension) {
+        return found.get(extension) != null ? found.get(extension) : false;
+    }
+
     public static void manageExtensions(String settings) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         KSettings ks = gson.fromJson(settings, KSettings.class);
@@ -65,102 +77,37 @@ public class ExtensionManager {
             }
         }
 
-        PermsExtension permsExtension = new PermsExtension(
-                new ExtensionSettings(
-                        "perms",
-                        found.get("perms") != null ? found.get("perms") : true,
-                        "Permission levels for other commands like /back, /c or /modTP. Enables /kPerms command."));
+        PermsExtension permsExtension = new PermsExtension(new ExtensionSettings("perms", isEnabled(found, "perms"), "Permission levels for other commands like /back, /c or /modTP. Enables /kPerms command."));
         KahzerxServer.extensions.add(permsExtension);
-        KahzerxServer.extensions.add(new HomeExtension(
-                new ExtensionSettings(
-                        "home",
-                        found.get("home") != null ? found.get("home") : true,
-                        "/home and /setHome commands.")));
-        KahzerxServer.extensions.add(new BackExtension(
-                new ExtensionSettings(
-                        "back",
-                        found.get("back") != null ? found.get("back") : true,
-                        "/back command to tp to the last death position."),
-                permsExtension));
-        KahzerxServer.extensions.add(new CameraExtension(
-                new ExtensionSettings(
-                        "camera",
-                        found.get("camera") != null ? found.get("camera") : true,
-                        "/c, spectator + night vision + conduit (stolen from carpet)."),
-                permsExtension));
-        KahzerxServer.extensions.add(new ModTPExtension(
-                new ExtensionSettings(
-                        "modTP",
-                        found.get("modTP") != null ? found.get("modTP") : true,
-                        "Enables /modTP that allows players with mod perms to tp to other players."
-                ),
-                permsExtension));
-        KahzerxServer.extensions.add(new SurvivalExtension(
-                new ExtensionSettings(
-                        "survival",
-                        found.get("survival") != null ? found.get("survival") : true,
-                        "/s, survival - night vision - conduit (stolen from carpet).")));
-        KahzerxServer.extensions.add(new PitoExtension(
-                new ExtensionSettings(
-                        "pito",
-                        found.get("pito") != null ? found.get("pito") : true,
-                        "/pito ¯\\_(ツ)_/¯")));
-        KahzerxServer.extensions.add(new HereExtension(
-                new ExtensionSettings(
-                        "here",
-                        found.get("here") != null ? found.get("here") : true,
-                        "/here, print current location + glowing 5 seconds.")));
-        KahzerxServer.extensions.add(new DeathMsgExtension(
-                new ExtensionSettings(
-                        "deathMessage",
-                        found.get("deathMessage") != null ? found.get("deathMessage") : true,
-                        "Print death position when player dies.")));
-        KahzerxServer.extensions.add(new AFKExtension(
-                new ExtensionSettings(
-                        "afk",
-                        found.get("afk") != null ? found.get("afk") : true,
-                        "/afk idk everyone keeps asking for this thing, it literally kicks you from the server.")));
-        KahzerxServer.extensions.add(new RandomTPExtension(
-                new ExtensionSettings(
-                        "randomTP",
-                        found.get("randomTP") != null ? found.get("randomTP") : true,
-                        "randomTP in a 10k block radius.")));
-        KahzerxServer.extensions.add(new BlockInfoExtension(
-                new ExtensionSettings(
-                        "blockInfo",
-                        found.get("blockInfo") != null ? found.get("blockInfo") : true,
-                        "Player action logging and /blockInfo command.")));
-        KahzerxServer.extensions.add(new MemberExtension(
-                new ExtensionSettings(
-                        "member",
-                        found.get("member") != null ? found.get("member") : true,
-                        "Gives member role on player first joined, it also creates member, mod and admin teams if not exist.")));
-        KahzerxServer.extensions.add(new SeedExtension(
-                new ExtensionSettings(
-                        "seed",
-                        found.get("seed") != null ? found.get("seed") : true,
-                        "Enables seed command for everyone in the server.")));
-        KahzerxServer.extensions.add(new FckPrivacyExtension(
-                new ExtensionSettings(
-                        "fckPrivacy",
-                        found.get("fckPrivacy") != null ? found.get("fckPrivacy") : true,
-                        "Saves every executed command including private messages in the logs file, like /msg name hello.")));
-        KahzerxServer.extensions.add(new SpoofExtension(
-                new ExtensionSettings(
-                        "spoof",
-                        found.get("spoof") != null ? found.get("spoof") : true,
-                        "Enables /spoof command that allows OP players to see other connected players enderchest and inventories, player inventory may not work correctly so unless you know what you are doing is not recommended to move items from the slots.")));
-        KahzerxServer.extensions.add(new ScoreboardExtension(
-                new ExtensionSettings(
-                        "scoreboard",
-                        found.get("scoreboard") != null ? found.get("scoreboard") : true,
-                        "Enables /sb command.")));
+        KahzerxServer.extensions.add(new HomeExtension(new ExtensionSettings("home", isEnabled(found, "home"), "/home and /setHome commands.")));
+        KahzerxServer.extensions.add(new BackExtension(new ExtensionSettings("back", isEnabled(found, "back"), "/back command to tp to the last death position."), permsExtension));
+        KahzerxServer.extensions.add(new CameraExtension(new ExtensionSettings("camera", isEnabled(found, "camera"), "/c, spectator + night vision + conduit (stolen from carpet)."), permsExtension));
+        KahzerxServer.extensions.add(new ModTPExtension(new ExtensionSettings("modTP", isEnabled(found, "modTP"), "Enables /modTP that allows players with mod perms to tp to other players."), permsExtension));
+        KahzerxServer.extensions.add(new SurvivalExtension(new ExtensionSettings("survival", isEnabled(found, "survival"), "/s, survival - night vision - conduit (stolen from carpet).")));
+        KahzerxServer.extensions.add(new PitoExtension(new ExtensionSettings("pito", isEnabled(found, "pito"), "/pito ¯\\_(ツ)_/¯")));
+        KahzerxServer.extensions.add(new HereExtension(new ExtensionSettings("here", isEnabled(found, "here"), "/here, print current location + glowing 5 seconds.")));
+        KahzerxServer.extensions.add(new DeathMsgExtension(new ExtensionSettings("deathMessage", isEnabled(found, "deathMessage"), "Print death position when player dies.")));
+        KahzerxServer.extensions.add(new AFKExtension(new ExtensionSettings("afk", isEnabled(found, "afk"), "/afk idk everyone keeps asking for this thing, it literally kicks you from the server.")));
+        KahzerxServer.extensions.add(new RandomTPExtension(new ExtensionSettings("randomTP", isEnabled(found, "randomTP"), "randomTP in a 10k block radius.")));
+        KahzerxServer.extensions.add(new BlockInfoExtension(new ExtensionSettings("blockInfo", isEnabled(found, "blockInfo"), "Player action logging and /blockInfo command.")));
+        KahzerxServer.extensions.add(new MemberExtension(new ExtensionSettings("member", isEnabled(found, "member"), "Gives member role on player first joined, it also creates member, mod and admin teams if not exist.")));
+        KahzerxServer.extensions.add(new SeedExtension(new ExtensionSettings("seed", isEnabled(found, "seed"), "Enables seed command for everyone in the server.")));
+        KahzerxServer.extensions.add(new FckPrivacyExtension(new ExtensionSettings("fckPrivacy", isEnabled(found, "fckPrivacy"), "Saves every executed command including private messages in the logs file, like /msg name hello.")));
+        KahzerxServer.extensions.add(new SpoofExtension(new ExtensionSettings("spoof", isEnabled(found, "spoof"), "Enables /spoof command that allows OP players to see other connected players enderchest and inventories, player inventory may not work correctly so unless you know what you are doing is not recommended to move items from the slots.")));
+        KahzerxServer.extensions.add(new ScoreboardExtension(new ExtensionSettings("scoreboard", isEnabled(found, "scoreboard"), "Enables /sb command.")));
+        KahzerxServer.extensions.add(new SpawnExtension(new ExtensionSettings("spawn", isEnabled(found, "spawn"), "Enables /spawn.")));
+        KahzerxServer.extensions.add(new WhereExtension(new ExtensionSettings("where", isEnabled(found, "where"), "Enables /where.")));
+        KahzerxServer.extensions.add(new BocaExtension(new ExtensionSettings("boca", isEnabled(found, "boca"), "Enables /boca & /boquita command.")));
+        KahzerxServer.extensions.add(new TotopoExtension(new ExtensionSettings("totopo", isEnabled(found, "totopo"), "Enables /totopo command.")));
+        KahzerxServer.extensions.add(new HatExtension(new ExtensionSettings("hat", isEnabled(found, "hat"), "Puts whatever item you have in the main hand on your head.")));
+        KahzerxServer.extensions.add(new EndermanNoGriefExtension(new ExtensionSettings("endermanNoGrief", isEnabled(found, "endermanNoGrief"), "Prevents endermans to pickup or place blocks (this will break enderman based farms).")));
 
         String token = "";
         boolean crossServerChat = false;
         String prefix = "";
         boolean isRunning = false;
         long chatChannelID = 0L;
+        boolean shouldFeedback = true;
         List<Long> allowedChats = new ArrayList<>();
         DiscordJsonSettings djs = gson.fromJson(settings, DiscordJsonSettings.class);
         if (djs != null) {
@@ -175,6 +122,7 @@ public class ExtensionManager {
                     isRunning = ds.isRunning();
                     chatChannelID = ds.getChatChannelID();
                     allowedChats = ds.getAllowedChats() != null ? ds.getAllowedChats() : new ArrayList<>();
+                    shouldFeedback = ds.isShouldFeedback();
                     break;
                 }
             }
@@ -182,14 +130,15 @@ public class ExtensionManager {
         DiscordExtension discordExtension = new DiscordExtension(
                 new DiscordSettings(
                         "discord",
-                        found.get("discord") != null ? found.get("discord") : false,
+                        isEnabled(found, "discord"),
                         "Connects minecraft chat + some events with a discord chat (chatbridge). Prefix is necessary if you want crossServerChat to work properly and not having duplicated messages.",
                         token,
                         crossServerChat,
                         prefix,
                         isRunning,
                         chatChannelID,
-                        allowedChats
+                        allowedChats,
+                        shouldFeedback
                 ));
         KahzerxServer.extensions.add(discordExtension);
 
@@ -213,7 +162,7 @@ public class ExtensionManager {
         DiscordWhitelistExtension discordWhitelistExtension = new DiscordWhitelistExtension(
                 new DiscordWhitelistSettings(
                         "discordWhitelist",
-                        (found.get("discordWhitelist") != null ? found.get("discordWhitelist") : true) && (discordExtension.extensionSettings().isEnabled()),
+                        isEnabled(found, "discordWhitelist") && (discordExtension.extensionSettings().isEnabled()),
                         "Enables !list, !add and !remove commands along with nPlayers that specifies how many minecraft players a discord user can add; There is also an optional discordRole that will be given to the discord user on !add and deleted on !remove.",
                         whitelistChats,
                         discordRoleID,
@@ -238,7 +187,7 @@ public class ExtensionManager {
         KahzerxServer.extensions.add(new DiscordAdminToolsExtension(
                 new DiscordAdminToolsSettings(
                         "discordAdminTools",
-                        (found.get("discordWhitelist") != null ? found.get("discordWhitelist") : true) && (discordExtension.extensionSettings().isEnabled()) && (discordWhitelistExtension.extensionSettings().isEnabled()),
+                        isEnabled(found, "discordAdminTools") && (discordExtension.extensionSettings().isEnabled()) && (discordWhitelistExtension.extensionSettings().isEnabled()),
                         "Enables !ban, !pardon, !exadd, !exremove on discord AdminChats.",
                         adminChats
                 ),
@@ -266,7 +215,7 @@ public class ExtensionManager {
         KahzerxServer.extensions.add(new DiscordWhitelistSyncExtension(
                 new DiscordWhitelistSyncSettings(
                         "discordWhitelistSync",
-                        (found.get("discordWhitelistSync") != null ? found.get("discordWhitelistSync") : true) && (discordExtension.extensionSettings().isEnabled()) && (discordWhitelistExtension.extensionSettings().isEnabled()),
+                        isEnabled(found, "discordWhitelistSync") && (discordExtension.extensionSettings().isEnabled()) && (discordWhitelistExtension.extensionSettings().isEnabled()),
                         "Check if people that did !add have a given discord role, if not they will get automatically removed from whitelist, useful for sub twitch role. The groupID is the ID of the discord server/guild. The aggressive mode will force whitelist and discord database have the same users so any player added with /whitelist add will get removed on autosave.",
                         notifyChannelID,
                         validRoles,
@@ -275,5 +224,25 @@ public class ExtensionManager {
                 ),
                 discordExtension,
                 discordWhitelistExtension));
+
+        int port = 25678;
+        PrometheusJsonSettings prometheusJsonSettings = gson.fromJson(settings, PrometheusJsonSettings.class);
+        if (prometheusJsonSettings != null) {
+            for (PrometheusSettings prometheusSettings : prometheusJsonSettings.getSettings()) {
+                if (prometheusSettings == null) {
+                    continue;
+                }
+                if (prometheusSettings.getName().equals("prometheus")) {
+                    port = prometheusSettings.getPort() != 0 ? prometheusSettings.getPort() : port;
+                }
+            }
+        }
+        KahzerxServer.extensions.add(new PrometheusExtension(
+                new PrometheusSettings(
+                        "prometheus",
+                        isEnabled(found, "prometheus"),
+                        "Enables prometheus endpoint.",
+                        port
+                )));
     }
 }

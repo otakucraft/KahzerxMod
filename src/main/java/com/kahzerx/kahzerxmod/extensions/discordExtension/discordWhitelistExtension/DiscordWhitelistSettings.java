@@ -26,4 +26,20 @@ public class DiscordWhitelistSettings extends ExtensionSettings {
     public int getNPlayers() {
         return nPlayers;
     }
+
+    public void setDiscordRoleID(long discordRoleID) {
+        this.discordRoleID = discordRoleID;
+    }
+
+    public void setNPlayers(int nPlayers) {
+        this.nPlayers = nPlayers;
+    }
+
+    public void addWhitelistChatID(long chatID) {
+        this.whitelistChats.add(chatID);
+    }
+
+    public void removeWhitelistChatID(long chatID) {
+        this.whitelistChats.remove(chatID);
+    }
 }

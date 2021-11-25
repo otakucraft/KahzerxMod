@@ -25,7 +25,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Util;
 import net.minecraft.world.level.ServerWorldProperties;
-import org.apache.logging.log4j.core.jmx.Server;
 
 import java.io.File;
 import java.util.Optional;
@@ -38,9 +37,7 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
 
     @Override
     public void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher) {
-        if (this.getSettings().isEnabled()) {
-            new ScoreboardCommand().register(dispatcher, this);
-        }
+        new ScoreboardCommand().register(dispatcher, this);
     }
 
     @Override
@@ -48,26 +45,16 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
         return this.getSettings();
     }
 
-    @Override
-    public void onExtensionEnabled() {
-
-    }
-
-    @Override
-    public void onExtensionDisabled() {
-
-    }
-
     public int hideSidebar(ServerCommandSource source) {
         Scoreboard scoreboard = source.getServer().getScoreboard();
         Entity entity = source.getEntity();
         if (scoreboard.getObjectiveForSlot(1) == null) {
-            source.sendFeedback(new LiteralText("No hay ninguna scoreboard."), false);
+            source.sendFeedback(new LiteralText("There is no scoreboard."), false);
             return 1;
         } else {
             scoreboard.setObjectiveSlot(1, null);
             assert entity != null;
-            source.getServer().getPlayerManager().broadcastChatMessage(new LiteralText(entity.getEntityName() + " ha eliminado la scoreboard."), MessageType.CHAT, Util.NIL_UUID);
+            source.getServer().getPlayerManager().broadcastChatMessage(new LiteralText(entity.getEntityName() + " removed the scoreboard."), MessageType.CHAT, Util.NIL_UUID);
         }
         return 1;
     }
@@ -88,10 +75,10 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
 
         if (scoreboardObjective != null) {
             if (scoreboard.getObjectiveForSlot(1) == scoreboardObjective) {
-                text = new LiteralText("Ya se está mostrando.");
+                text = new LiteralText("Already showing.");
             } else {
                 assert entity != null;
-                text = new LiteralText(entity.getEntityName() + " ha seleccionado el scoreboard " + Formatting.GOLD + "[" + scoreboardObjective.getDisplayName().asString() + "]");
+                text = new LiteralText(entity.getEntityName() + " has selected " + Formatting.GOLD + "[" + scoreboardObjective.getDisplayName().asString() + "]");
                 scoreboard.setObjectiveSlot(1, scoreboardObjective);
             }
         } else {
@@ -111,7 +98,7 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
                 initScoreboard(source, newScoreboardObjective, minecraftItem, type);
             } catch (Exception e) {
                 scoreboard.removeObjective(newScoreboardObjective);
-                text = new LiteralText("Ha ocurrido un error al momento de seleccionar un scoreboard, inténtelo de nuevo.").formatted(Formatting.RED);
+                text = new LiteralText("Error.").formatted(Formatting.RED);
                 assert entity != null;
                 source.getServer().getPlayerManager().broadcastChatMessage(text, MessageType.CHAT, Util.NIL_UUID);
 
@@ -121,7 +108,7 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
             scoreboard.setObjectiveSlot(1, newScoreboardObjective);
             assert entity != null;
             assert scoreboardObjective != null;
-            text = new LiteralText(entity.getEntityName() + " ha seleccionado el scoreboard " + Formatting.GOLD + "[" + scoreboardObjective.getDisplayName().asString() + "]");
+            text = new LiteralText(entity.getEntityName() + " has selected " + Formatting.GOLD + "[" + scoreboardObjective.getDisplayName().asString() + "]");
         }
         assert entity != null;
         source.getServer().getPlayerManager().broadcastChatMessage(text, MessageType.CHAT, Util.NIL_UUID);
@@ -147,6 +134,10 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
                 finalStat = Stats.MINED.getOrCreateStat(Block.getBlockFromItem(item));
             } else if (type.equalsIgnoreCase("used")) {
                 finalStat = Stats.USED.getOrCreateStat(item);
+            } else if (type.equalsIgnoreCase("picked_up")) {
+                finalStat = Stats.PICKED_UP.getOrCreateStat(item);
+            } else if (type.equalsIgnoreCase("dropped")) {
+                finalStat = Stats.DROPPED.getOrCreateStat(item);
             }
             int value;
             String playerName;
