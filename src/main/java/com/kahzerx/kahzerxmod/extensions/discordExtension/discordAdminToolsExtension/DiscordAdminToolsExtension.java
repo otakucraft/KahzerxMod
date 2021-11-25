@@ -91,17 +91,19 @@ public class DiscordAdminToolsExtension extends GenericExtension implements Exte
                     || message.startsWith(DiscordListener.commandPrefix + pardonCommand.getBody())
                     || message.startsWith(DiscordListener.commandPrefix + exaddCommand.getBody())
                     || message.startsWith(DiscordListener.commandPrefix + exremoveCommand.getBody())) {
-                event.getMessage().delete().queueAfter(2, TimeUnit.SECONDS);
                 EmbedBuilder embed = DiscordChatUtils.generateEmbed(
-                        new String[]{"**Usa bien los canales!!! >:(**"},
+                        new String[]{"**This is not the channel!!! >:(**"},
                         discordExtension.extensionSettings().getPrefix(),
                         true,
                         Color.RED,
-                        true
+                        true,
+                        discordExtension.extensionSettings().isShouldFeedback()
                 );
-                assert embed != null;
-                MessageAction embedSent = event.getChannel().sendMessageEmbeds(embed.build());
-                embedSent.queue(m -> m.delete().queueAfter(2, TimeUnit.SECONDS));
+                if (embed != null) {
+                    event.getMessage().delete().queueAfter(2, TimeUnit.SECONDS);
+                    MessageAction embedSent = event.getChannel().sendMessageEmbeds(embed.build());
+                    embedSent.queue(m -> m.delete().queueAfter(2, TimeUnit.SECONDS));
+                }
                 return true;
             }
         }
@@ -129,10 +131,10 @@ public class DiscordAdminToolsExtension extends GenericExtension implements Exte
                                 then(argument("chatID", LongArgumentType.longArg()).
                                         executes(context -> {
                                             if (extensionSettings().getAdminChats().contains(LongArgumentType.getLong(context, "chatID"))) {
-                                                context.getSource().sendFeedback(new LiteralText("Este ID ya está añadido."), false);
+                                                context.getSource().sendFeedback(new LiteralText("ID already added."), false);
                                             } else {
                                                 extensionSettings().addAdminChatID(LongArgumentType.getLong(context, "chatID"));
-                                                context.getSource().sendFeedback(new LiteralText("ID añadido."), false);
+                                                context.getSource().sendFeedback(new LiteralText("ID added."), false);
                                                 ExtensionManager.saveSettings();
                                             }
                                             return 1;
@@ -142,10 +144,10 @@ public class DiscordAdminToolsExtension extends GenericExtension implements Exte
                                         executes(context -> {
                                             if (extensionSettings().getAdminChats().contains(LongArgumentType.getLong(context, "chatID"))) {
                                                 extensionSettings().removeAdminChatID(LongArgumentType.getLong(context, "chatID"));
-                                                context.getSource().sendFeedback(new LiteralText("ID eliminado."), false);
+                                                context.getSource().sendFeedback(new LiteralText("ID removed."), false);
                                                 ExtensionManager.saveSettings();
                                             } else {
-                                                context.getSource().sendFeedback(new LiteralText("Este ID no estaba añadido."), false);
+                                                context.getSource().sendFeedback(new LiteralText("This ID doesn't exist."), false);
                                             }
                                             return 1;
                                         }))).
@@ -155,7 +157,7 @@ public class DiscordAdminToolsExtension extends GenericExtension implements Exte
                                     return 1;
                                 })).
                         executes(context -> {
-                            String help = "Lista de ChatIDs en los que el comando !ban, !pardon, !exadd y !exremove funcionan.";
+                            String help = "ChatIDs where !ban, !pardon, !exadd and !exremove work.";
                             context.getSource().sendFeedback(new LiteralText(help), false);
                             return 1;
                         }));

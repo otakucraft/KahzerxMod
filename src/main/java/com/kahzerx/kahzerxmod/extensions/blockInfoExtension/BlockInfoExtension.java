@@ -171,14 +171,14 @@ public class BlockInfoExtension extends GenericExtension implements Extensions {
                 i++;
             }
             if (msg.isEmpty()) {
-                msg.add(new LiteralText("No hay registros de este bloque :("));
+                msg.add(new LiteralText("No logs :("));
             }
             rs.close();
             ps.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             msg.clear();
-            msg.add(new LiteralText("Error al conectar con la base de datos."));
+            msg.add(new LiteralText("Error."));
         }
         return msg;
     }

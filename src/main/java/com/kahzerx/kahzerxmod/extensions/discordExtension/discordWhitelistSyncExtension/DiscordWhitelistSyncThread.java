@@ -117,11 +117,12 @@ public class DiscordWhitelistSyncThread extends Thread {
             discordWhitelistExtension.tryVanillaWhitelistRemove(server.getPlayerManager().getWhitelist(), p.get(), server);
             discordWhitelistExtension.deletePlayer(discordID, whitelistedPlayerUUID);
 
-            EmbedBuilder embed = DiscordChatUtils.generateEmbed(new String[]{String.format("**F %s**", p.get().getName())}, "", true, Color.RED, true);
-            assert embed != null;
-            TextChannel channel = guild.getTextChannelById(discordWhitelistSyncExtension.extensionSettings().getNotifyChannelID());
-            assert channel != null;
-            channel.sendMessageEmbeds(embed.build()).queue();
+            EmbedBuilder embed = DiscordChatUtils.generateEmbed(new String[]{String.format("**F %s**", p.get().getName())}, "", true, Color.RED, true, discordWhitelistExtension.getDiscordExtension().extensionSettings().isShouldFeedback());
+            if (embed != null) {
+                TextChannel channel = guild.getTextChannelById(discordWhitelistSyncExtension.extensionSettings().getNotifyChannelID());
+                assert channel != null;
+                channel.sendMessageEmbeds(embed.build()).queue();
+            }
         }
     }
 

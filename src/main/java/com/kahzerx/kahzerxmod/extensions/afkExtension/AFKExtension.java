@@ -29,7 +29,7 @@ public class AFKExtension extends GenericExtension implements Extensions {
         if (player == null) {
             return 1;
         }
-        player.networkHandler.disconnect(new LiteralText("Toma tu AFK."));
+        player.networkHandler.disconnect(new LiteralText(":D"));
         return 1;
     }
 }

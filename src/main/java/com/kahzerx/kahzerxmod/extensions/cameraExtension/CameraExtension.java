@@ -40,14 +40,14 @@ public class CameraExtension extends GenericExtension implements Extensions {
         if (permsExtension.getPlayerPerms().containsKey(player.getUuidAsString())) {
             if (permsExtension.getPlayerPerms().get(player.getUuidAsString()).getId() == PermsLevels.MEMBER.getId()) {
                 player.sendMessage(
-                        new LiteralText("No tienes permisos para ejecutar este comando."),
+                        new LiteralText("You don't have permission to run this command."),
                         false
                 );
                 return 1;
             }
         } else {
             player.sendMessage(
-                    new LiteralText("Error al ejecutar, intenta reconectarte o contacta con un admin."),
+                    new LiteralText("Error."),
                     false
             );
             return 1;

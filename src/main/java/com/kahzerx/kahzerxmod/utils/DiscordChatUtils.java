@@ -28,9 +28,9 @@ public class DiscordChatUtils {
             emb.setColor(n != 0 ? Color.GREEN : Color.RED);
             emb.setTitle(prefix.replace("`", ""));
             if (n > 1) {
-                emb.setDescription("**" + n + " jugadores conectados** \n\n" + msg.toString());
+                emb.setDescription("**" + n + " online players** \n\n" + msg.toString());
             } else {
-                emb.setDescription(n == 0 ? "**No hay nadie online :(**" : "**" + n + " jugador conectado** \n\n" + msg.toString());
+                emb.setDescription(n == 0 ? "**no players online :(**" : "**" + n + " player online** \n\n" + msg.toString());
             }
             return emb;
         } catch (Exception ex) {
@@ -39,7 +39,10 @@ public class DiscordChatUtils {
         }
     }
 
-    public static EmbedBuilder generateEmbed(String[] msg, String serverPrefix, boolean inline, Color color, boolean hasOne) {
+    public static EmbedBuilder generateEmbed(String[] msg, String serverPrefix, boolean inline, Color color, boolean hasOne, boolean shouldFeedback) {
+        if (!shouldFeedback) {
+            return null;
+        }
         try {
             EmbedBuilder emb = new EmbedBuilder();
             emb.setColor(color);
@@ -49,7 +52,7 @@ public class DiscordChatUtils {
             if (hasOne) {
                 emb.setDescription(msg[0].replace("_", "\\_"));
             } else {
-                String[] names = new String[] {"Jugadores", "en", "Whitelist"};
+                String[] names = new String[] {"Players", "in", "Whitelist"};
                 HashMap<String, List<String>> columns = new HashMap<>();
                 columns.put(names[0], new ArrayList<>());
                 columns.put(names[1], new ArrayList<>());

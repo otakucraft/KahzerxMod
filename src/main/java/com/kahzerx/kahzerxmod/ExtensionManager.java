@@ -107,6 +107,7 @@ public class ExtensionManager {
         String prefix = "";
         boolean isRunning = false;
         long chatChannelID = 0L;
+        boolean shouldFeedback = true;
         List<Long> allowedChats = new ArrayList<>();
         DiscordJsonSettings djs = gson.fromJson(settings, DiscordJsonSettings.class);
         if (djs != null) {
@@ -121,6 +122,7 @@ public class ExtensionManager {
                     isRunning = ds.isRunning();
                     chatChannelID = ds.getChatChannelID();
                     allowedChats = ds.getAllowedChats() != null ? ds.getAllowedChats() : new ArrayList<>();
+                    shouldFeedback = ds.isShouldFeedback();
                     break;
                 }
             }
@@ -135,7 +137,8 @@ public class ExtensionManager {
                         prefix,
                         isRunning,
                         chatChannelID,
-                        allowedChats
+                        allowedChats,
+                        shouldFeedback
                 ));
         KahzerxServer.extensions.add(discordExtension);
 

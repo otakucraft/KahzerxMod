@@ -95,7 +95,7 @@ public class SpawnExtension extends GenericExtension implements Extensions {
             ps.close();
             source.sendFeedback(new LiteralText(
                     String.format(
-                            "Spawn en: %s %s",
+                            "Spawn @: %s %s",
                             DimUtils.getDimensionWithColor(player.world),
                             DimUtils.formatCoords(pos.getX(), pos.getY(), pos.getZ())
                     )

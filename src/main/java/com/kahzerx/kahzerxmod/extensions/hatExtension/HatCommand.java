@@ -17,7 +17,7 @@ public class HatCommand {
                 executes(context -> {
                     ServerPlayerEntity player = context.getSource().getPlayer();
                     if (player.getMainHandStack().isEmpty()) {
-                        context.getSource().sendFeedback(new LiteralText("Tienes que tener algo en la mano."), false);
+                        context.getSource().sendFeedback(new LiteralText("Hold something on your main hand."), false);
                         return 1;
                     }
                     int mainHandStack = player.getInventory().getSlotWithStack(player.getMainHandStack());

@@ -93,7 +93,7 @@ public class DiscordWhitelistSyncExtension extends GenericExtension implements E
                                     return 1;
                                 })).
                         executes(context -> {
-                            String help = "Canal en el que se notifica cuando alguien es eliminado de la whitelist porque ya no tenga el rol.";
+                            String help = "Channel where you get notified when someone gets removed from the whitelist.";
                             context.getSource().sendFeedback(new LiteralText(help), false);
                             context.getSource().sendFeedback(new LiteralText("[notifyChatID] > " + extensionSettings().getNotifyChannelID() + "."), false);
                             return 1;
@@ -107,7 +107,7 @@ public class DiscordWhitelistSyncExtension extends GenericExtension implements E
                                     return 1;
                                 })).
                         executes(context -> {
-                            String help = "ID del servidor de discord o guild, para saber de qué server mirar los roles de los members.";
+                            String help = "ServerID, to know where to check members.";
                             context.getSource().sendFeedback(new LiteralText(help), false);
                             context.getSource().sendFeedback(new LiteralText("[groupID] > " + extensionSettings().getGroupID() + "."), false);
                             return 1;
@@ -121,7 +121,7 @@ public class DiscordWhitelistSyncExtension extends GenericExtension implements E
                                     return 1;
                                 })).
                         executes(context -> {
-                            String help = "Checks extra de si debería sacar a la gente de la whitelist que ya estaba de antes o no está 100% en la base de datos, sincronización completa.";
+                            String help = "Full whitelist/database sync.";
                             context.getSource().sendFeedback(new LiteralText(help), false);
                             context.getSource().sendFeedback(new LiteralText("[aggressive] > " + extensionSettings().isAggressive() + "."), false);
                             return 1;
@@ -131,10 +131,10 @@ public class DiscordWhitelistSyncExtension extends GenericExtension implements E
                                 then(argument("roleID", LongArgumentType.longArg()).
                                         executes(context -> {
                                             if (extensionSettings().getValidRoles().contains(LongArgumentType.getLong(context, "roleID"))) {
-                                                context.getSource().sendFeedback(new LiteralText("Este ID ya está añadido."), false);
+                                                context.getSource().sendFeedback(new LiteralText("ID already added."), false);
                                             } else {
                                                 extensionSettings().addValidRoleID(LongArgumentType.getLong(context, "roleID"));
-                                                context.getSource().sendFeedback(new LiteralText("ID añadido."), false);
+                                                context.getSource().sendFeedback(new LiteralText("ID added."), false);
                                                 ExtensionManager.saveSettings();
                                             }
                                             return 1;
@@ -144,10 +144,10 @@ public class DiscordWhitelistSyncExtension extends GenericExtension implements E
                                         executes(context -> {
                                             if (extensionSettings().getValidRoles().contains(LongArgumentType.getLong(context, "roleID"))) {
                                                 extensionSettings().removeValidRoleID(LongArgumentType.getLong(context, "roleID"));
-                                                context.getSource().sendFeedback(new LiteralText("ID eliminado."), false);
+                                                context.getSource().sendFeedback(new LiteralText("ID removed."), false);
                                                 ExtensionManager.saveSettings();
                                             } else {
-                                                context.getSource().sendFeedback(new LiteralText("Este ID no estaba añadido."), false);
+                                                context.getSource().sendFeedback(new LiteralText("This ID doesn't exist."), false);
                                             }
                                             return 1;
                                         }))).
@@ -157,7 +157,7 @@ public class DiscordWhitelistSyncExtension extends GenericExtension implements E
                                     return 1;
                                 })).
                         executes(context -> {
-                            String help = "Lista de roles que un member tiene que tener en discord (al menos 1) para que no le saque de la whitelist(ej: rol de sub).";
+                            String help = "Role list that a member needs to have (at least one) so dont get kicked from the whitelist (ex: sub role).";
                             context.getSource().sendFeedback(new LiteralText(help), false);
                             return 1;
                         }));

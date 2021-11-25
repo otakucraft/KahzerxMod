@@ -128,7 +128,7 @@ public class HomeExtension extends GenericExtension implements Extensions {
 //        }
         if (!this.playerHomes.containsKey(playerUUID)) {
             player.sendMessage(
-                    new LiteralText("Error al ejecutar, intenta reconectarte o contacta con un admin."),
+                    new LiteralText("Error."),
                     false
             );
             return 1;
@@ -146,7 +146,7 @@ public class HomeExtension extends GenericExtension implements Extensions {
             player.addExperience(0);  // xp resets when you tp from other dimension and needs to update smh, mojang pls.
         } else {
             player.sendMessage(
-                    new LiteralText("Aun no has configurado tu casa, usa ").append(getClickableSetHomeCommand()),
+                    new LiteralText("You don't have a home yet, use ").append(getClickableSetHomeCommand()),
                     false
             );
         }
@@ -162,7 +162,7 @@ public class HomeExtension extends GenericExtension implements Extensions {
         String playerUUID = player.getUuidAsString();
         if (!this.playerHomes.containsKey(playerUUID)) {
             player.sendMessage(
-                    new LiteralText("Error al ejecutar, intenta reconectarte o contacta con un admin."),
+                    new LiteralText("Error."),
                     false
             );
             return 1;
@@ -170,7 +170,7 @@ public class HomeExtension extends GenericExtension implements Extensions {
         playerHomes.put(playerUUID, newHomePos);
         src.sendFeedback(
             new LiteralText(String.format(
-                "Casa en: %s %s",
+                "Home @: %s %s",
                 DimUtils.getDimensionWithColor(player.world),
                 DimUtils.formatCoords(player.getX(), player.getY(), player.getZ())
             )),

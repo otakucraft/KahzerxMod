@@ -11,7 +11,8 @@ public class DiscordSettings extends ExtensionSettings {
     private boolean running;
     private long chatChannelID;
     private List<Long> allowedChats;
-    public DiscordSettings(String name, boolean enabled, String description, String token, boolean crossServerChat, String prefix, boolean running, long chatChannelID, List<Long> allowedChats) {
+    private boolean shouldFeedback;
+    public DiscordSettings(String name, boolean enabled, String description, String token, boolean crossServerChat, String prefix, boolean running, long chatChannelID, List<Long> allowedChats, boolean shouldFeedback) {
         super(name, enabled, description);
         this.token = token;
         this.crossServerChat = crossServerChat;
@@ -19,6 +20,15 @@ public class DiscordSettings extends ExtensionSettings {
         this.running = running;
         this.chatChannelID = chatChannelID;
         this.allowedChats = allowedChats;
+        this.shouldFeedback = shouldFeedback;
+    }
+
+    public boolean isShouldFeedback() {
+        return shouldFeedback;
+    }
+
+    public void setShouldFeedback(boolean shouldFeedback) {
+        this.shouldFeedback = shouldFeedback;
     }
 
     public String getToken() {

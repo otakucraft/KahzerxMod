@@ -124,7 +124,7 @@ public class PermsExtension extends GenericExtension implements Extensions {
         }
         int level = PermsLevels.getLevel(value);
         if (level == -1) {
-            source.sendFeedback(new LiteralText("No es un nivel válido!"), false);
+            source.sendFeedback(new LiteralText("Not a valid level!"), false);
             return 1;
         }
         try {

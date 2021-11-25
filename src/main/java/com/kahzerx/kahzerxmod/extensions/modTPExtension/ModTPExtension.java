@@ -26,17 +26,17 @@ public class ModTPExtension extends GenericExtension implements Extensions {
     public int tp(ServerCommandSource source, String playerName) throws CommandSyntaxException {
         ServerPlayerEntity player = source.getServer().getPlayerManager().getPlayer(playerName);
         if (player == null) {
-            source.sendFeedback(new LiteralText("No está conectado XD."), false);
+            source.sendFeedback(new LiteralText("Not connected XD."), false);
             return 1;
         }
         ServerPlayerEntity sourcePlayer = source.getPlayer();
         if (permsExtension.getPlayerPerms().containsKey(sourcePlayer.getUuidAsString())) {
             if (permsExtension.getPlayerPerms().get(sourcePlayer.getUuidAsString()).getId() == PermsLevels.MEMBER.getId()) {
-                source.sendFeedback(new LiteralText("No tienes permisos para ejecutar este comando."), false);
+                source.sendFeedback(new LiteralText("You are not allowed to run this command."), false);
                 return 1;
             }
         } else {
-            source.sendFeedback(new LiteralText("Error al ejecutar, intenta reconectarte o contacta con un admin."), false);
+            source.sendFeedback(new LiteralText("Error."), false);
             return 1;
         }
         sourcePlayer.teleport(player.getServerWorld(), player.getX(), player.getY(), player.getZ(), sourcePlayer.getYaw(), sourcePlayer.getPitch());

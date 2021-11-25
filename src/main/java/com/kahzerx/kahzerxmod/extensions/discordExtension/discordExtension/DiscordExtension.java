@@ -106,11 +106,11 @@ public class DiscordExtension extends GenericExtension implements Extensions {
                                 then(argument("chatChannelID", LongArgumentType.longArg()).
                                         executes(context -> {
                                             if (DiscordListener.chatbridge) {
-                                                context.getSource().sendFeedback(new LiteralText("Detén el bot antes de hacer cambios..."), false);
+                                                context.getSource().sendFeedback(new LiteralText("Stop the bot before you make any changes..."), false);
                                             } else {
                                                 extensionSettings().setToken(StringArgumentType.getString(context, "token"));
                                                 extensionSettings().setChatChannelID(LongArgumentType.getLong(context, "chatChannelID"));
-                                                context.getSource().sendFeedback(new LiteralText("Nuevo bot configurado!"), false);
+                                                context.getSource().sendFeedback(new LiteralText("Done!"), false);
                                                 ExtensionManager.saveSettings();
                                             }
                                             return 1;
@@ -120,10 +120,10 @@ public class DiscordExtension extends GenericExtension implements Extensions {
                             if (DiscordListener.chatbridge) {
                                 DiscordListener.stop();
                                 this.extensionSettings().setRunning(false);
-                                context.getSource().sendFeedback(new LiteralText("Bot detenido!"), false);
+                                context.getSource().sendFeedback(new LiteralText("Bot stopped!"), false);
                                 ExtensionManager.saveSettings();
                             } else {
-                                context.getSource().sendFeedback(new LiteralText("El bot ya estaba detenido."), false);
+                                context.getSource().sendFeedback(new LiteralText("Bot already stopped."), false);
                             }
                             return 1;
                         })).
@@ -132,14 +132,26 @@ public class DiscordExtension extends GenericExtension implements Extensions {
                             if (!DiscordListener.chatbridge) {
                                 DiscordListener.start(KahzerxServer.minecraftServer, extensionSettings().getToken(), String.valueOf(extensionSettings().getChatChannelID()), this);
                                 if (DiscordListener.chatbridge) {
-                                    context.getSource().sendFeedback(new LiteralText("Bot iniciado!"), false);
+                                    context.getSource().sendFeedback(new LiteralText("Started!"), false);
                                 } else {
-                                    context.getSource().sendFeedback(new LiteralText("Fallo al iniciar el Bot."), false);
+                                    context.getSource().sendFeedback(new LiteralText("Failed to start."), false);
                                 }
                                 ExtensionManager.saveSettings();
                             } else {
-                                context.getSource().sendFeedback(new LiteralText("El bot ya estaba en ejecución."), false);
+                                context.getSource().sendFeedback(new LiteralText("But is already running."), false);
                             }
+                            return 1;
+                        })).
+                then(literal("shouldFeedback").
+                        then(argument("feedback", BoolArgumentType.bool()).
+                                executes(context -> {
+                                    extensionSettings().setShouldFeedback(BoolArgumentType.getBool(context, "feedback"));
+                                    context.getSource().sendFeedback(new LiteralText("[shouldFeedback] > " + extensionSettings().isShouldFeedback() + "."), false);
+                                    ExtensionManager.saveSettings();
+                                    return 1;
+                                })).
+                        executes(context -> {
+                            context.getSource().sendFeedback(new LiteralText("[shouldFeedback] > " + extensionSettings().isShouldFeedback() + "."), false);
                             return 1;
                         })).
                 then(literal("chatBridgePrefix").
@@ -151,10 +163,10 @@ public class DiscordExtension extends GenericExtension implements Extensions {
                                     return 1;
                                 })).
                         executes(context -> {
-                            String help = "Prefix que aparecerá en Discord delante de todos los mensajes que vengan de este server.";
+                            String help = "Server prefix.";
                             context.getSource().sendFeedback(new LiteralText(help), false);
                             String prefix = extensionSettings().getPrefix();
-                            context.getSource().sendFeedback(new LiteralText(prefix.equals("") ? "No hay prefix." : "[Prefix] > " + extensionSettings().getPrefix() + "."), false);
+                            context.getSource().sendFeedback(new LiteralText(prefix.equals("") ? "There is no prefix." : "[Prefix] > " + extensionSettings().getPrefix() + "."), false);
                             return 1;
                         })).
                 then(literal("crossServerChat").
@@ -166,7 +178,7 @@ public class DiscordExtension extends GenericExtension implements Extensions {
                                     return 1;
                                 })).
                         executes(context -> {
-                            String help = "Todos los servers con el mismo bot conectado para el chatbridge pero distinto prefix puedan intercambiar mensajes redirigiendo desde Discord.";
+                            String help = "Same bot(same token) on same chatID and different prefix on many servers will connect their chats.";
                             context.getSource().sendFeedback(new LiteralText(help), false);
                             context.getSource().sendFeedback(new LiteralText("[CrossServerChat] > " + extensionSettings().isCrossServerChat() + "."), false);
                             return 1;
@@ -176,10 +188,10 @@ public class DiscordExtension extends GenericExtension implements Extensions {
                                 then(argument("chatID", LongArgumentType.longArg()).
                                         executes(context -> {
                                             if (extensionSettings().getAllowedChats().contains(LongArgumentType.getLong(context, "chatID"))) {
-                                                context.getSource().sendFeedback(new LiteralText("Este ID ya está añadido."), false);
+                                                context.getSource().sendFeedback(new LiteralText("ID already added."), false);
                                             } else {
                                                 extensionSettings().addAllowedChatID(LongArgumentType.getLong(context, "chatID"));
-                                                context.getSource().sendFeedback(new LiteralText("ID añadido."), false);
+                                                context.getSource().sendFeedback(new LiteralText("ID added."), false);
                                                 ExtensionManager.saveSettings();
                                             }
                                             return 1;
@@ -189,10 +201,10 @@ public class DiscordExtension extends GenericExtension implements Extensions {
                                         executes(context -> {
                                             if (extensionSettings().getAllowedChats().contains(LongArgumentType.getLong(context, "chatID"))) {
                                                 extensionSettings().removeAllowedChatID(LongArgumentType.getLong(context, "chatID"));
-                                                context.getSource().sendFeedback(new LiteralText("ID eliminado."), false);
+                                                context.getSource().sendFeedback(new LiteralText("ID removed."), false);
                                                 ExtensionManager.saveSettings();
                                             } else {
-                                                context.getSource().sendFeedback(new LiteralText("Este ID no estaba añadido."), false);
+                                                context.getSource().sendFeedback(new LiteralText("This ID doesn't exist."), false);
                                             }
                                             return 1;
                                         }))).
@@ -202,7 +214,7 @@ public class DiscordExtension extends GenericExtension implements Extensions {
                                     return 1;
                                 })).
                         executes(context -> {
-                            String help = "Lista de ChatIDs en los que el comando !online funciona.";
+                            String help = "ChatIDs where !online work.";
                             context.getSource().sendFeedback(new LiteralText(help), false);
                             return 1;
                         }));

@@ -27,7 +27,7 @@ public class PlayerManagerWLMixin {
         private void onCheckWhitelisted(SocketAddress address, GameProfile profile, CallbackInfoReturnable<Text> cir) {
             if (!bannedProfiles.contains(profile) && DiscordWhitelistExtension.isExtensionEnabled) {
                 if (!isWhitelisted(profile)) {
-                    cir.setReturnValue(new LiteralText(String.format("No estás en la whitelist :(\n Haz !add %s en el canal de whitelist de discord.", profile.getName())));
+                    cir.setReturnValue(new LiteralText(String.format("You are not whitelisted :(\n!add %s on discord.", profile.getName())));
                 }
             }
         }
