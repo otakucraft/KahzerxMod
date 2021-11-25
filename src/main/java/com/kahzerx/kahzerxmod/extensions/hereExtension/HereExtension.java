@@ -40,7 +40,7 @@ public class HereExtension extends GenericExtension implements Extensions {
         double y = player.getY();
         double z = player.getZ();
         if (player.world.getRegistryKey().getValue().equals(World.OVERWORLD.getValue())) {
-            src.getServer().getPlayerManager().broadcastChatMessage(
+            src.getServer().getPlayerManager().broadcast(
                     new LiteralText(String.format(
                             "%s %s %s -> %s %s",
                             PlayerUtils.getPlayerWithColor(player),
@@ -53,7 +53,7 @@ public class HereExtension extends GenericExtension implements Extensions {
                     Util.NIL_UUID
             );
         } else if (player.world.getRegistryKey().getValue().equals(World.NETHER.getValue())) {
-            src.getServer().getPlayerManager().broadcastChatMessage(
+            src.getServer().getPlayerManager().broadcast(
                     new LiteralText(String.format(
                             "%s %s %s -> %s %s",
                             PlayerUtils.getPlayerWithColor(player),
@@ -66,7 +66,7 @@ public class HereExtension extends GenericExtension implements Extensions {
                     Util.NIL_UUID
             );
         } else if (player.world.getRegistryKey().getValue().equals(World.END.getValue())) {
-            src.getServer().getPlayerManager().broadcastChatMessage(
+            src.getServer().getPlayerManager().broadcast(
                     new LiteralText(String.format(
                             "%s %s %s",
                             PlayerUtils.getPlayerWithColor(player),

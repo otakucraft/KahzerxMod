@@ -117,9 +117,9 @@ public class DiscordChatUtils {
         }
         if (server.getPlayerManager() != null) {
             if (hasUrl) {
-                server.getPlayerManager().broadcastChatMessage(finalMsg.append(msg.substring(prev)), MessageType.CHAT, Util.NIL_UUID);
+                server.getPlayerManager().broadcast(finalMsg.append(msg.substring(prev)), MessageType.CHAT, Util.NIL_UUID);
             } else {
-                server.getPlayerManager().broadcastChatMessage(new LiteralText(msg), MessageType.CHAT, Util.NIL_UUID);
+                server.getPlayerManager().broadcast(new LiteralText(msg), MessageType.CHAT, Util.NIL_UUID);
             }
         } else {
             LOGGER.info(String.format("Server may not be initialized yet...\nError sending %s%n", msg));

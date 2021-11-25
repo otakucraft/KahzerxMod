@@ -16,7 +16,7 @@ public class DiscordSendCommand {
                 requires(serverCommandSource -> serverCommandSource.hasPermissionLevel(2) && discordExtension.extensionSettings().isEnabled()).
                 then(argument("message", MessageArgumentType.message()).
                         executes(context -> {
-                            context.getSource().getServer().getPlayerManager().broadcastChatMessage(
+                            context.getSource().getServer().getPlayerManager().broadcast(
                                     MessageArgumentType.getMessage(context, "message"),
                                     MessageType.CHAT,
                                     Util.NIL_UUID

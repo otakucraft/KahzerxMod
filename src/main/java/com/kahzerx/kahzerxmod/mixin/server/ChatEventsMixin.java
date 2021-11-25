@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class ChatEventsMixin {
     @Shadow public ServerPlayerEntity player;
 
-    @Inject(method = "onGameMessage", at = @At("RETURN"))
+    @Inject(method = "onChatMessage", at = @At("RETURN"))
     private void onChatMessage(ChatMessageC2SPacket packet, CallbackInfo ci) {
         KahzerxServer.onChatMessage(player, packet.getChatMessage());
     }

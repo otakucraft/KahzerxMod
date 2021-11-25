@@ -22,7 +22,7 @@ public class ServerEventsMixin {
         KahzerxServer.onStopServer();
     }
 
-    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/PlayerManager;saveAllPlayerData()V"))
+    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;saveAll(ZZZ)Z"))
     private void onSave(CallbackInfo ci) {
         KahzerxServer.onAutoSave();
     }

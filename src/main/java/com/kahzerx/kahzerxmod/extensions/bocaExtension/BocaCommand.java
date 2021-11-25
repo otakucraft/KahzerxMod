@@ -25,7 +25,7 @@ public class BocaCommand {
                             return 1;
                         })).
                 executes(context -> {
-                    context.getSource().getServer().getPlayerManager().broadcastChatMessage(new LiteralText(
+                    context.getSource().getServer().getPlayerManager().broadcast(new LiteralText(
                             "§9❤§r §l§9BO§eQUI§9TA§r §9❤§r"
                     ), MessageType.CHAT, Util.NIL_UUID);
                     return 1;
