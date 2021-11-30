@@ -39,12 +39,12 @@ public class HereExtension extends GenericExtension implements Extensions {
         double x = player.getX();
         double y = player.getY();
         double z = player.getZ();
-        if (player.world.getRegistryKey().getValue().equals(World.OVERWORLD.getValue())) {
+        if (player.getWorld().getRegistryKey().getValue().equals(World.OVERWORLD.getValue())) {
             src.getServer().getPlayerManager().broadcast(
                     new LiteralText(String.format(
                             "%s %s %s -> %s %s",
                             PlayerUtils.getPlayerWithColor(player),
-                            DimUtils.getDimensionWithColor(player.world),
+                            DimUtils.getDimensionWithColor(player.getWorld()),
                             DimUtils.formatCoords(x, y, z),
                             DimUtils.getDimensionWithColor(World.NETHER.getValue()),
                             DimUtils.formatCoords(x / 8, y, z / 8)
@@ -52,12 +52,12 @@ public class HereExtension extends GenericExtension implements Extensions {
                     MessageType.CHAT,
                     Util.NIL_UUID
             );
-        } else if (player.world.getRegistryKey().getValue().equals(World.NETHER.getValue())) {
+        } else if (player.getWorld().getRegistryKey().getValue().equals(World.NETHER.getValue())) {
             src.getServer().getPlayerManager().broadcast(
                     new LiteralText(String.format(
                             "%s %s %s -> %s %s",
                             PlayerUtils.getPlayerWithColor(player),
-                            DimUtils.getDimensionWithColor(player.world),
+                            DimUtils.getDimensionWithColor(player.getWorld()),
                             DimUtils.formatCoords(x, y, z),
                             DimUtils.getDimensionWithColor(World.OVERWORLD.getValue()),
                             DimUtils.formatCoords(x *  8, y, z * 8)
@@ -65,12 +65,12 @@ public class HereExtension extends GenericExtension implements Extensions {
                     MessageType.CHAT,
                     Util.NIL_UUID
             );
-        } else if (player.world.getRegistryKey().getValue().equals(World.END.getValue())) {
+        } else if (player.getWorld().getRegistryKey().getValue().equals(World.END.getValue())) {
             src.getServer().getPlayerManager().broadcast(
                     new LiteralText(String.format(
                             "%s %s %s",
                             PlayerUtils.getPlayerWithColor(player),
-                            DimUtils.getDimensionWithColor(player.world),
+                            DimUtils.getDimensionWithColor(player.getWorld()),
                             DimUtils.formatCoords(x, y, z)
                     )),
                     MessageType.CHAT,

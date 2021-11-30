@@ -34,14 +34,18 @@ dependencies {
 
 	implementation 'org.xerial:sqlite-jdbc:3.36.0.2'
 	implementation 'com.google.code.gson:gson:2.8.9'
-	implementation 'net.dv8tion:JDA:4.3.0_324'
+	implementation('net.dv8tion:JDA:4.4.0_350') {
+		exclude module: 'opus-java'
+	}
 	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 	implementation 'io.prometheus:simpleclient:0.12.0'
 	implementation 'io.prometheus:simpleclient_httpserver:0.12.0'
 
 	include 'org.xerial:sqlite-jdbc:3.36.0.2'
 	include 'com.google.code.gson:gson:2.8.9'
-	include 'net.dv8tion:JDA:4.3.0_324'
+	include('net.dv8tion:JDA:4.4.0_350') {
+		exclude module: 'opus-java'
+	}
 	include 'com.googlecode.json-simple:json-simple:1.1.1'
 	include 'io.prometheus:simpleclient:0.12.0'
 	include 'io.prometheus:simpleclient_httpserver:0.12.0'
@@ -50,9 +54,6 @@ dependencies {
 	include 'com.squareup.okio:okio:1.17.2'
 	include 'org.slf4j:slf4j-api:1.7.25'
 	include 'com.neovisionaries:nv-websocket-client:2.14'
-	include 'club.minnced:opus-java:1.1.0'
-	include 'club.minnced:opus-java-api:1.1.0'
-	include 'club.minnced:opus-java-natives:1.1.0'
 	include 'org.apache.commons:commons-collections4:4.1'
 	include 'com.fasterxml.jackson.core:jackson-databind:2.10.1'
 	include 'com.fasterxml.jackson.core:jackson-annotations:2.10.1'
