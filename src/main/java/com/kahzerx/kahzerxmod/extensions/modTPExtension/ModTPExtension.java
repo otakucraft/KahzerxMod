@@ -39,7 +39,7 @@ public class ModTPExtension extends GenericExtension implements Extensions {
             source.sendFeedback(new LiteralText("Error."), false);
             return 1;
         }
-        sourcePlayer.teleport(player.getServerWorld(), player.getX(), player.getY(), player.getZ(), sourcePlayer.getYaw(), sourcePlayer.getPitch());
+        sourcePlayer.teleport(player.getWorld(), player.getX(), player.getY(), player.getZ(), sourcePlayer.getYaw(), sourcePlayer.getPitch());
         return 1;
     }
 

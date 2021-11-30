@@ -54,7 +54,7 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
         } else {
             scoreboard.setObjectiveSlot(1, null);
             assert entity != null;
-            source.getServer().getPlayerManager().broadcastChatMessage(new LiteralText(entity.getEntityName() + " removed the scoreboard."), MessageType.CHAT, Util.NIL_UUID);
+            source.getServer().getPlayerManager().broadcast(new LiteralText(entity.getEntityName() + " removed the scoreboard."), MessageType.CHAT, Util.NIL_UUID);
         }
         return 1;
     }
@@ -100,7 +100,7 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
                 scoreboard.removeObjective(newScoreboardObjective);
                 text = new LiteralText("Error.").formatted(Formatting.RED);
                 assert entity != null;
-                source.getServer().getPlayerManager().broadcastChatMessage(text, MessageType.CHAT, Util.NIL_UUID);
+                source.getServer().getPlayerManager().broadcast(text, MessageType.CHAT, Util.NIL_UUID);
 
                 return;
 
@@ -111,7 +111,7 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
             text = new LiteralText(entity.getEntityName() + " has selected " + Formatting.GOLD + "[" + scoreboardObjective.getDisplayName().asString() + "]");
         }
         assert entity != null;
-        source.getServer().getPlayerManager().broadcastChatMessage(text, MessageType.CHAT, Util.NIL_UUID);
+        source.getServer().getPlayerManager().broadcast(text, MessageType.CHAT, Util.NIL_UUID);
     }
 
     public void initScoreboard(ServerCommandSource source, ScoreboardObjective scoreboardObjective, Item item, String type) {
