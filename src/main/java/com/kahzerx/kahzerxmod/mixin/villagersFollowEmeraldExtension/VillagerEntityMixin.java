@@ -32,8 +32,7 @@ public abstract class VillagerEntityMixin extends MerchantEntity {
                         (player) ->
                                 player instanceof PlayerEntity
                                         && !player.isSpectator()
-                                        && (((PlayerEntity) player).isHolding(Items.EMERALD_BLOCK)
-                                        || ((PlayerEntity) player).isHolding(Items.EMERALD)));
+                                        && ((PlayerEntity) player).isHolding(Items.EMERALD_BLOCK));
             }
             if (player != null) {
                 getLookControl().lookAt(player, getMaxHeadRotation(), getMaxLookPitchChange());
