@@ -45,6 +45,7 @@ import com.kahzerx.kahzerxmod.extensions.survivalExtension.SurvivalExtension;
 import com.kahzerx.kahzerxmod.extensions.totopoExtension.TotopoExtension;
 import com.kahzerx.kahzerxmod.extensions.villagersFollowEmeraldExtension.VillagersFollowEmeraldExtension;
 import com.kahzerx.kahzerxmod.extensions.whereExtension.WhereExtension;
+import com.kahzerx.kahzerxmod.extensions.xiemarExtension.XiemarExtension;
 import com.kahzerx.kahzerxmod.utils.FileUtils;
 import net.minecraft.util.WorldSavePath;
 
@@ -107,6 +108,7 @@ public class ExtensionManager {
         KahzerxServer.extensions.add(new DeepslateInstaMineExtension(new ExtensionSettings("deepslateInstaMine", isEnabled(found, "deepslateInstaMine"), "Deepslate instamine as if it was stone.")));
         KahzerxServer.extensions.add(new RenewableElytraExtension(new ExtensionSettings("renewableElytra", isEnabled(found, "renewableElytra"), "Phantoms killed by shulker have 25% chance of dropping elytras.")));
         KahzerxServer.extensions.add(new VillagersFollowEmeraldExtension(new ExtensionSettings("villagersFollowEmeralds", isEnabled(found, "villagersFollowEmeralds"), "Villagers will follow any player holding emerald blocks.")));
+        KahzerxServer.extensions.add(new XiemarExtension(new ExtensionSettings("xiemar", isEnabled(found, "xiemar"), "Literally kills xiemar if connected.")));
 
         String token = "";
         boolean crossServerChat = false;

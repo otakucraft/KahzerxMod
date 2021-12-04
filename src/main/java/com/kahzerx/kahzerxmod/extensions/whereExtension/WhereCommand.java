@@ -1,5 +1,6 @@
 package com.kahzerx.kahzerxmod.extensions.whereExtension;
 
+import com.kahzerx.kahzerxmod.extensions.whereExtension.WhereExtension;
 import com.kahzerx.kahzerxmod.utils.DimUtils;
 import com.kahzerx.kahzerxmod.utils.PlayerUtils;
 import com.mojang.brigadier.CommandDispatcher;
