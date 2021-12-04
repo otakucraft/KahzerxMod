@@ -8,9 +8,11 @@
     "blockInfoExtension.BlockInteractionLoggingMixin",
     "blockInfoExtension.BlockPlacingLoggingMixin",
     "blockInfoExtension.ContainerInteractionLoggingMixin",
+    "deepslateInstaMineExtension.AbstractStateMixin",
     "discordWhitelistExtension.PlayerManagerWLMixin$PlayerNotWhitelisted",
     "endermanNoGriefExtension.EndermanEntityMixin",
     "prometheusExtension.WorldBlockEntityMixin",
+    "RenewableElytraExtension.PhantomEntityMixin",
     "seedExtension.seedCommandMixin",
     "server.ChatEventsMixin",
     "server.CommandEventsMixin",
@@ -18,7 +20,8 @@
     "server.PlayerEventsMixins$PlayerDied",
     "server.PlayerEventsMixins$PlayerJoined",
     "server.PlayerEventsMixins$PlayerLeft",
-    "server.ServerEventsMixin"
+    "server.ServerEventsMixin",
+    "villagersFollowEmeraldExtension.VillagerEntityMixin"
   ],
   "client": [],
   "injectors": {

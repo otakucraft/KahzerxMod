@@ -174,7 +174,7 @@ public class PrometheusExtension extends GenericExtension implements Extensions 
         private final BigDecimal[] samples;
         private final long[] times;
 
-        TpsRollingAverage(int size) {
+        private TpsRollingAverage(int size) {
             this.size = size;
             this.time = size * SEC_IN_NANO;
             this.total = new BigDecimal(TPS).multiply(new BigDecimal(SEC_IN_NANO)).multiply(new BigDecimal(size));

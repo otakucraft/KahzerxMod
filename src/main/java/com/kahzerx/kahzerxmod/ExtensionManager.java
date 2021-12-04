@@ -10,6 +10,7 @@ import com.kahzerx.kahzerxmod.extensions.blockInfoExtension.BlockInfoExtension;
 import com.kahzerx.kahzerxmod.extensions.bocaExtension.BocaExtension;
 import com.kahzerx.kahzerxmod.extensions.cameraExtension.CameraExtension;
 import com.kahzerx.kahzerxmod.extensions.deathMsgExtension.DeathMsgExtension;
+import com.kahzerx.kahzerxmod.extensions.deepslateInstaMineExtension.DeepslateInstaMineExtension;
 import com.kahzerx.kahzerxmod.extensions.discordExtension.discordAdminToolsExtension.DiscordAdminToolsExtension;
 import com.kahzerx.kahzerxmod.extensions.discordExtension.discordAdminToolsExtension.DiscordAdminToolsJsonSettings;
 import com.kahzerx.kahzerxmod.extensions.discordExtension.discordAdminToolsExtension.DiscordAdminToolsSettings;
@@ -35,12 +36,14 @@ import com.kahzerx.kahzerxmod.extensions.prometheusExtension.PrometheusExtension
 import com.kahzerx.kahzerxmod.extensions.prometheusExtension.PrometheusJsonSettings;
 import com.kahzerx.kahzerxmod.extensions.prometheusExtension.PrometheusSettings;
 import com.kahzerx.kahzerxmod.extensions.randomTPExtension.RandomTPExtension;
+import com.kahzerx.kahzerxmod.extensions.renewableElytraExtension.RenewableElytraExtension;
 import com.kahzerx.kahzerxmod.extensions.scoreboardExtension.ScoreboardExtension;
 import com.kahzerx.kahzerxmod.extensions.seedExtension.SeedExtension;
 import com.kahzerx.kahzerxmod.extensions.spawnExtension.SpawnExtension;
 import com.kahzerx.kahzerxmod.extensions.spoofExtension.SpoofExtension;
 import com.kahzerx.kahzerxmod.extensions.survivalExtension.SurvivalExtension;
 import com.kahzerx.kahzerxmod.extensions.totopoExtension.TotopoExtension;
+import com.kahzerx.kahzerxmod.extensions.villagersFollowEmeraldExtension.VillagersFollowEmeraldExtension;
 import com.kahzerx.kahzerxmod.extensions.whereExtension.WhereExtension;
 import com.kahzerx.kahzerxmod.utils.FileUtils;
 import net.minecraft.util.WorldSavePath;
@@ -101,6 +104,9 @@ public class ExtensionManager {
         KahzerxServer.extensions.add(new TotopoExtension(new ExtensionSettings("totopo", isEnabled(found, "totopo"), "Enables /totopo command.")));
         KahzerxServer.extensions.add(new HatExtension(new ExtensionSettings("hat", isEnabled(found, "hat"), "Puts whatever item you have in the main hand on your head.")));
         KahzerxServer.extensions.add(new EndermanNoGriefExtension(new ExtensionSettings("endermanNoGrief", isEnabled(found, "endermanNoGrief"), "Prevents endermans to pickup or place blocks (this will break enderman based farms).")));
+        KahzerxServer.extensions.add(new DeepslateInstaMineExtension(new ExtensionSettings("deepslateInstaMine", isEnabled(found, "deepslateInstaMine"), "Deepslate instamine as if it was stone.")));
+        KahzerxServer.extensions.add(new RenewableElytraExtension(new ExtensionSettings("renewableElytra", isEnabled(found, "renewableElytra"), "Phantoms killed by shulker have 30% chance of dropping elytras.")));
+        KahzerxServer.extensions.add(new VillagersFollowEmeraldExtension(new ExtensionSettings("villagersFollowEmeralds", isEnabled(found, "villagersFollowEmeralds"), "Villagers will follow any player holding emeralds.")));
 
         String token = "";
         boolean crossServerChat = false;
