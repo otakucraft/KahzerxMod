@@ -39,6 +39,7 @@ import com.kahzerx.kahzerxmod.extensions.randomTPExtension.RandomTPExtension;
 import com.kahzerx.kahzerxmod.extensions.renewableElytraExtension.RenewableElytraExtension;
 import com.kahzerx.kahzerxmod.extensions.scoreboardExtension.ScoreboardExtension;
 import com.kahzerx.kahzerxmod.extensions.seedExtension.SeedExtension;
+import com.kahzerx.kahzerxmod.extensions.solExtension.SolExtension;
 import com.kahzerx.kahzerxmod.extensions.spawnExtension.SpawnExtension;
 import com.kahzerx.kahzerxmod.extensions.spoofExtension.SpoofExtension;
 import com.kahzerx.kahzerxmod.extensions.survivalExtension.SurvivalExtension;
@@ -109,6 +110,7 @@ public class ExtensionManager {
         KahzerxServer.extensions.add(new RenewableElytraExtension(new ExtensionSettings("renewableElytra", isEnabled(found, "renewableElytra"), "Phantoms killed by shulker have 25% chance of dropping elytras.")));
         KahzerxServer.extensions.add(new VillagersFollowEmeraldExtension(new ExtensionSettings("villagersFollowEmeralds", isEnabled(found, "villagersFollowEmeralds"), "Villagers will follow any player holding emerald blocks.")));
         KahzerxServer.extensions.add(new XiemarExtension(new ExtensionSettings("xiemar", isEnabled(found, "xiemar"), "Literally kills xiemar if connected.")));
+        KahzerxServer.extensions.add(new SolExtension(new ExtensionSettings("sol", isEnabled(found, "sol"), "Waifu")));
 
         String token = "";
         boolean crossServerChat = false;
