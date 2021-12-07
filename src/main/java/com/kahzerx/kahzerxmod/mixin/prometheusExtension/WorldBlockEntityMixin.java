@@ -27,33 +27,33 @@ public abstract class WorldBlockEntityMixin {
 
     @Shadow public abstract WorldChunk getWorldChunk(BlockPos pos);
 
-    @Inject(method = "tickBlockEntities", at = @At("HEAD"))
-    private void onTick(CallbackInfo ci) {
-        HashMap<String, HashMap<String, Integer>> worldBlockEntities = new HashMap<>();
-        blockEntityTickers.forEach(ticker -> {
-            if (ticker.isRemoved()) {
-                return;
-            }
-            if (!getWorldChunk(ticker.getPos()).getLevelType().isAfter(ChunkHolder.LevelType.TICKING)) {
-                return;
-            }
-            BlockEntity be = getBlockEntity(ticker.getPos());
-            if (be == null) {
-                return;
-            }
-            Identifier id = BlockEntityType.getId(be.getType());
-            if (id == null) {
-                return;
-            }
-            String world = ((World) (Object) this).getRegistryKey().getValue().getPath();
-            if (!worldBlockEntities.containsKey(world)) {
-                worldBlockEntities.put(world, new HashMap<>());
-            }
-            worldBlockEntities.get(world).put(
-                    id.getPath(),
-                    worldBlockEntities.get(world).getOrDefault(id.getPath(), 0) + 1
-            );
-            BlockEntitiesMetrics.worldBlockEntities = worldBlockEntities;
-        });
-    }
+//    @Inject(method = "tickBlockEntities", at = @At("HEAD"))
+//    private void onTick(CallbackInfo ci) {
+//        HashMap<String, HashMap<String, Integer>> worldBlockEntities = new HashMap<>();
+//        blockEntityTickers.forEach(ticker -> {
+//            if (ticker.isRemoved()) {
+//                return;
+//            }
+//            if (!getWorldChunk(ticker.getPos()).getLevelType().isAfter(ChunkHolder.LevelType.TICKING)) {
+//                return;
+//            }
+//            BlockEntity be = getBlockEntity(ticker.getPos());
+//            if (be == null) {
+//                return;
+//            }
+//            Identifier id = BlockEntityType.getId(be.getType());
+//            if (id == null) {
+//                return;
+//            }
+//            String world = ((World) (Object) this).getRegistryKey().getValue().getPath();
+//            if (!worldBlockEntities.containsKey(world)) {
+//                worldBlockEntities.put(world, new HashMap<>());
+//            }
+//            worldBlockEntities.get(world).put(
+//                    id.getPath(),
+//                    worldBlockEntities.get(world).getOrDefault(id.getPath(), 0) + 1
+//            );
+//            BlockEntitiesMetrics.worldBlockEntities = worldBlockEntities;
+//        });
+//    }
 }

@@ -1,4 +1,4 @@
-package com.kahzerx.kahzerxmod.mixin.RenewableElytraExtension;
+package com.kahzerx.kahzerxmod.mixin.renewableElytraExtension;
 
 import com.kahzerx.kahzerxmod.extensions.renewableElytraExtension.RenewableElytraExtension;
 import net.minecraft.entity.EntityType;
