@@ -6,6 +6,7 @@ import com.kahzerx.kahzerxmod.KahzerxServer;
 import com.kahzerx.kahzerxmod.extensions.GenericExtension;
 import com.kahzerx.kahzerxmod.extensions.discordExtension.DiscordSendCommand;
 import com.kahzerx.kahzerxmod.extensions.discordExtension.DiscordListener;
+import com.kahzerx.kahzerxmod.klone.KlonePlayerEntity;
 import com.kahzerx.kahzerxmod.utils.PlayerUtils;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
@@ -43,17 +44,20 @@ public class DiscordExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onPlayerJoined(ServerPlayerEntity player) {
-        DiscordListener.sendDiscordMessage(":arrow_right: **" + player.getName().getString().replace("_", "\\_") + " joined the game!**");
+        boolean isBot = player.getClass() == KlonePlayerEntity.class;
+        DiscordListener.sendDiscordMessage(":arrow_right: **" + player.getName().getString().replace("_", "\\_") + (isBot ? " [Bot]" : "") + " joined the game!**");
     }
 
     @Override
     public void onPlayerLeft(ServerPlayerEntity player) {
-        DiscordListener.sendDiscordMessage(":arrow_left: **" + player.getName().getString().replace("_", "\\_") + " left the game!**");
+        boolean isBot = player.getClass() == KlonePlayerEntity.class;
+        DiscordListener.sendDiscordMessage(":arrow_left: **" + player.getName().getString().replace("_", "\\_") + (isBot ? " [Bot]" : "") + " left the game!**");
     }
 
     @Override
     public void onPlayerDied(ServerPlayerEntity player) {
-        DiscordListener.sendDiscordMessage(":skull_crossbones: **" + player.getDamageTracker().getDeathMessage().getString().replace("_", "\\_") + "**");
+        boolean isBot = player.getClass() == KlonePlayerEntity.class;
+        DiscordListener.sendDiscordMessage(":skull_crossbones: **" + player.getDamageTracker().getDeathMessage().getString().replace("_", "\\_") + (isBot ? " [Bot]" : "") + "**");
     }
 
     @Override

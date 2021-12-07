@@ -1,4 +1,4 @@
-package com.kahzerx.kahzerxmod.klonePlayer;
+package com.kahzerx.kahzerxmod.klone;
 
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.NetworkSide;

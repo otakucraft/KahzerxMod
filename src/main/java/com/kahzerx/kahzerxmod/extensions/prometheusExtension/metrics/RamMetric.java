@@ -10,9 +10,9 @@ public class RamMetric extends AbstractMetric {
     @Override
     public void update(PrometheusExtension extension) {
         Runtime runtime = Runtime.getRuntime();
-        long maxMemory = runtime.maxMemory() / 1024;
-        long allocatedMemory = runtime.totalMemory() / 1024;
-        long freeMemory = runtime.freeMemory() / 1024;
+        long maxMemory = runtime.maxMemory() / 1024 / 1024 / 1024;
+        long allocatedMemory = runtime.totalMemory() / 1024 / 1024 / 1024;
+        long freeMemory = runtime.freeMemory() / 1024 / 1024 / 1024;
         this.getGauge().labels("used").set(allocatedMemory - freeMemory);
         this.getGauge().labels("max").set(maxMemory);
     }

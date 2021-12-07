@@ -28,6 +28,7 @@ import com.kahzerx.kahzerxmod.extensions.fckPrivacyExtension.FckPrivacyExtension
 import com.kahzerx.kahzerxmod.extensions.hatExtension.HatExtension;
 import com.kahzerx.kahzerxmod.extensions.hereExtension.HereExtension;
 import com.kahzerx.kahzerxmod.extensions.homeExtension.HomeExtension;
+import com.kahzerx.kahzerxmod.extensions.kloneExtension.KloneExtension;
 import com.kahzerx.kahzerxmod.extensions.memberExtension.MemberExtension;
 import com.kahzerx.kahzerxmod.extensions.modTPExtension.ModTPExtension;
 import com.kahzerx.kahzerxmod.extensions.permsExtension.PermsExtension;
@@ -110,7 +111,8 @@ public class ExtensionManager {
         KahzerxServer.extensions.add(new RenewableElytraExtension(new ExtensionSettings("renewableElytra", isEnabled(found, "renewableElytra"), "Phantoms killed by shulker have 25% chance of dropping elytras.")));
         KahzerxServer.extensions.add(new VillagersFollowEmeraldExtension(new ExtensionSettings("villagersFollowEmeralds", isEnabled(found, "villagersFollowEmeralds"), "Villagers will follow any player holding emerald blocks.")));
         KahzerxServer.extensions.add(new XiemarExtension(new ExtensionSettings("xiemar", isEnabled(found, "xiemar"), "Literally kills xiemar if connected.")));
-        KahzerxServer.extensions.add(new SolExtension(new ExtensionSettings("sol", isEnabled(found, "sol"), "Waifu")));
+        KahzerxServer.extensions.add(new SolExtension(new ExtensionSettings("sol", isEnabled(found, "sol"), "Waifu!")));
+        KahzerxServer.extensions.add(new KloneExtension(new ExtensionSettings("klone", isEnabled(found, "klone"), "Clones your player to afk (will kick you); the bot will leave once you rejoin.")));
 
         String token = "";
         boolean crossServerChat = false;

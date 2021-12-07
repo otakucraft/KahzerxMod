@@ -1,6 +1,7 @@
 package com.kahzerx.kahzerxmod.extensions.discordExtension.commands;
 
 import com.kahzerx.kahzerxmod.extensions.discordExtension.DiscordPermission;
+import com.kahzerx.kahzerxmod.klone.KlonePlayerEntity;
 import com.kahzerx.kahzerxmod.utils.DiscordChatUtils;
 import com.kahzerx.kahzerxmod.utils.DiscordUtils;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -23,7 +24,8 @@ public class OnlineCommand extends GenericCommand {
         StringBuilder msg = new StringBuilder();
         int n = server.getPlayerManager().getPlayerList().size();
         for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
-            msg.append(player.getName().getString().replace("_", "\\_")).append("\n");
+            boolean isBot = player.getClass() == KlonePlayerEntity.class;
+            msg.append(player.getName().getString().replace("_", "\\_")).append(isBot ? " [Bot]" : "").append("\n");
         }
         event.getChannel().sendMessageEmbeds(Objects.requireNonNull(DiscordChatUtils.generateEmbed(msg, n, serverPrefix)).build()).queue();
     }

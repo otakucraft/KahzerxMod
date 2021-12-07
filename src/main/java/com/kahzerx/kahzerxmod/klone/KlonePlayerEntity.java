@@ -1,4 +1,4 @@
-package com.kahzerx.kahzerxmod.klonePlayer;
+package com.kahzerx.kahzerxmod.klone;
 
 import com.mojang.authlib.GameProfile;
 import net.minecraft.entity.damage.DamageSource;
@@ -21,12 +21,12 @@ public class KlonePlayerEntity extends ServerPlayerEntity {
         super(server, world, profile);
     }
 
-    public static KlonePlayerEntity createKlone(MinecraftServer server, ServerPlayerEntity player) {
+    public static void createKlone(MinecraftServer server, ServerPlayerEntity player) {
         ServerWorld world = player.getWorld();
         GameProfile profile = player.getGameProfile();
 
         server.getPlayerManager().remove(player);
-        player.networkHandler.disconnect(new LiteralText("A clone has been created\nThe clone will leave once you rejoin."));
+        player.networkHandler.disconnect(new LiteralText("A clone has been created.\nThe clone will leave once you rejoin.\nHappy AFK!"));
 
         KlonePlayerEntity klonedPlayer = new KlonePlayerEntity(server, world, profile);
         server.getPlayerManager().onPlayerConnect(new KloneNetworkManager(NetworkSide.SERVERBOUND), klonedPlayer);
@@ -41,8 +41,6 @@ public class KlonePlayerEntity extends ServerPlayerEntity {
         server.getPlayerManager().sendToDimension(new EntitySetHeadYawS2CPacket(klonedPlayer, (byte) (player.headYaw * 256 / 360)), klonedPlayer.world.getRegistryKey());
         server.getPlayerManager().sendToAll(new PlayerListS2CPacket(PlayerListS2CPacket.Action.ADD_PLAYER, klonedPlayer));
         player.getWorld().getChunkManager().updatePosition(klonedPlayer);
-
-        return klonedPlayer;
     }
 
     private void getOut() {
