@@ -5,6 +5,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.HungerManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.NetworkSide;
+import net.minecraft.network.packet.s2c.play.EntityPositionS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntitySetHeadYawS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
 import net.minecraft.server.MinecraftServer;
@@ -29,18 +30,22 @@ public class KlonePlayerEntity extends ServerPlayerEntity {
         player.networkHandler.disconnect(new LiteralText("A clone has been created.\nThe clone will leave once you rejoin.\nHappy AFK!"));
 
         KlonePlayerEntity klonedPlayer = new KlonePlayerEntity(server, world, profile);
-        server.getPlayerManager().onPlayerConnect(new KloneNetworkManager(NetworkSide.SERVERBOUND), klonedPlayer);
 
+        klonedPlayer.refreshPositionAndAngles(player.getX(), player.getY(), player.getZ(), player.getYaw(), player.getPitch());
+        server.getPlayerManager().onPlayerConnect(new KloneNetworkManager(NetworkSide.SERVERBOUND), klonedPlayer);
+        klonedPlayer.teleport(world, player.getX(), player.getY(), player.getZ(), player.getYaw(), player.getPitch());
         klonedPlayer.setHealth(player.getHealth());
-        klonedPlayer.networkHandler.requestTeleport(player.getX(), player.getY(), player.getZ(), player.getYaw(), player.getPitch());
-        klonedPlayer.interactionManager.changeGameMode(player.interactionManager.getGameMode());
+        klonedPlayer.unsetRemoved();
         klonedPlayer.stepHeight = 0.6F;
-        klonedPlayer.dataTracker.set(PLAYER_MODEL_PARTS, player.getDataTracker().get(PLAYER_MODEL_PARTS));
-        klonedPlayer.getAbilities().flying = player.getAbilities().flying;
+        klonedPlayer.interactionManager.changeGameMode(player.interactionManager.getGameMode());
 
         server.getPlayerManager().sendToDimension(new EntitySetHeadYawS2CPacket(klonedPlayer, (byte) (player.headYaw * 256 / 360)), klonedPlayer.world.getRegistryKey());
-        server.getPlayerManager().sendToAll(new PlayerListS2CPacket(PlayerListS2CPacket.Action.ADD_PLAYER, klonedPlayer));
+        server.getPlayerManager().sendToDimension(new EntityPositionS2CPacket(klonedPlayer), klonedPlayer.world.getRegistryKey());
+
         player.getWorld().getChunkManager().updatePosition(klonedPlayer);
+
+        klonedPlayer.dataTracker.set(PLAYER_MODEL_PARTS, (byte) 0x7f);
+        klonedPlayer.getAbilities().flying = player.getAbilities().flying;
     }
 
     private void getOut() {
