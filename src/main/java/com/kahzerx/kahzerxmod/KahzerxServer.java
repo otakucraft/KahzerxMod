@@ -118,6 +118,10 @@ public class KahzerxServer {
         extensions.forEach(e -> e.onCreateDatabase(db.getConnection()));
     }
 
+    public static void onServerStarted(MinecraftServer minecraftServer) {
+        extensions.forEach(e -> e.onServerStarted(minecraftServer));
+    }
+
     public static void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher) {
         KahzerxServer.dispatcher = dispatcher;
     }

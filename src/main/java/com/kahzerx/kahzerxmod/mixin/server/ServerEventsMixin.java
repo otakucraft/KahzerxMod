@@ -17,6 +17,11 @@ public class ServerEventsMixin {
         KahzerxServer.onCreateDatabase();
     }
 
+    @Inject(method = "runServer", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Lnet/minecraft/server/MinecraftServer;setupServer()Z"))
+    private void onStarted(CallbackInfo ci) {
+        KahzerxServer.onServerStarted((MinecraftServer) (Object) this);
+    }
+
     @Inject(method = "runServer", at = @At("RETURN"))
     private void onStop(CallbackInfo ci) {
         KahzerxServer.onStopServer();

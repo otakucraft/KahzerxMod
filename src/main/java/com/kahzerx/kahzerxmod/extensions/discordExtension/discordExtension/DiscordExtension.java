@@ -32,6 +32,10 @@ public class DiscordExtension extends GenericExtension implements Extensions {
             return;
         }
         DiscordListener.start(minecraftServer, extensionSettings().getToken(), String.valueOf(extensionSettings().getChatChannelID()), this);
+    }
+
+    @Override
+    public void onServerStarted(MinecraftServer minecraftServer) {
         DiscordListener.sendDiscordMessage("\\o/");
     }
 
