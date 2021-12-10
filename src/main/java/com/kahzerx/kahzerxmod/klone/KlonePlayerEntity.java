@@ -25,6 +25,7 @@ public class KlonePlayerEntity extends ServerPlayerEntity {
         ServerWorld world = player.getWorld();
         GameProfile profile = player.getGameProfile();
 
+        server.getPlayerManager().remove(player);
         player.networkHandler.disconnect(new LiteralText("A clone has been created.\nThe clone will leave once you rejoin.\nHappy AFK!"));
 
         KlonePlayerEntity klonedPlayer = new KlonePlayerEntity(server, world, profile);
@@ -83,7 +84,7 @@ public class KlonePlayerEntity extends ServerPlayerEntity {
     @Override
     public void onDeath(DamageSource source) {
         this.getOut();
-        // super.onDeath(source);
+        super.onDeath(source);
         this.setHealth(20);
         this.hungerManager = new HungerManager();
         this.kill(this.getDamageTracker().getDeathMessage());
