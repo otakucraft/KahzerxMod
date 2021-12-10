@@ -25,7 +25,6 @@ public class KlonePlayerEntity extends ServerPlayerEntity {
         ServerWorld world = player.getWorld();
         GameProfile profile = player.getGameProfile();
 
-        server.getPlayerManager().remove(player);
         player.networkHandler.disconnect(new LiteralText("A clone has been created.\nThe clone will leave once you rejoin.\nHappy AFK!"));
 
         KlonePlayerEntity klonedPlayer = new KlonePlayerEntity(server, world, profile);
@@ -60,7 +59,7 @@ public class KlonePlayerEntity extends ServerPlayerEntity {
 
     private void kill(Text reason) {
         this.getOut();
-        Objects.requireNonNull(this.getServer()).send(new ServerTask(this.getServer().getTicks(), () -> this.networkHandler.onDisconnected(reason)));
+        this.server.send(new ServerTask(this.server.getTicks(), () -> this.networkHandler.onDisconnected(reason)));
     }
 
     @Override
@@ -75,16 +74,19 @@ public class KlonePlayerEntity extends ServerPlayerEntity {
             this.getWorld().getChunkManager().updatePosition(this);
             this.onTeleportationDone();
         }
-        super.tick();
-        this.playerTick();
+        try {
+            super.tick();
+            this.playerTick();
+        } catch (NullPointerException ignored) { }
     }
 
     @Override
     public void onDeath(DamageSource source) {
         this.getOut();
-        super.onDeath(source);
+        // super.onDeath(source);
         this.setHealth(20);
         this.hungerManager = new HungerManager();
+        this.kill(this.getDamageTracker().getDeathMessage());
     }
 
     @Override
