@@ -21,6 +21,7 @@ public class MetricUpdater extends TimerTask {
             try {
                 metric.update(this.extension);
             } catch (Exception exception) {
+                System.err.println(metric.getName());
                 exception.printStackTrace();
             }
         }
