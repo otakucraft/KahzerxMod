@@ -32,6 +32,7 @@ public class BlockInfoUtils {
         LocalDateTime date = LocalDateTime.parse(rs.getString("date"), DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
         String playerName = rs.getString("playerName");
         String block = rs.getString("block");
+        int amount = rs.getInt("amount");
         block = block.split("\\.")[block.split("\\.").length - 1];
         MutableText fDate = getDateWithHover(date);
         return switch (rs.getInt("action")) {
@@ -43,10 +44,20 @@ public class BlockInfoUtils {
                     Formatting.WHITE + playerName,
                     Formatting.GREEN + "placed",
                     Formatting.YELLOW + block + Formatting.WHITE));
-            default -> fDate.append(String.format(" %s %s %s.",
+            case 2 -> fDate.append(String.format(" %s %s %s.",
                     Formatting.WHITE + playerName,
                     Formatting.DARK_AQUA + "used",
                     Formatting.YELLOW + block + Formatting.WHITE));
+            case 3 -> fDate.append(String.format(" %s %s %s %s.",
+                    Formatting.WHITE + playerName,
+                    Formatting.AQUA + "added",
+                    Formatting.YELLOW + String.valueOf(amount),
+                    block + Formatting.WHITE));
+            default -> fDate.append(String.format(" %s %s %s %s.",
+                    Formatting.WHITE + playerName,
+                    Formatting.DARK_RED + "removed",
+                    Formatting.YELLOW + String.valueOf(amount),
+                    block + Formatting.WHITE));
         };
     }
 
@@ -80,7 +91,7 @@ public class BlockInfoUtils {
 
     public static MutableText getHelp(int x, int y, int z) {
         return new LiteralText(
-                String.format(". Page with /blockInfo %d %d %d <página>.", x, y, z))
+                String.format(". Page with /blockInfo %d %d %d <page>.", x, y, z))
                 .styled(style -> style.withColor(Formatting.WHITE));
     }
 }

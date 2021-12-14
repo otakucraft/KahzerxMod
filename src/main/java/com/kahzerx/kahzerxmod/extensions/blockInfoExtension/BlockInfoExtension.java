@@ -33,6 +33,7 @@ public class BlockInfoExtension extends GenericExtension implements Extensions {
             String createBlockInfoTable = "CREATE TABLE IF NOT EXISTS `action_logger` (" +
                     "`id` INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "`playerName` TEXT(20) NOT NULL," +
+                    "`amount` NUMERIC NOT NULL," +
                     "`block` TEXT(30) NOT NULL," +
                     "`posX` NUMERIC NOT NULL," +
                     "`posY` NUMERIC NOT NULL," +
@@ -49,18 +50,19 @@ public class BlockInfoExtension extends GenericExtension implements Extensions {
     }
 
     public void logAction(BlockActionLog action) {
-        String q = "INSERT INTO `action_logger` (playerName, block, posX, posY, posZ, dim, action, date) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+        String q = "INSERT INTO `action_logger` (playerName, amount, block, posX, posY, posZ, dim, action, date) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
         try {
             PreparedStatement ps = conn.prepareStatement(q);
             ps.setString(1, action.getPlayer());
-            ps.setString(2, action.getBlock().toLowerCase());
-            ps.setInt(3, action.getX());
-            ps.setInt(4, action.getY());
-            ps.setInt(5, action.getZ());
-            ps.setInt(6, action.getDim());
-            ps.setInt(7, action.getActionType());
-            ps.setString(8, action.getDate());
+            ps.setInt(2, action.getAmount());
+            ps.setString(3, action.getBlock().toLowerCase());
+            ps.setInt(4, action.getX());
+            ps.setInt(5, action.getY());
+            ps.setInt(6, action.getZ());
+            ps.setInt(7, action.getDim());
+            ps.setInt(8, action.getActionType());
+            ps.setString(9, action.getDate());
             ps.executeUpdate();
             ps.close();
         } catch (SQLException throwables) {
@@ -155,7 +157,7 @@ public class BlockInfoExtension extends GenericExtension implements Extensions {
     public List<MutableText> getBlockInfo(int x, int y, int z, int dim, int page) {
         List<MutableText> msg = new ArrayList<>();
         try {
-            String q = "SELECT action, date, playerName, block FROM `action_logger` " +
+            String q = "SELECT amount, action, date, playerName, block FROM `action_logger` " +
                     "WHERE posX = ? AND posY = ? AND posZ = ? AND dim = ? ORDER BY id DESC LIMIT 10 OFFSET ?;";
             PreparedStatement ps = this.conn.prepareStatement(q);
             ps.setInt(1, x);
@@ -215,7 +217,7 @@ public class BlockInfoExtension extends GenericExtension implements Extensions {
 
         List<MutableText> msg = getBlockInfo(x, y, z, DimUtils.getWorldID(DimUtils.getDim(source.getWorld())), page);
         Collections.reverse(msg);
-        source.sendFeedback(new LiteralText("======================"), false);
+        source.sendFeedback(new LiteralText("======BlockInfo======"), false);
         int nLine = getLines(x, y, z, DimUtils.getWorldID(DimUtils.getDim(source.getWorld())));
 
         for (MutableText line : msg) {

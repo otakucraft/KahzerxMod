@@ -7,7 +7,10 @@
     "blockInfoExtension.BlockBreakingLoggingMixin",
     "blockInfoExtension.BlockInteractionLoggingMixin",
     "blockInfoExtension.BlockPlacingLoggingMixin",
-    "blockInfoExtension.ContainerInteractionLoggingMixin",
+    "blockInfoExtension.ContainerInteractionLoggingMixin$DoubleInventoryMixin",
+    "blockInfoExtension.ContainerInteractionLoggingMixin$LockableContainerBlockEntityMixin",
+    "blockInfoExtension.ContainerInteractionLoggingMixin$ScreenHandlerMixin",
+    "blockInfoExtension.ContainerInteractionLoggingMixin$SlotMixin",
     "deepslateInstaMineExtension.AbstractStateMixin",
     "discordWhitelistExtension.PlayerManagerWLMixin$PlayerNotWhitelisted",
     "endermanNoGriefExtension.EndermanEntityMixin",
@@ -24,6 +27,7 @@
     "villagersFollowEmeraldExtension.VillagerEntityMixin"
   ],
   "client": [],
+  "server": [],
   "injectors": {
     "defaultRequire": 1
   }

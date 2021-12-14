@@ -24,6 +24,7 @@ public class BlockInteractionLoggingMixin {
         if (BlockInfoUtils.shouldRegisterBlock(world.getBlockState(hitResult.getBlockPos()).getBlock(), player)) {
             BlockActionLog actionLog = new BlockActionLog(
                     player.getName().getString(),
+                    1,
                     world.getBlockState(hitResult.getBlockPos()).getBlock().getName().getString(),
                     hitResult.getBlockPos().getX(),
                     hitResult.getBlockPos().getY(),
@@ -36,6 +37,7 @@ public class BlockInteractionLoggingMixin {
         } else if (BlockInfoUtils.shouldRegisterItem(player, stack)) {
             BlockActionLog actionLog = new BlockActionLog(
                     player.getName().getString(),
+                    1,
                     stack.getItem().getName().getString(),
                     hitResult.getBlockPos().getX(),
                     hitResult.getBlockPos().getY(),
