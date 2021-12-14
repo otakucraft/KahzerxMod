@@ -54,7 +54,7 @@ public class BlockInfoExtension extends GenericExtension implements Extensions {
         try {
             PreparedStatement ps = conn.prepareStatement(q);
             ps.setString(1, action.getPlayer());
-            ps.setString(2, action.getBlock());
+            ps.setString(2, action.getBlock().toLowerCase());
             ps.setInt(3, action.getX());
             ps.setInt(4, action.getY());
             ps.setInt(5, action.getZ());

@@ -35,15 +35,18 @@ public class BlockInfoUtils {
         block = block.split("\\.")[block.split("\\.").length - 1];
         MutableText fDate = getDateWithHover(date);
         return switch (rs.getInt("action")) {
-            case 0 -> fDate.append(String.format(" <%s> has broken '%s'.",
+            case 0 -> fDate.append(String.format(" %s %s %s.",
                     Formatting.WHITE + playerName,
-                    Formatting.DARK_PURPLE + block + Formatting.WHITE));
-            case 1 -> fDate.append(String.format(" <%s> has put '%s'.",
+                    Formatting.RED + "broke",
+                    Formatting.YELLOW + block + Formatting.WHITE));
+            case 1 -> fDate.append(String.format(" %s %s %s.",
                     Formatting.WHITE + playerName,
-                    Formatting.DARK_PURPLE + block + Formatting.WHITE));
-            default -> fDate.append(String.format(" <%s> has used '%s'.",
+                    Formatting.GREEN + "placed",
+                    Formatting.YELLOW + block + Formatting.WHITE));
+            default -> fDate.append(String.format(" %s %s %s.",
                     Formatting.WHITE + playerName,
-                    Formatting.DARK_PURPLE + block + Formatting.WHITE));
+                    Formatting.DARK_AQUA + "used",
+                    Formatting.YELLOW + block + Formatting.WHITE));
         };
     }
 

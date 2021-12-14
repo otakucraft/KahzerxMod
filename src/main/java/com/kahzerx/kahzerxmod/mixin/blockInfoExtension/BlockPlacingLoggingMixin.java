@@ -24,7 +24,7 @@ public class BlockPlacingLoggingMixin {
         if (placer instanceof ServerPlayerEntity) {
             BlockActionLog actionLog = new BlockActionLog(
                     placer.getName().getString(),
-                    state.getBlock().getTranslationKey(),
+                    state.getBlock().getName().getString(),
                     pos.getX(),
                     pos.getY(),
                     pos.getZ(),

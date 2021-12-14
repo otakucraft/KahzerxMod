@@ -25,7 +25,7 @@ public class BlockBreakingLoggingMixin {
     private void onBroken(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
         BlockActionLog actionLog = new BlockActionLog(
                 player.getName().getString(),
-                world.getBlockState(pos).getBlock().getTranslationKey(),
+                world.getBlockState(pos).getBlock().getName().getString(),
                 pos.getX(),
                 pos.getY(),
                 pos.getZ(),
