@@ -15,6 +15,7 @@
     "discordWhitelistExtension.PlayerManagerWLMixin$PlayerNotWhitelisted",
     "endermanNoGriefExtension.EndermanEntityMixin",
     "kloneExtension.PlayerManagerMixin",
+    "maintenanceExtension.PlayerManagerMixin",
     "renewableElytraExtension.PhantomEntityMixin",
     "seedExtension.seedCommandMixin",
     "server.ChatEventsMixin",
