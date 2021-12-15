@@ -14,7 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Final;
@@ -53,7 +52,7 @@ public class ContainerInteractionLoggingMixin {
 
         @Inject(method = "dropInventory", at = @At("HEAD"))
         private void onDrop(PlayerEntity player, Inventory inventory, CallbackInfo ci) {
-            this.player = (ServerPlayerEntity) player;
+            this.player = player;
         }
 
         @Override
