@@ -26,11 +26,15 @@ public class MemberExtension extends GenericExtension implements Extensions {
         Collection<String> teamNames = server.getScoreboard().getTeamNames();
         if (!teamNames.contains("ADMIN")) {
             Team team = server.getScoreboard().addTeam("ADMIN");
-            team.setPrefix(new LiteralText("[ADMIN] ").styled(style -> style.withBold(true).withColor(Formatting.AQUA)));
+            team.setPrefix(new LiteralText("[ADMIN] ").styled(style -> style.withBold(true).withColor(Formatting.GOLD)));
         }
         if (!teamNames.contains("MOD")) {
             Team team = server.getScoreboard().addTeam("MOD");
             team.setPrefix(new LiteralText("[MOD] ").styled(style -> style.withBold(true).withColor(Formatting.DARK_PURPLE)));
+        }
+        if (!teamNames.contains("HELPER")) {
+            Team team = server.getScoreboard().addTeam("HELPER");
+            team.setPrefix(new LiteralText("[HELPER] ").styled(style -> style.withBold(true).withColor(Formatting.AQUA)));
         }
         if (!teamNames.contains("MIEMBRO")) {
             Team team = server.getScoreboard().addTeam("MIEMBRO");
