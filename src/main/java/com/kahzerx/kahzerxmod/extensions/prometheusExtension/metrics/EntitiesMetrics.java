@@ -14,7 +14,8 @@ public class EntitiesMetrics extends AbstractMetric {
 
     @Override
     public void update(PrometheusExtension extension) {
-        for (ServerWorld world : extension.getServer().getWorlds()) {
+        Iterable<ServerWorld> worlds = extension.getServer().getWorlds();
+        for (ServerWorld world : worlds) {
             HashMap<String, Integer> worldEntities = new HashMap<>();
             world.iterateEntities().forEach(e -> worldEntities.put(
                     Registry.ENTITY_TYPE.getId(e.getType()).getPath(),

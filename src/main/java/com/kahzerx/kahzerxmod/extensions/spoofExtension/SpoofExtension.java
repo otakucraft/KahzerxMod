@@ -24,6 +24,11 @@ public class SpoofExtension extends GenericExtension implements Extensions {
         new SpoofCommand().register(dispatcher, this);
     }
 
+    @Override
+    public ExtensionSettings extensionSettings() {
+        return this.getSettings();
+    }
+
     public int spoofEC(ServerCommandSource source, String playerE) throws CommandSyntaxException {
         ServerPlayerEntity player = source.getPlayer();
         ServerPlayerEntity player2 = source.getServer().getPlayerManager().getPlayer(playerE);
@@ -40,10 +45,10 @@ public class SpoofExtension extends GenericExtension implements Extensions {
     }
 
     public int spoofInv(ServerCommandSource source, String playerE) throws CommandSyntaxException {
-        final int invSize = 54;
-        final int hotBarSize = 9;
-        final int hotBarStartPos = 27;
-        final int invStartPos = 9;
+        int invSize = 54;
+        int hotBarSize = 9;
+        int hotBarStartPos = 27;
+        int invStartPos = 9;
         Inventory inventory = new SimpleInventory(invSize);
         ServerPlayerEntity player = source.getPlayer();
         ServerPlayerEntity player2 = source.getServer().getPlayerManager().getPlayer(playerE);
@@ -57,12 +62,12 @@ public class SpoofExtension extends GenericExtension implements Extensions {
             }
         }
 
-        final int armorSlotStartPos = 45;
+        int armorSlotStartPos = 45;
         for (int j = 0; j < player2.getInventory().armor.size(); j++) {
             inventory.setStack(j + armorSlotStartPos, player2.getInventory().armor.get(j));
         }
 
-        final int offHandSlotPos = 36;
+        int offHandSlotPos = 36;
         inventory.setStack(offHandSlotPos, player2.getInventory().offHand.get(0));
 
         player.openHandledScreen(
@@ -74,10 +79,5 @@ public class SpoofExtension extends GenericExtension implements Extensions {
                                         "%s stop hax >:(",
                                         player.getName().getString()))));
         return 1;
-    }
-
-    @Override
-    public ExtensionSettings extensionSettings() {
-        return this.getSettings();
     }
 }
