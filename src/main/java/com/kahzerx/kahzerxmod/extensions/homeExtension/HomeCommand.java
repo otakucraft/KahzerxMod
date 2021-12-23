@@ -10,5 +10,8 @@ public class HomeCommand {
         dispatcher.register(literal("home").
                 requires(server -> home.extensionSettings().isEnabled()).
                 executes(context -> home.tpHome(context.getSource())));
+        dispatcher.register(literal("HOME").  // Popular request smh...
+                requires(server -> home.extensionSettings().isEnabled()).
+                executes(context -> home.tpHome(context.getSource())));
     }
 }
