@@ -6,6 +6,7 @@ import com.kahzerx.kahzerxmod.extensions.GenericExtension;
 import com.kahzerx.kahzerxmod.utils.DimUtils;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.ClickEvent;
@@ -20,6 +21,7 @@ import java.util.HashMap;
 public class HomeExtension extends GenericExtension implements Extensions {
     private final HashMap<String, HomePos> playerHomes = new HashMap<>();
     private Connection conn;
+    private MinecraftServer server;
 
     public HomeExtension(ExtensionSettings settings) {
         super(settings);
@@ -45,19 +47,34 @@ public class HomeExtension extends GenericExtension implements Extensions {
     }
 
     @Override
+    public void onServerRun(MinecraftServer minecraftServer) {
+        this.server = minecraftServer;
+    }
+
+    @Override
     public void onPlayerJoined(ServerPlayerEntity player) {
         String playerUUID = player.getUuidAsString();
-        if (this.playerHomes.containsKey(playerUUID)) {
-            playerHomes.remove(playerUUID);
-        }
+        playerHomes.remove(playerUUID);
         playerHomes.put(playerUUID, getHomePos(player));
     }
 
     @Override
     public void onPlayerLeft(ServerPlayerEntity player) {
         String playerUUID = player.getUuidAsString();
-        if (this.playerHomes.containsKey(playerUUID)) {
-            playerHomes.remove(playerUUID);
+        playerHomes.remove(playerUUID);
+    }
+
+    @Override
+    public void onExtensionDisabled() {
+        Extensions.super.onExtensionDisabled();
+        playerHomes.clear();
+    }
+
+    @Override
+    public void onExtensionEnabled() {
+        Extensions.super.onExtensionEnabled();
+        for (ServerPlayerEntity player : this.server.getPlayerManager().getPlayerList()) {
+            this.onPlayerJoined(player);
         }
     }
 
@@ -170,7 +187,7 @@ public class HomeExtension extends GenericExtension implements Extensions {
         playerHomes.put(playerUUID, newHomePos);
         src.sendFeedback(
             new LiteralText(String.format(
-                "Home @: %s %s",
+                "Home @ %s %s",
                 DimUtils.getDimensionWithColor(player.world),
                 DimUtils.formatCoords(player.getX(), player.getY(), player.getZ())
             )),

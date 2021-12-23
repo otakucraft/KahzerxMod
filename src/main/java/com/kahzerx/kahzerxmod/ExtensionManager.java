@@ -34,6 +34,7 @@ import com.kahzerx.kahzerxmod.extensions.memberExtension.MemberExtension;
 import com.kahzerx.kahzerxmod.extensions.modTPExtension.ModTPExtension;
 import com.kahzerx.kahzerxmod.extensions.permsExtension.PermsExtension;
 import com.kahzerx.kahzerxmod.extensions.pitoExtension.PitoExtension;
+import com.kahzerx.kahzerxmod.extensions.prankExtension.PrankExtension;
 import com.kahzerx.kahzerxmod.extensions.prometheusExtension.PrometheusExtension;
 import com.kahzerx.kahzerxmod.extensions.prometheusExtension.PrometheusJsonSettings;
 import com.kahzerx.kahzerxmod.extensions.prometheusExtension.PrometheusSettings;
@@ -115,6 +116,7 @@ public class ExtensionManager {
         KahzerxServer.extensions.add(new SolExtension(new ExtensionSettings("sol", isEnabled(found, "sol"), "Waifu!")));
         KahzerxServer.extensions.add(new KloneExtension(new ExtensionSettings("klone", isEnabled(found, "klone"), "Clones your player to afk (will kick you); the bot will leave once you rejoin.")));
         KahzerxServer.extensions.add(new MaintenanceExtension(new ExtensionSettings("maintenance", isEnabled(found, "maintenance"), "Sets your server in maintenance mode so only op players can join.")));
+        KahzerxServer.extensions.add(new PrankExtension(new ExtensionSettings("pranks", isEnabled(found, "pranks"), "Sets a prank level on your name.")));
 
         String token = "";
         boolean crossServerChat = false;

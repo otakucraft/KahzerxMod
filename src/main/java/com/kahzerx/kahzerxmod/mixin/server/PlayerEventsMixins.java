@@ -21,18 +21,15 @@ import java.util.Objects;
 
 public class PlayerEventsMixins {
     @Mixin(PlayerManager.class)
-    public static class PlayerJoined {
-        @Inject(method = "onPlayerConnect", at = @At("RETURN"))
-        private void onPlayerJoined(ClientConnection connection, ServerPlayerEntity player, CallbackInfo ci) {
-            KahzerxServer.onPlayerJoined(player);
-        }
-    }
-
-    @Mixin(PlayerManager.class)
-    public static class PlayerLeft {
+    public static class PlayerConn {
         @Inject(method = "remove", at = @At("RETURN"))
         private void onPlayerLeft(ServerPlayerEntity player, CallbackInfo ci) {
             KahzerxServer.onPlayerLeft(player);
+        }
+
+        @Inject(method = "onPlayerConnect", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/PlayerManager;loadPlayerData(Lnet/minecraft/server/network/ServerPlayerEntity;)Lnet/minecraft/nbt/NbtCompound;", shift = At.Shift.AFTER))
+        private void onPlayerJoined(ClientConnection connection, ServerPlayerEntity player, CallbackInfo ci) {
+            KahzerxServer.onPlayerJoined(player);
         }
     }
 
