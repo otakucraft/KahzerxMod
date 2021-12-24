@@ -7,7 +7,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -26,7 +25,7 @@ public abstract class PlayerMixin extends PlayerEntity {
     private void onGet(CallbackInfoReturnable<Text> cir) {
         MutableText name = (MutableText) this.getDisplayName();
         if (PrankExtension.isExtensionEnabled && PrankExtension.playerLevel.containsKey(this.getUuidAsString()) && PrankExtension.playerLevel.get(this.getUuidAsString()) != PrankLevel.LEVEL0) {
-            cir.setReturnValue(name.append(Formatting.RED + " " + PrankExtension.playerLevel.get(this.getUuidAsString()).getIdentifier()));
+            cir.setReturnValue(name.append(PrankExtension.playerLevel.get(this.getUuidAsString()).getFormatting() + " " + PrankExtension.playerLevel.get(this.getUuidAsString()).getIdentifier()));
         }
     }
  }

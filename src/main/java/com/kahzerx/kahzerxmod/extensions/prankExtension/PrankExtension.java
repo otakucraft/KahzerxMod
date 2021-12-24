@@ -108,8 +108,8 @@ public class PrankExtension extends GenericExtension implements Extensions {
                     "DO UPDATE SET id = ?;";
             PreparedStatement ps = conn.prepareStatement(q);
             ps.setString(1, player.getUuidAsString());
-            ps.setInt(2, PrankLevel.levelToID(level));
-            ps.setInt(3, PrankLevel.levelToID(level));
+            ps.setInt(2, level.getID());
+            ps.setInt(3, level.getID());
             ps.executeUpdate();
             ps.close();
             this.onPlayerJoined(player);
