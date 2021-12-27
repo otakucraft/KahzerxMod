@@ -32,7 +32,7 @@ public class SkullCommand {
                             compound.putString("SkullOwner", profile.get().getName());
                             stack.writeNbt(compound);
                             ServerPlayerEntity sourcePlayer = context.getSource().getPlayer();
-                            if (sourcePlayer.giveItemStack(stack)) {
+                            if (!sourcePlayer.giveItemStack(stack)) {
                                 ItemScatterer.spawn(sourcePlayer.getWorld(), sourcePlayer.getX(), sourcePlayer.getY(), sourcePlayer.getZ(), stack);
                             }
                             return 1;
