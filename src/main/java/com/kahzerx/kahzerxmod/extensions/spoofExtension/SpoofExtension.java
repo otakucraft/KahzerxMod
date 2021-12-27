@@ -8,7 +8,10 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.inventory.EnderChestInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.screen.GenericContainerScreenHandler;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -70,14 +73,25 @@ public class SpoofExtension extends GenericExtension implements Extensions {
         int offHandSlotPos = 36;
         inventory.setStack(offHandSlotPos, player2.getInventory().offHand.get(0));
 
+        ScreenHandlerListener listener = new ScreenHandlerListener() {
+            @Override
+            public void onSlotUpdate(ScreenHandler handler, int slotId, ItemStack stack) {
+                // source.getServer().getPlayerManager().saveAllPlayerData();
+            }
+
+            @Override
+            public void onPropertyUpdate(ScreenHandler handler, int property, int value) {
+
+            }
+        };
+
         player.openHandledScreen(
                 new SimpleNamedScreenHandlerFactory(
-                        (i, playerInventory, playerEntity) ->
-                                GenericContainerScreenHandler.createGeneric9x6(i, playerInventory, inventory),
-                        new LiteralText(
-                                String.format(
-                                        "%s stop hax >:(",
-                                        player.getName().getString()))));
+                        (i, playerInventory, playerEntity) -> {
+                            GenericContainerScreenHandler invCont = GenericContainerScreenHandler.createGeneric9x6(i, playerInventory, inventory);
+                            invCont.addListener(listener);
+                            return invCont;
+                        }, new LiteralText(String.format("%s stop hax >:(", player.getName().getString()))));
         return 1;
     }
 }

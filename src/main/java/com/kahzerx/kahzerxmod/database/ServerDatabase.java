@@ -24,7 +24,6 @@ public class ServerDatabase {
                     DATABASE_DIR,
                     DATABASE_NAME
             ));
-
             query = new ServerQuery(connection);
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
