@@ -94,7 +94,7 @@ public class KahzerxServer {
                         style -> style.
                                 withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new LiteralText(""))).
                                 withUnderline(false)));
-                exData.append(new LiteralText("[False]\n").styled(
+                exData.append(new LiteralText("[False]").styled(
                         style -> style.
                                 withBold(!ex.extensionSettings().isEnabled()).
                                 withUnderline(!ex.extensionSettings().isEnabled()).
