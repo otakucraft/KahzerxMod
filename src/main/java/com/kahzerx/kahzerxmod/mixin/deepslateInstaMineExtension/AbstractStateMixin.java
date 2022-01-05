@@ -17,7 +17,7 @@ public abstract class AbstractStateMixin {
     @Shadow public abstract Block getBlock();
     @Inject(method = "getHardness", at = @At("HEAD"), cancellable = true)
     public void onGetHardness(BlockView world, BlockPos pos, CallbackInfoReturnable<Float> cir) {
-        if (DeepslateInstaMineExtension.isExtensionEnabled && this.getBlock() == Blocks.DEEPSLATE) {
+        if (DeepslateInstaMineExtension.isExtensionEnabled && (this.getBlock() == Blocks.DEEPSLATE || this.getBlock() == Blocks.COBBLED_DEEPSLATE)) {
             cir.setReturnValue(1.5F);
         }
     }
