@@ -16,6 +16,7 @@
     "endermanNoGriefExtension.EndermanEntityMixin",
     "kloneExtension.PlayerManagerMixin",
     "maintenanceExtension.PlayerManagerMixin",
+    "playerDropsSkullExtension.PlayerEntityMixin",
     "pranksExtension.PlayerMixin",
     "renewableElytraExtension.PhantomEntityMixin",
     "seedExtension.seedCommandMixin",
