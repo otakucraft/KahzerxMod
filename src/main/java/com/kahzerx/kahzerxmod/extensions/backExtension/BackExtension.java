@@ -127,7 +127,7 @@ public class BackExtension extends GenericExtension implements Extensions {
             return 1;
         }
         if (permsExtension.getPlayerPerms().containsKey(player.getUuidAsString())) {
-            if (permsExtension.getPlayerPerms().get(player.getUuidAsString()).getId() == PermsLevels.MEMBER.getId()) {
+            if (permsExtension.getPlayerPerms().get(player.getUuidAsString()).getId() < PermsLevels.MOD.getId()) {
                 player.sendMessage(
                         new LiteralText("You don't have permission to run this command."),
                         false

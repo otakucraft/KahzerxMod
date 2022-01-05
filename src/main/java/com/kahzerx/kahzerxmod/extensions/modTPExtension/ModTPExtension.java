@@ -31,7 +31,7 @@ public class ModTPExtension extends GenericExtension implements Extensions {
         }
         ServerPlayerEntity sourcePlayer = source.getPlayer();
         if (permsExtension.getPlayerPerms().containsKey(sourcePlayer.getUuidAsString())) {
-            if (permsExtension.getPlayerPerms().get(sourcePlayer.getUuidAsString()).getId() == PermsLevels.MEMBER.getId()) {
+            if (permsExtension.getPlayerPerms().get(sourcePlayer.getUuidAsString()).getId() < PermsLevels.MOD.getId()) {
                 source.sendFeedback(new LiteralText("You are not allowed to run this command."), false);
                 return 1;
             }

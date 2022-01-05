@@ -4,7 +4,8 @@ import java.util.Locale;
 
 public enum PermsLevels {
     MEMBER(1),
-    MOD(2);
+    HELPER(2),
+    MOD(3);
 
     private final int id;
 
@@ -17,21 +18,23 @@ public enum PermsLevels {
     }
 
     public static PermsLevels getValue(int l) {
-        if (l == 2) {
-            return MOD;
-        }
-        return MEMBER;
+        return switch (l) {
+            case 2 -> HELPER;
+            case 3 -> MOD;
+            default -> MEMBER;
+        };
     }
 
     public static String[] permNames() {
-        return new String[]{"MEMBER", "MOD"};
+        return new String[]{"MEMBER", "HELPER", "MOD"};
     }
 
     public static int getLevel(String name) {
         String upName = name.toUpperCase(Locale.ROOT);
         return switch (upName) {
             case "MEMBER" -> 1;
-            case "MOD" -> 2;
+            case "HELPER" -> 2;
+            case "MOD" -> 3;
             default -> -1;
         };
     }

@@ -10,5 +10,8 @@ public class RandomTPCommand {
         dispatcher.register(literal("randomTP").
                 requires(server -> rTP.extensionSettings().isEnabled()).
                 executes(context -> rTP.tpAndSpawnPoint(context.getSource())));
+        dispatcher.register(literal("rTP").
+                requires(server -> rTP.extensionSettings().isEnabled()).
+                executes(context -> rTP.tpAndSpawnPoint(context.getSource())));
     }
 }

@@ -13,7 +13,7 @@ public class BackCommand {
                 requires(serverCommandSource -> {
                     try {
                         if (back.extensionSettings().isEnabled() && back.permsExtension.extensionSettings().isEnabled()) {
-                            return back.permsExtension.getDBPlayerPerms(serverCommandSource.getPlayer().getUuidAsString()).getId() > PermsLevels.MEMBER.getId();
+                            return back.permsExtension.getDBPlayerPerms(serverCommandSource.getPlayer().getUuidAsString()).getId() >= PermsLevels.MOD.getId();
                         }
                     } catch (CommandSyntaxException e) {
                         e.printStackTrace();
