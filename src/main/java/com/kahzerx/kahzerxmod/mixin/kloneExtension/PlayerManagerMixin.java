@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
 
-@Mixin(PlayerManager.class)
+@Mixin(value = PlayerManager.class, priority = 5000)
 public abstract class PlayerManagerMixin {
     @Shadow public abstract List<ServerPlayerEntity> getPlayerList();
 
