@@ -14,6 +14,7 @@
     "deepslateInstaMineExtension.AbstractStateMixin",
     "discordWhitelistExtension.PlayerManagerWLMixin$PlayerNotWhitelisted",
     "endermanNoGriefExtension.EndermanEntityMixin",
+    "kloneExtension.NetworkHandlerMixin",
     "kloneExtension.PlayerManagerMixin",
     "maintenanceExtension.PlayerManagerMixin",
     "playerDropsSkullExtension.PlayerEntityMixin",

@@ -1,19 +1,15 @@
 package com.kahzerx.kahzerxmod.mixin.kloneExtension;
 
-import com.kahzerx.kahzerxmod.klone.KloneNetworkHandler;
 import com.kahzerx.kahzerxmod.klone.KlonePlayerEntity;
 import com.mojang.authlib.GameProfile;
-import net.minecraft.network.ClientConnection;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
-import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
@@ -30,15 +26,6 @@ public abstract class PlayerManagerMixin {
             if (player.getGameProfile().getId().equals(profile.getId()) && player.getClass() == KlonePlayerEntity.class) {
                  player.kill();
             }
-        }
-    }
-
-    @Redirect(method = "onPlayerConnect", at = @At(value = "NEW", target = "net/minecraft/server/network/ServerPlayNetworkHandler"))
-    private ServerPlayNetworkHandler kloneNetworkHandler(MinecraftServer server, ClientConnection connection, ServerPlayerEntity player) {
-        if (player instanceof KlonePlayerEntity) {
-            return new KloneNetworkHandler(this.server, connection, player);
-        } else {
-            return new ServerPlayNetworkHandler(this.server, connection, player);
         }
     }
 }
