@@ -33,8 +33,8 @@ public abstract class PlayerManagerMixin {
         }
     }
 
-    @Redirect(method = "onPlayerConnect", at = @At(value = "NEW", target = "Lnet/minecraft/server/network/ServerPlayNetworkHandler;<init>(Lnet/minecraft/server/MinecraftServer;Lnet/minecraft/network/ClientConnection;Lnet/minecraft/server/network/ServerPlayerEntity;)V"))
-    private ServerPlayNetworkHandler customNetworkHandler(MinecraftServer server, ClientConnection connection, ServerPlayerEntity player) {
+    @Redirect(method = "onPlayerConnect", at = @At(value = "NEW", target = "net/minecraft/server/network/ServerPlayNetworkHandler"))
+    private ServerPlayNetworkHandler kloneNetworkHandler(MinecraftServer server, ClientConnection connection, ServerPlayerEntity player) {
         if (player instanceof KlonePlayerEntity) {
             return new KloneNetworkHandler(this.server, connection, player);
         } else {
