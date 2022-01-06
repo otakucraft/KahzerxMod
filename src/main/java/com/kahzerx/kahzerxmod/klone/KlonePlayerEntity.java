@@ -60,7 +60,7 @@ public class KlonePlayerEntity extends ServerPlayerEntity {
         });
     }
 
-    private void kill(Text reason) {
+    public void kill(Text reason) {
         this.getOut();
         this.server.send(new ServerTask(this.server.getTicks(), () -> this.networkHandler.onDisconnected(reason)));
     }
