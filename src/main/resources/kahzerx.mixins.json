@@ -18,7 +18,6 @@
     "kloneExtension.EntityMixin",
     "kloneExtension.PistonMixin",
     "kloneExtension.PlayerManagerMixin",
-    "kloneExtension.PlayerMixin",
     "maintenanceExtension.PlayerManagerMixin",
     "playerDropsSkullExtension.PlayerEntityMixin",
     "pranksExtension.PlayerMixin",
