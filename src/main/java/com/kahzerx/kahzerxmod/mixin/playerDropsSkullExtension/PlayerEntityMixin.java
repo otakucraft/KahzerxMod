@@ -25,19 +25,21 @@ public abstract class PlayerEntityMixin extends PlayerEntity {
     @Override
     protected void dropLoot(DamageSource source, boolean causedByPlayer) {
         super.dropLoot(source, causedByPlayer);
-        if (PlayerDropsSkullExtension.isExtensionEnabled && source == DamageSource.LIGHTNING_BOLT && !causedByPlayer && random.nextDouble() < 0.20D) {
-            ItemStack stack = new ItemStack(Items.PLAYER_HEAD);
-            NbtCompound compound = stack.getOrCreateNbt();
-            compound.putString("SkullOwner", this.getName().asString());
-            stack.writeNbt(compound);
-            new Thread(() -> {
-                try {
-                    Thread.sleep(500L);
-                    ItemScatterer.spawn(this.getWorld(), this.getX(), this.getY(), this.getZ(), stack);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }).start();
+        if (PlayerDropsSkullExtension.isExtensionEnabled && source == DamageSource.LIGHTNING_BOLT) {
+            if ((causedByPlayer && random.nextDouble() < 0.12D) || (!causedByPlayer && random.nextDouble() < 0.30D)) {
+                ItemStack stack = new ItemStack(Items.PLAYER_HEAD);
+                NbtCompound compound = stack.getOrCreateNbt();
+                compound.putString("SkullOwner", this.getName().asString());
+                stack.writeNbt(compound);
+                new Thread(() -> {
+                    try {
+                        Thread.sleep(500L);
+                        ItemScatterer.spawn(this.getWorld(), this.getX(), this.getY(), this.getZ(), stack);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }).start();
+            }
         }
     }
 }
