@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(PlayerEntity.class)
+@Mixin(value = PlayerEntity.class, priority = 69420)
 public abstract class PlayerMixin {
     @Redirect(method = "attack", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/Entity;velocityModified:Z", ordinal = 0))
     private boolean knockbackKlones(Entity instance) {
