@@ -1,4 +1,4 @@
-package com.kahzerx.kahzerxmod.utils;
+package com.kahzerx.kahzerxmod.extensions.discordExtension.utils;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;

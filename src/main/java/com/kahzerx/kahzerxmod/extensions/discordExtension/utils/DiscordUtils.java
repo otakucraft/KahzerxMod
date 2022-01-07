@@ -1,4 +1,4 @@
-package com.kahzerx.kahzerxmod.utils;
+package com.kahzerx.kahzerxmod.extensions.discordExtension.utils;
 
 import java.util.List;
 

@@ -2,7 +2,7 @@ package com.kahzerx.kahzerxmod.extensions.discordExtension.discordWhitelistSyncE
 
 import com.kahzerx.kahzerxmod.extensions.discordExtension.DiscordListener;
 import com.kahzerx.kahzerxmod.extensions.discordExtension.discordWhitelistExtension.DiscordWhitelistExtension;
-import com.kahzerx.kahzerxmod.utils.DiscordChatUtils;
+import com.kahzerx.kahzerxmod.extensions.discordExtension.utils.DiscordChatUtils;
 import com.mojang.authlib.GameProfile;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;

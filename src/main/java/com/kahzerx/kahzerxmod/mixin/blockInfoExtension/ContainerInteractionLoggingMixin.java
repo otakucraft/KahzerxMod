@@ -1,6 +1,7 @@
 package com.kahzerx.kahzerxmod.mixin.blockInfoExtension;
 
 import com.kahzerx.kahzerxmod.extensions.blockInfoExtension.*;
+import com.kahzerx.kahzerxmod.extensions.blockInfoExtension.helpers.*;
 import com.kahzerx.kahzerxmod.utils.DateUtils;
 import com.kahzerx.kahzerxmod.utils.DimUtils;
 import net.minecraft.block.BlockState;

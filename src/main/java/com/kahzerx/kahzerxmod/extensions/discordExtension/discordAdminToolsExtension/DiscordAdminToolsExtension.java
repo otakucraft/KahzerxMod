@@ -12,8 +12,8 @@ import com.kahzerx.kahzerxmod.extensions.discordExtension.commands.ExremoveComma
 import com.kahzerx.kahzerxmod.extensions.discordExtension.commands.PardonCommand;
 import com.kahzerx.kahzerxmod.extensions.discordExtension.discordExtension.DiscordExtension;
 import com.kahzerx.kahzerxmod.extensions.discordExtension.discordWhitelistExtension.DiscordWhitelistExtension;
-import com.kahzerx.kahzerxmod.utils.DiscordChatUtils;
-import com.kahzerx.kahzerxmod.utils.DiscordUtils;
+import com.kahzerx.kahzerxmod.extensions.discordExtension.utils.DiscordChatUtils;
+import com.kahzerx.kahzerxmod.extensions.discordExtension.utils.DiscordUtils;
 import com.mojang.brigadier.arguments.LongArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.dv8tion.jda.api.EmbedBuilder;

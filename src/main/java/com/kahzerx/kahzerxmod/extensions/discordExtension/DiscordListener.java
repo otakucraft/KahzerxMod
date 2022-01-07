@@ -3,7 +3,7 @@ package com.kahzerx.kahzerxmod.extensions.discordExtension;
 import com.kahzerx.kahzerxmod.extensions.discordExtension.commands.OnlineCommand;
 import com.kahzerx.kahzerxmod.extensions.discordExtension.discordExtension.DiscordExtension;
 import com.kahzerx.kahzerxmod.extensions.discordExtension.discordExtension.DiscordSettings;
-import com.kahzerx.kahzerxmod.utils.DiscordChatUtils;
+import com.kahzerx.kahzerxmod.extensions.discordExtension.utils.DiscordChatUtils;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.TextChannel;

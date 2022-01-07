@@ -6,6 +6,9 @@ import com.kahzerx.kahzerxmod.extensions.ExtensionSettings;
 import com.kahzerx.kahzerxmod.extensions.GenericExtension;
 import com.kahzerx.kahzerxmod.utils.PlayerUtils;
 import com.mojang.brigadier.CommandDispatcher;
+import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
+import net.minecraft.scoreboard.Team;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
@@ -13,7 +16,6 @@ import net.minecraft.text.LiteralText;
 import java.sql.*;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Set;
 
 public class PermsExtension extends GenericExtension implements Extensions {
@@ -67,6 +69,18 @@ public class PermsExtension extends GenericExtension implements Extensions {
             playerPerms.put(playerUUID, getDBPlayerPerms(playerUUID));
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        }
+        MinecraftServer server = player.getServer();
+        if (server == null) {
+            return;
+        }
+        Team actual = server.getScoreboard().getPlayerTeam(player.getName().getString());
+        Team shouldTeam = server.getScoreboard().getTeam(playerPerms.get(playerUUID).getName());
+        if (actual == null || shouldTeam == null) {
+            return;
+        }
+        if (!actual.isEqual(shouldTeam)) {
+            server.getScoreboard().addPlayerToTeam(player.getName().getString(), shouldTeam);
         }
     }
 
@@ -143,8 +157,14 @@ public class PermsExtension extends GenericExtension implements Extensions {
             playerPerms.put(playerUUID, getDBPlayerPerms(playerUUID));
         } catch (SQLException e) {
             e.printStackTrace();
+            return 1;
         }
         PlayerUtils.reloadCommands();
+
+        Collection<String> teamNames = source.getServer().getScoreboard().getTeamNames();
+        if (teamNames.contains(PermsLevels.getValue(level).getName())) {
+            source.getServer().getScoreboard().addPlayerToTeam(player, source.getServer().getScoreboard().getTeam(PermsLevels.getValue(level).getName()));
+        }
 
         return 1;
     }

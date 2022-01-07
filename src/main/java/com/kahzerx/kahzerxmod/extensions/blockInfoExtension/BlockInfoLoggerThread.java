@@ -1,5 +1,7 @@
 package com.kahzerx.kahzerxmod.extensions.blockInfoExtension;
 
+import com.kahzerx.kahzerxmod.extensions.blockInfoExtension.helpers.BlockActionLog;
+
 public class BlockInfoLoggerThread extends Thread {
     private boolean running = true;
     private final BlockInfoExtension extension;

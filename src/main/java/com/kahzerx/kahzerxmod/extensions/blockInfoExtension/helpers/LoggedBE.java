@@ -1,4 +1,4 @@
-package com.kahzerx.kahzerxmod.extensions.blockInfoExtension;
+package com.kahzerx.kahzerxmod.extensions.blockInfoExtension.helpers;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;

@@ -1,4 +1,4 @@
-package com.kahzerx.kahzerxmod.utils;
+package com.kahzerx.kahzerxmod.extensions.blockInfoExtension.utils;
 
 import net.minecraft.block.*;
 import net.minecraft.item.ItemStack;

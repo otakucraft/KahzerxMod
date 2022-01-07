@@ -1,8 +1,8 @@
 package com.kahzerx.kahzerxmod.mixin.blockInfoExtension;
 
-import com.kahzerx.kahzerxmod.extensions.blockInfoExtension.BlockActionLog;
+import com.kahzerx.kahzerxmod.extensions.blockInfoExtension.helpers.BlockActionLog;
 import com.kahzerx.kahzerxmod.extensions.blockInfoExtension.BlockInfoExtension;
-import com.kahzerx.kahzerxmod.utils.BlockInfoUtils;
+import com.kahzerx.kahzerxmod.extensions.blockInfoExtension.utils.BlockInfoUtils;
 import com.kahzerx.kahzerxmod.utils.DateUtils;
 import com.kahzerx.kahzerxmod.utils.DimUtils;
 import net.minecraft.item.ItemStack;

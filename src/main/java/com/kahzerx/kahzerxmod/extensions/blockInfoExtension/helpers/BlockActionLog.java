@@ -1,4 +1,4 @@
-package com.kahzerx.kahzerxmod.extensions.blockInfoExtension;
+package com.kahzerx.kahzerxmod.extensions.blockInfoExtension.helpers;
 
 public record BlockActionLog(String player, int amount, String block, int x, int y, int z, int dim, int actionType, String date) {
     public String getPlayer() {
