@@ -4,6 +4,7 @@
   "package": "com.kahzerx.kahzerxmod.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
+    "badgeExtension.PlayerManagerMixin",
     "blockInfoExtension.BlockBreakingLoggingMixin",
     "blockInfoExtension.BlockInteractionLoggingMixin",
     "blockInfoExtension.BlockPlacingLoggingMixin",
