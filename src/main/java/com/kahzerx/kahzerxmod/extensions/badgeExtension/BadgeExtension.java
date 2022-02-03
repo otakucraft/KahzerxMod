@@ -433,10 +433,10 @@ public class BadgeExtension extends GenericExtension implements Extensions {
             ps.executeUpdate();
             ps.close();
             source.sendFeedback(new LiteralText("✓ Badge added!").styled(style -> style.withBold(true).withColor(Formatting.GREEN)), false);
+            reload();
         } catch (SQLException e) {
             e.printStackTrace();
             source.sendFeedback(new LiteralText("✘ Error adding badge!").styled(style -> style.withBold(true).withColor(Formatting.DARK_RED)), false);
-            reload();
         }
     }
 

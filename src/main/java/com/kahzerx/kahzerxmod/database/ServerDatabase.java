@@ -25,6 +25,8 @@ public class ServerDatabase {
                     DATABASE_NAME
             ));
             query = new ServerQuery(connection);
+
+            connection.createStatement().executeUpdate("PRAGMA foreign_keys=ON");
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
