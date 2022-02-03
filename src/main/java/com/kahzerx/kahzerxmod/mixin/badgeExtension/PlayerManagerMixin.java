@@ -14,7 +14,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-import java.util.List;
 import java.util.UUID;
 
 @Mixin(PlayerManager.class)
@@ -33,19 +32,7 @@ public class PlayerManagerMixin {
                 t.append(new LiteralText("\n" + badgeInstance.getBadge()).styled(style -> style.withColor(Formatting.byColorIndex(badgeInstance.getColorIndex()))));
                 t.append(new LiteralText(String.format(": %s", badgeInstance.getDescription())).styled(style -> style.withColor(Formatting.WHITE)));
             }
-            if (((TranslatableText) message).getArgs().length > 0 && ((TranslatableText) message).getArgs()[0] instanceof LiteralText) {
-                LiteralText t2 = new LiteralText(((LiteralText) ((TranslatableText) message).getArgs()[0]).getSiblings().get(2).getString());
-                List<BadgeInstance> badges = BadgeExtension.playerBadges.get(sender.toString());
-                for (int i = badges.size() - 1; i >= 0; i--) {
-                    int finalI = i;
-                    t2.append(new LiteralText(" " + badges.get(i).getBadge()).styled(style -> style.withColor(Formatting.byColorIndex(badges.get(finalI).getColorIndex()))));
-                    if (i < badges.size() - 2) {
-                        break;
-                    }
-                }
-                ((LiteralText) ((TranslatableText) message).getArgs()[0]).getSiblings().set(2, t2);
-                ((LiteralText) ((TranslatableText) message).getArgs()[0]).styled(style -> style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, t)));
-            }
+            ((LiteralText) ((TranslatableText) message).getArgs()[0]).styled(style -> style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, t)));
         }
         instance.sendMessage(message, type, sender);
     }

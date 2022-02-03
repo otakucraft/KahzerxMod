@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_16",
   "mixins": [
     "badgeExtension.PlayerManagerMixin",
+    "badgeExtension.ServerPlayNetworkHandlerMixin",
     "blockInfoExtension.BlockBreakingLoggingMixin",
     "blockInfoExtension.BlockInteractionLoggingMixin",
     "blockInfoExtension.BlockPlacingLoggingMixin",
