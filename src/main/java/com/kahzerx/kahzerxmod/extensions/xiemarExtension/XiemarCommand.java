@@ -1,6 +1,7 @@
 package com.kahzerx.kahzerxmod.extensions.xiemarExtension;
 
 import com.kahzerx.kahzerxmod.ExtensionManager;
+import com.kahzerx.kahzerxmod.utils.MarkEnum;
 import com.kahzerx.kahzerxmod.utils.PlayerUtils;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
@@ -36,7 +37,7 @@ public class XiemarCommand {
                         }).
                         executes(context -> {
                             xiemar.extensionSettings().setEnabled(BoolArgumentType.getBool(context, "enabled"));
-                            context.getSource().sendFeedback(new LiteralText("[Xiemar] > " + xiemar.extensionSettings().isEnabled() + "."), false);
+                            context.getSource().sendFeedback(new LiteralText("[Xiemar] > " + xiemar.extensionSettings().isEnabled()), false);
                             ExtensionManager.saveSettings();
                             PlayerUtils.reloadCommands();
                             return 1;
@@ -46,7 +47,7 @@ public class XiemarCommand {
                     if (player != null) {
                         player.kill();
                     } else {
-                        context.getSource().sendFeedback(new LiteralText("Xiemar is not online."), false);
+                        context.getSource().sendFeedback(MarkEnum.CROSS.appendMessage("Xiemar is not online"), false);
                     }
                     return 1;
                 }));

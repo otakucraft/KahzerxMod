@@ -1,11 +1,11 @@
 package com.kahzerx.kahzerxmod.extensions.hatExtension;
 
+import com.kahzerx.kahzerxmod.utils.MarkEnum;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralText;
 import net.minecraft.util.Hand;
 
 import static net.minecraft.server.command.CommandManager.literal;
@@ -17,7 +17,7 @@ public class HatCommand {
                 executes(context -> {
                     ServerPlayerEntity player = context.getSource().getPlayer();
                     if (player.getMainHandStack().isEmpty()) {
-                        context.getSource().sendFeedback(new LiteralText("Hold something on your main hand."), false);
+                        context.getSource().sendFeedback(MarkEnum.INFO.appendMessage("Hold something on your main hand."), false);
                         return 1;
                     }
                     int mainHandStack = player.getInventory().getSlotWithStack(player.getMainHandStack());

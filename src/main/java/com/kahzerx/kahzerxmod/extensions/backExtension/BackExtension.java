@@ -4,14 +4,12 @@ import com.kahzerx.kahzerxmod.Extensions;
 import com.kahzerx.kahzerxmod.extensions.ExtensionSettings;
 import com.kahzerx.kahzerxmod.extensions.GenericExtension;
 import com.kahzerx.kahzerxmod.extensions.permsExtension.PermsExtension;
-import com.kahzerx.kahzerxmod.extensions.permsExtension.PermsLevels;
 import com.kahzerx.kahzerxmod.utils.DimUtils;
+import com.kahzerx.kahzerxmod.utils.MarkEnum;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralText;
-import net.minecraft.util.Formatting;
 
 import java.sql.*;
 import java.util.HashMap;
@@ -126,34 +124,9 @@ public class BackExtension extends GenericExtension implements Extensions {
         if (player == null) {
             return 1;
         }
-        if (permsExtension.getPlayerPerms().containsKey(player.getUuidAsString())) {
-            if (permsExtension.getPlayerPerms().get(player.getUuidAsString()).getId() < PermsLevels.MOD.getId()) {
-                player.sendMessage(
-                        new LiteralText("You don't have permission to run this command."),
-                        false
-                );
-                return 1;
-            }
-        } else {
-            player.sendMessage(
-                    new LiteralText("Error."),
-                    false
-            );
-            return 1;
-        }
         String playerUUID = player.getUuidAsString();
-//        if (player.getVelocity().getY() < -1 || player.isOnFire() || player.isSubmergedInWater() || player.getDamageTracker().wasRecentlyAttacked()) {
-//            player.sendMessage(
-//                    new LiteralText("NOP").styled(style -> style.withColor(Formatting.DARK_RED)),
-//                    false
-//            );
-//            return 1;
-//        }
         if (!this.playerBack.containsKey(playerUUID)) {
-            player.sendMessage(
-                    new LiteralText("Error."),
-                    false
-            );
+            player.sendMessage(MarkEnum.CROSS.appendMessage("Error"), false);
             return 1;
         }
         BackPos backPos = playerBack.get(playerUUID);
@@ -168,10 +141,7 @@ public class BackExtension extends GenericExtension implements Extensions {
             );
             player.addExperience(0);  // xp resets when you tp from other dimension and needs to update smh, mojang pls.
         } else {
-            player.sendMessage(
-                    new LiteralText("You haven't died yet :("),
-                    false
-            );
+            player.sendMessage(MarkEnum.INFO.appendMessage("You haven't died yet :("), false);
         }
         return 1;
     }

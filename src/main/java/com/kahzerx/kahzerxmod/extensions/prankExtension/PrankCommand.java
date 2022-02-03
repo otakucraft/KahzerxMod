@@ -1,5 +1,6 @@
 package com.kahzerx.kahzerxmod.extensions.prankExtension;
 
+import com.kahzerx.kahzerxmod.utils.MarkEnum;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.minecraft.command.CommandSource;
@@ -18,7 +19,7 @@ public class PrankCommand {
                         suggests(((context, builder) -> CommandSource.suggestMatching(new String[]{"0", "1", "2", "3", "4", "5"}, builder))).
                         executes(context -> {
                             prankExtension.updateLevel(context.getSource().getPlayer(), PrankLevel.idToLevel(IntegerArgumentType.getInteger(context, "level")));
-                            context.getSource().sendFeedback(new LiteralText(String.format("Prank level > %d", IntegerArgumentType.getInteger(context, "level"))), false);
+                            context.getSource().sendFeedback(MarkEnum.TICK.appendMessage(String.format("Prank level > %d", IntegerArgumentType.getInteger(context, "level"))), false);
                             return 1;
                         })).
                 then(literal("info").
@@ -26,7 +27,7 @@ public class PrankCommand {
                                 suggests(((context, builder) -> CommandSource.suggestMatching(new String[]{"0", "1", "2", "3", "4", "5"}, builder))).
                                 executes(context -> {
                                     PrankLevel level = PrankLevel.idToLevel(IntegerArgumentType.getInteger(context, "level"));
-                                    context.getSource().sendFeedback(new LiteralText(
+                                    context.getSource().sendFeedback(MarkEnum.INFO.appendText(new LiteralText(
                                             String.format("Nivel %d", level.getID())
                                     ).styled(style -> style.
                                             withBold(true).
@@ -35,7 +36,7 @@ public class PrankCommand {
                                             String.format(": %s", level.getDescription())
                                     ).styled(style -> style.
                                             withBold(false).
-                                            withColor(Formatting.WHITE))), false);
+                                            withColor(Formatting.WHITE)))), false);
                                     return 1;
                                 }))));
     }

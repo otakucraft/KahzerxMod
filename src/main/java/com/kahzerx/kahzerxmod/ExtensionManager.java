@@ -122,7 +122,7 @@ public class ExtensionManager {
         KahzerxServer.extensions.add(new PrankExtension(new ExtensionSettings("pranks", isEnabled(found, "pranks"), "Sets a prank level on your name.")));
         KahzerxServer.extensions.add(new SkullExtension(new ExtensionSettings("skull", isEnabled(found, "skull"), "Gives player heads.")));
         KahzerxServer.extensions.add(new PlayerDropsSkullExtension(new ExtensionSettings("playerDropsSkull", isEnabled(found, "playerDropsSkull"), "Players have a 12% chance of dropping skull on death by trident lightning and a 30% by natural lightning.")));
-        KahzerxServer.extensions.add(new BadgeExtension(new ExtensionSettings("badge", isEnabled(found, "badge"), "Badge system, helpers can add badges to players that will display on chat(only last 3), and on chat hover"), permsExtension));
+        KahzerxServer.extensions.add(new BadgeExtension(new ExtensionSettings("badge", isEnabled(found, "badge"), "Badge system, helpers can add badges to players that will display on chat(only last 3), and on chat hover."), permsExtension));
 
         String token = "";
         boolean crossServerChat = false;

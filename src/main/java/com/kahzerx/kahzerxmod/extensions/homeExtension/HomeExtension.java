@@ -4,6 +4,7 @@ import com.kahzerx.kahzerxmod.Extensions;
 import com.kahzerx.kahzerxmod.extensions.ExtensionSettings;
 import com.kahzerx.kahzerxmod.extensions.GenericExtension;
 import com.kahzerx.kahzerxmod.utils.DimUtils;
+import com.kahzerx.kahzerxmod.utils.MarkEnum;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.server.MinecraftServer;
@@ -136,20 +137,6 @@ public class HomeExtension extends GenericExtension implements Extensions {
             return 1;
         }
         String playerUUID = player.getUuidAsString();
-//        if (player.getVelocity().getY() < -1 || player.isOnFire() || player.isSubmergedInWater() || player.getDamageTracker().wasRecentlyAttacked()) {
-//            player.sendMessage(
-//                    new LiteralText("NOP").styled(style -> style.withColor(Formatting.DARK_RED).withBold(true)),
-//                    false
-//            );
-//            return 1;
-//        }
-        if (!this.playerHomes.containsKey(playerUUID)) {
-            player.sendMessage(
-                    new LiteralText("Error."),
-                    false
-            );
-            return 1;
-        }
         HomePos homePos = playerHomes.get(playerUUID);
         if (homePos.isValid()) {
             player.teleport(
@@ -162,10 +149,7 @@ public class HomeExtension extends GenericExtension implements Extensions {
             );
             player.addExperience(0);  // xp resets when you tp from other dimension and needs to update smh, mojang pls.
         } else {
-            player.sendMessage(
-                    new LiteralText("You don't have a home yet, use ").append(getClickableSetHomeCommand()),
-                    false
-            );
+            player.sendMessage(MarkEnum.INFO.appendText(new LiteralText("You don't have a home yet, use ").styled(style -> style.withColor(Formatting.WHITE)).append(getClickableSetHomeCommand())), false);
         }
         return 1;
     }
@@ -177,13 +161,6 @@ public class HomeExtension extends GenericExtension implements Extensions {
         }
         HomePos newHomePos = new HomePos(player.getX(), player.getY(), player.getZ(), DimUtils.getDim(player.world));
         String playerUUID = player.getUuidAsString();
-        if (!this.playerHomes.containsKey(playerUUID)) {
-            player.sendMessage(
-                    new LiteralText("Error."),
-                    false
-            );
-            return 1;
-        }
         playerHomes.put(playerUUID, newHomePos);
         src.sendFeedback(
             new LiteralText(String.format(

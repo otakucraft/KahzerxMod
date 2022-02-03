@@ -4,6 +4,7 @@ import com.kahzerx.kahzerxmod.Extensions;
 import com.kahzerx.kahzerxmod.extensions.ExtensionSettings;
 import com.kahzerx.kahzerxmod.extensions.GenericExtension;
 import com.kahzerx.kahzerxmod.utils.DimUtils;
+import com.kahzerx.kahzerxmod.utils.MarkEnum;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.server.command.ServerCommandSource;
@@ -93,13 +94,7 @@ public class SpawnExtension extends GenericExtension implements Extensions {
             ps.setInt(4, DimUtils.getWorldID(DimUtils.getDim(player.world)));
             ps.executeUpdate();
             ps.close();
-            source.sendFeedback(new LiteralText(
-                    String.format(
-                            "Spawn @: %s %s",
-                            DimUtils.getDimensionWithColor(player.world),
-                            DimUtils.formatCoords(pos.getX(), pos.getY(), pos.getZ())
-                    )
-            ), false);
+            source.sendFeedback(MarkEnum.TICK.appendMessage(String.format("Spawn @: %s %s", DimUtils.getDimensionWithColor(player.world), DimUtils.formatCoords(pos.getX(), pos.getY(), pos.getZ()))), false);
         } catch (SQLException | CommandSyntaxException e) {
             e.printStackTrace();
         }

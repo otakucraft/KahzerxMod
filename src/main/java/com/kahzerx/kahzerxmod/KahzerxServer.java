@@ -2,6 +2,7 @@ package com.kahzerx.kahzerxmod;
 
 import com.kahzerx.kahzerxmod.database.ServerDatabase;
 import com.kahzerx.kahzerxmod.utils.FileUtils;
+import com.kahzerx.kahzerxmod.utils.MarkEnum;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.server.MinecraftServer;
@@ -40,35 +41,29 @@ public class KahzerxServer {
                     then(literal("enable").
                             executes(context -> {
                                 if (ex.extensionSettings().isEnabled()) {
-                                    context.getSource().sendFeedback(new LiteralText(ex.extensionSettings().getName() + " already enabled!"), false);
+                                    context.getSource().sendFeedback(MarkEnum.CROSS.appendMessage(ex.extensionSettings().getName() + " extension already enabled"), false);
                                     return 1;
                                 }
                                 ex.extensionSettings().setEnabled(true);
                                 ex.onExtensionEnabled();
                                 ExtensionManager.saveSettings();
-                                context.getSource().sendFeedback(new LiteralText(ex.extensionSettings().getName() + " extension enabled!"), false);
+                                context.getSource().sendFeedback(MarkEnum.TICK.appendMessage(ex.extensionSettings().getName() + " extension enabled"), false);
                                 return 1;
                             })).
                     then(literal("disable").
                             executes(context -> {
                                 if (!ex.extensionSettings().isEnabled()) {
-                                    context.getSource().sendFeedback(new LiteralText(ex.extensionSettings().getName() + " already disabled!"), false);
+                                    context.getSource().sendFeedback(MarkEnum.CROSS.appendMessage(ex.extensionSettings().getName() + " extension already disabled"), false);
                                     return 1;
                                 }
                                 ex.extensionSettings().setEnabled(false);
                                 ex.onExtensionDisabled();
                                 ExtensionManager.saveSettings();
-                                context.getSource().sendFeedback(new LiteralText(ex.extensionSettings().getName() + " extension disabled!"), false);
+                                context.getSource().sendFeedback(MarkEnum.TICK.appendMessage(ex.extensionSettings().getName() + " extension disabled"), false);
                                 return 1;
                             })).
                     executes(context -> {
-                        context.getSource().sendFeedback(
-                                new LiteralText(String.format(
-                                        "[%s] > %s\n%s",
-                                        ex.extensionSettings().getName(),
-                                        ex.extensionSettings().isEnabled(),
-                                        ex.extensionSettings().getDescription()
-                                )), false);
+                        context.getSource().sendFeedback(MarkEnum.INFO.appendMessage(String.format("[%s] > %s\n%s", ex.extensionSettings().getName(), ex.extensionSettings().isEnabled(), ex.extensionSettings().getDescription())), false);
                         return 1;
                     });
             ex.settingsCommand(extensionSubCommand);  // Otros ajustes por si fueran necesarios para las extensiones más complejas.

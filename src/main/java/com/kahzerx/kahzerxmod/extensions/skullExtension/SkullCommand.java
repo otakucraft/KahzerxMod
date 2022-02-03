@@ -1,5 +1,6 @@
 package com.kahzerx.kahzerxmod.extensions.skullExtension;
 
+import com.kahzerx.kahzerxmod.utils.MarkEnum;
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -9,7 +10,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralText;
 import net.minecraft.util.ItemScatterer;
 
 import java.util.Optional;
@@ -24,7 +24,7 @@ public class SkullCommand {
                         executes(context -> {
                             Optional<GameProfile> profile = context.getSource().getServer().getUserCache().findByName(StringArgumentType.getString(context, "playerName"));
                             if (profile.isEmpty()) {
-                                context.getSource().sendFeedback(new LiteralText("Not premium!"), false);
+                                context.getSource().sendFeedback(MarkEnum.CROSS.appendMessage("Not premium!"), false);
                                 return 1;
                             }
                             ItemStack stack = new ItemStack(Items.PLAYER_HEAD);

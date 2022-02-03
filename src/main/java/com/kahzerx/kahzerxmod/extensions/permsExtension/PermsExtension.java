@@ -4,13 +4,13 @@ import com.google.common.collect.Sets;
 import com.kahzerx.kahzerxmod.Extensions;
 import com.kahzerx.kahzerxmod.extensions.ExtensionSettings;
 import com.kahzerx.kahzerxmod.extensions.GenericExtension;
+import com.kahzerx.kahzerxmod.utils.MarkEnum;
 import com.kahzerx.kahzerxmod.utils.PlayerUtils;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralText;
 
 import java.sql.*;
 import java.util.Collection;
@@ -137,7 +137,7 @@ public class PermsExtension extends GenericExtension implements Extensions {
         }
         int level = PermsLevels.getLevel(value);
         if (level == -1) {
-            source.sendFeedback(new LiteralText("Not a valid level!"), false);
+            source.sendFeedback(MarkEnum.CROSS.appendMessage("Not a valid level!"), false);
             return 1;
         }
         try {
@@ -149,7 +149,7 @@ public class PermsExtension extends GenericExtension implements Extensions {
             ps.setInt(3, level);
             ps.executeUpdate();
             ps.close();
-            source.sendFeedback(new LiteralText(String.format("Player %s > %s", player, value)), false);
+            source.sendFeedback(MarkEnum.TICK.appendMessage(String.format("Player %s > %s", player, value)), false);
             if (this.playerPerms.containsKey(playerUUID)) {
                 playerPerms.remove(playerUUID);
             }

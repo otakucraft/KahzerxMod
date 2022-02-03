@@ -18,8 +18,6 @@ import java.util.List;
 public abstract class PlayerManagerMixin {
     @Shadow public abstract List<ServerPlayerEntity> getPlayerList();
 
-    @Shadow @Final private MinecraftServer server;
-
     @Inject(method = "createPlayer", at = @At("HEAD"))
     private void onCreatePlayer(GameProfile profile, CallbackInfoReturnable<ServerPlayerEntity> cir) {
         for (ServerPlayerEntity player : getPlayerList()) {

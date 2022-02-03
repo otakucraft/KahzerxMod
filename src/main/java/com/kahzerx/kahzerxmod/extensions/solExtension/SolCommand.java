@@ -1,9 +1,9 @@
 package com.kahzerx.kahzerxmod.extensions.solExtension;
 
+import com.kahzerx.kahzerxmod.utils.MarkEnum;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralText;
 
 import static net.minecraft.server.command.CommandManager.literal;
 
@@ -15,7 +15,7 @@ public class SolCommand {
                 executes(context -> {
                     ServerPlayerEntity player = context.getSource().getPlayer();
                     player.setOnFireFor(3);
-                    context.getSource().sendFeedback(new LiteralText("Very hot indeed."), false);
+                    context.getSource().sendFeedback(MarkEnum.SUN.appendMessage("Very hot indeed!"), false);
                     return 1;
                 }));
     }

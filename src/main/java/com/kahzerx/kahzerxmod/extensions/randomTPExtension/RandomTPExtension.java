@@ -3,12 +3,12 @@ package com.kahzerx.kahzerxmod.extensions.randomTPExtension;
 import com.kahzerx.kahzerxmod.Extensions;
 import com.kahzerx.kahzerxmod.extensions.ExtensionSettings;
 import com.kahzerx.kahzerxmod.extensions.GenericExtension;
+import com.kahzerx.kahzerxmod.utils.MarkEnum;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.block.Blocks;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
@@ -36,7 +36,7 @@ public class RandomTPExtension extends GenericExtension implements Extensions {
             return 1;
         }
         if (player.getEntityWorld().getRegistryKey() != World.OVERWORLD) {
-            source.sendFeedback(new LiteralText("You can only run this command in the overworld."), false);
+            source.sendFeedback(MarkEnum.CROSS.appendMessage("You can only run this command in the overworld"), false);
             return 1;
         }
         final int min = -10000;

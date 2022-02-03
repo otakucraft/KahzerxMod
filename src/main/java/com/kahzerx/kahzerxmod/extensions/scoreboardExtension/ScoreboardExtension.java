@@ -3,6 +3,7 @@ package com.kahzerx.kahzerxmod.extensions.scoreboardExtension;
 import com.kahzerx.kahzerxmod.Extensions;
 import com.kahzerx.kahzerxmod.extensions.ExtensionSettings;
 import com.kahzerx.kahzerxmod.extensions.GenericExtension;
+import com.kahzerx.kahzerxmod.utils.MarkEnum;
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.block.Block;
@@ -49,12 +50,12 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
         Scoreboard scoreboard = source.getServer().getScoreboard();
         Entity entity = source.getEntity();
         if (scoreboard.getObjectiveForSlot(1) == null) {
-            source.sendFeedback(new LiteralText("There is no scoreboard."), false);
+            source.sendFeedback(MarkEnum.CROSS.appendMessage("There is no scoreboard"), false);
             return 1;
         } else {
             scoreboard.setObjectiveSlot(1, null);
             assert entity != null;
-            source.getServer().getPlayerManager().broadcast(new LiteralText(entity.getEntityName() + " removed the scoreboard."), MessageType.CHAT, Util.NIL_UUID);
+            source.getServer().getPlayerManager().broadcast(MarkEnum.TICK.appendMessage(entity.getEntityName() + " removed the scoreboard."), MessageType.CHAT, Util.NIL_UUID);
         }
         return 1;
     }
@@ -75,10 +76,10 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
 
         if (scoreboardObjective != null) {
             if (scoreboard.getObjectiveForSlot(1) == scoreboardObjective) {
-                text = new LiteralText("Already showing.");
+                text = MarkEnum.CROSS.appendMessage("Already showing");
             } else {
                 assert entity != null;
-                text = new LiteralText(entity.getEntityName() + " has selected " + Formatting.GOLD + "[" + scoreboardObjective.getDisplayName().asString() + "]");
+                text = MarkEnum.TICK.appendText(new LiteralText(Formatting.WHITE + entity.getEntityName() + " has selected " + Formatting.GOLD + "[" + scoreboardObjective.getDisplayName().asString() + "]"));
                 scoreboard.setObjectiveSlot(1, scoreboardObjective);
             }
         } else {
@@ -98,17 +99,16 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
                 initScoreboard(source, newScoreboardObjective, minecraftItem, type);
             } catch (Exception e) {
                 scoreboard.removeObjective(newScoreboardObjective);
-                text = new LiteralText("Error.").formatted(Formatting.RED);
+                text = MarkEnum.CROSS.appendMessage("Error.");
                 assert entity != null;
                 source.getServer().getPlayerManager().broadcast(text, MessageType.CHAT, Util.NIL_UUID);
 
                 return;
-
             }
             scoreboard.setObjectiveSlot(1, newScoreboardObjective);
             assert entity != null;
             assert scoreboardObjective != null;
-            text = new LiteralText(entity.getEntityName() + " has selected " + Formatting.GOLD + "[" + scoreboardObjective.getDisplayName().asString() + "]");
+            text = MarkEnum.TICK.appendText(new LiteralText(Formatting.WHITE + entity.getEntityName() + " has selected " + Formatting.GOLD + "[" + scoreboardObjective.getDisplayName().asString() + "]"));
         }
         assert entity != null;
         source.getServer().getPlayerManager().broadcast(text, MessageType.CHAT, Util.NIL_UUID);
