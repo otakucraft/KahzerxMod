@@ -17,7 +17,7 @@ public class HatCommand {
                 executes(context -> {
                     ServerPlayerEntity player = context.getSource().getPlayer();
                     if (player.getMainHandStack().isEmpty()) {
-                        context.getSource().sendFeedback(MarkEnum.INFO.appendMessage("Hold something on your main hand."), false);
+                        context.getSource().sendFeedback(MarkEnum.CROSS.appendMessage("Hold something on your main hand"), false);
                         return 1;
                     }
                     int mainHandStack = player.getInventory().getSlotWithStack(player.getMainHandStack());

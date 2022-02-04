@@ -46,6 +46,7 @@ import com.kahzerx.kahzerxmod.extensions.renewableElytraExtension.RenewableElytr
 import com.kahzerx.kahzerxmod.extensions.scoreboardExtension.ScoreboardExtension;
 import com.kahzerx.kahzerxmod.extensions.seedExtension.SeedExtension;
 import com.kahzerx.kahzerxmod.extensions.skullExtension.SkullExtension;
+import com.kahzerx.kahzerxmod.extensions.slabExtension.SlabExtension;
 import com.kahzerx.kahzerxmod.extensions.solExtension.SolExtension;
 import com.kahzerx.kahzerxmod.extensions.spawnExtension.SpawnExtension;
 import com.kahzerx.kahzerxmod.extensions.spoofExtension.SpoofExtension;
@@ -125,6 +126,7 @@ public class ExtensionManager {
         KahzerxServer.extensions.add(new PlayerDropsSkullExtension(new ExtensionSettings("playerDropsSkull", isEnabled(found, "playerDropsSkull"), "Players have a 12% chance of dropping skull on death by trident lightning and a 30% by natural lightning.")));
         KahzerxServer.extensions.add(new BadgeExtension(new ExtensionSettings("badge", isEnabled(found, "badge"), "Badge system, helpers can add badges to players that will display on chat(only last 3), and on chat hover."), permsExtension));
         KahzerxServer.extensions.add(new ItemFormattedExtension(new ExtensionSettings("formattedItems",isEnabled(found, "formattedItems"), "Items renamed on anvils can set format if set on the usual mc formatting replacing § with %")));
+        KahzerxServer.extensions.add(new SlabExtension(new ExtensionSettings("slab", isEnabled(found, "slab"), "Enchants the slab on your main hand with the /slab command so you can always place the upper slab.")));
 
         String token = "";
         boolean crossServerChat = false;

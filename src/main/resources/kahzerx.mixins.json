@@ -30,6 +30,7 @@
     "server.PlayerEventsMixins$PlayerConn",
     "server.PlayerEventsMixins$PlayerDied",
     "server.ServerEventsMixin",
+    "slabExtension.SlabBlockExtension",
     "villagersFollowEmeraldExtension.VillagerEntityMixin"
   ],
   "client": [],
