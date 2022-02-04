@@ -32,6 +32,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class ScoreboardExtension extends GenericExtension implements Extensions {
+    public static boolean isExtensionEnabled = false;
+
     public ScoreboardExtension(ExtensionSettings settings) {
         super(settings);
     }
@@ -39,6 +41,23 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
     @Override
     public void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher) {
         new ScoreboardCommand().register(dispatcher, this);
+    }
+
+    @Override
+    public void onServerRun(MinecraftServer minecraftServer) {
+        isExtensionEnabled = this.getSettings().isEnabled();
+    }
+
+    @Override
+    public void onExtensionDisabled() {
+        Extensions.super.onExtensionDisabled();
+        isExtensionEnabled = false;
+    }
+
+    @Override
+    public void onExtensionEnabled() {
+        Extensions.super.onExtensionEnabled();
+        isExtensionEnabled = true;
     }
 
     @Override
