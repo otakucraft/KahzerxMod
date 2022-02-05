@@ -1,6 +1,7 @@
 package com.kahzerx.kahzerxmod;
 
 import com.kahzerx.kahzerxmod.database.ServerDatabase;
+import com.kahzerx.kahzerxmod.profiler.*;
 import com.kahzerx.kahzerxmod.utils.FileUtils;
 import com.kahzerx.kahzerxmod.utils.MarkEnum;
 import com.mojang.brigadier.CommandDispatcher;
@@ -20,10 +21,19 @@ import static net.minecraft.server.command.CommandManager.literal;
 public class KahzerxServer {
     public static MinecraftServer minecraftServer;
     public static List<Extensions> extensions = new ArrayList<>();
+    public static List<AbstractProfiler> profilers = new ArrayList<>();
     public static ServerDatabase db = new ServerDatabase();
     public static CommandDispatcher<ServerCommandSource> dispatcher;
 
     public static void onRunServer(MinecraftServer minecraftServer) {
+        profilers.add(new TPSProfiler());
+        profilers.add(new RamProfiler());
+        profilers.add(new MSPTProfiler());
+        profilers.add(new PlayersProfiler());
+        profilers.add(new BlockEntitiesProfiler());
+        profilers.add(new EntityProfiler());
+        profilers.add(new ChunkProfiler());
+
         KahzerxServer.minecraftServer = minecraftServer;
         ExtensionManager.manageExtensions(FileUtils.loadConfig(minecraftServer.getSavePath(WorldSavePath.ROOT).toString()));
 
@@ -153,5 +163,9 @@ public class KahzerxServer {
 
     public static void onTick(MinecraftServer server) {
         extensions.forEach(e -> e.onTick(server));
+        profilers.forEach(p -> {
+            p.onTick(server);
+            p.clearResults();
+        });
     }
 }
