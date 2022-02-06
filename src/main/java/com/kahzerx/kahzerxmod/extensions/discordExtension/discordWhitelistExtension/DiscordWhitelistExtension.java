@@ -72,9 +72,8 @@ public class DiscordWhitelistExtension extends GenericExtension implements Exten
             stmt.executeUpdate(createDiscordDatabase);
             stmt.close();
 
-            String createBannedDiscordDatabase = "CREATE TABLE IF NOT EXISTS `discord_banned`(" +
-                    "`discordID` NUMERIC PRIMARY KEY NOT NULL," +
-                    "FOREIGN KEY(discordID) REFERENCES discord(discordID));";
+            String createBannedDiscordDatabase = "CREATE TABLE IF NOT EXISTS `discord_banned_v2`(" +
+                    "`discordID` NUMERIC PRIMARY KEY NOT NULL);";
             Statement stmt_ = conn.createStatement();
             stmt_.executeUpdate(createBannedDiscordDatabase);
             stmt_.close();
@@ -98,7 +97,7 @@ public class DiscordWhitelistExtension extends GenericExtension implements Exten
     public boolean isDiscordBanned(long discordID) {
         boolean banned = false;
         try {
-            String getBan = "SELECT discordID FROM discord_banned WHERE discordID = ?;";
+            String getBan = "SELECT discordID FROM discord_banned_v2 WHERE discordID = ?;";
             PreparedStatement ps = conn.prepareStatement(getBan);
             ps.setLong(1, discordID);
             ResultSet rs = ps.executeQuery();
@@ -220,7 +219,7 @@ public class DiscordWhitelistExtension extends GenericExtension implements Exten
 
     public void banDiscord(long discordID) {
         try {
-            String insertPlayer = "INSERT OR IGNORE INTO discord_banned (discordID) VALUES (?);";
+            String insertPlayer = "INSERT OR IGNORE INTO discord_banned_v2 (discordID) VALUES (?);";
             PreparedStatement ps = conn.prepareStatement(insertPlayer);
             ps.setLong(1, discordID);
             ps.executeUpdate();
@@ -232,7 +231,7 @@ public class DiscordWhitelistExtension extends GenericExtension implements Exten
 
     public void pardonDiscord(long discordID) {
         try {
-            String insertPlayer = "DELETE FROM discord_banned WHERE discordID = ?;";
+            String insertPlayer = "DELETE FROM discord_banned_v2 WHERE discordID = ?;";
             PreparedStatement ps = conn.prepareStatement(insertPlayer);
             ps.setLong(1, discordID);
             ps.executeUpdate();

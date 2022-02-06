@@ -86,7 +86,6 @@ public class DiscordExtension extends GenericExtension implements Extensions {
         new DiscordSendCommand().register(dispatcher, this);
     }
 
-
     @Override
     public void onExtensionEnabled() {
         if (!extensionSettings().isEnabled()) {
