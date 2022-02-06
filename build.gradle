@@ -63,6 +63,10 @@ dependencies {
 	include 'org.apache.httpcomponents:httpcore:4.4.12'
 	include 'org.apache.httpcomponents:httpasyncclient:4.1.4'
 	include 'org.apache.httpcomponents:httpcore-nio:4.4.12'
+	include 'commons-codec:commons-codec:1.11'
+	include 'commons-logging:commons-logging:1.1.3'
+	include 'jakarta.json:jakarta.json-api:2.0.1'
+	include 'org.eclipse.parsson:parsson:1.0.0'
 }
 
 processResources {

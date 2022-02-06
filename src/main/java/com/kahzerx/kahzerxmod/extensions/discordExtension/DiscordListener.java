@@ -52,7 +52,9 @@ public class DiscordListener extends ListenerAdapter {
     }
 
     public static void stop() {
-        jda.shutdownNow();
+        if (jda != null) {
+            jda.shutdownNow();
+        }
         chatbridge = false;
     }
 
