@@ -1,11 +1,11 @@
 package com.kahzerx.kahzerxmod.profiler;
 
 import com.kahzerx.kahzerxmod.profiler.instances.ChunkInstance;
+import com.kahzerx.kahzerxmod.profiler.instances.ProfilerResult;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.chunk.WorldChunk;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class ChunkProfiler extends AbstractProfiler {
@@ -13,9 +13,7 @@ public class ChunkProfiler extends AbstractProfiler {
 
     @Override
     public void onTick(MinecraftServer server) {
-        HashMap<String, Object> chunks = new HashMap<>();
-        chunks.put("loaded_chunks", chunkList);
-        this.addResult(server.getTicks(), chunks);
+        this.addResult(server.getTicks(), new ProfilerResult("loaded_chunks", chunkList));
         chunkList.clear();
     }
 

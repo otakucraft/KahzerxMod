@@ -1,11 +1,11 @@
 package com.kahzerx.kahzerxmod.profiler;
 
+import com.kahzerx.kahzerxmod.profiler.instances.ProfilerResult;
 import com.kahzerx.kahzerxmod.profiler.instances.TPSInstance;
 import net.minecraft.server.MinecraftServer;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 public class TPSProfiler extends AbstractProfiler {
@@ -23,12 +23,10 @@ public class TPSProfiler extends AbstractProfiler {
 
     @Override
     public void onTick(MinecraftServer server) {
-        HashMap<String, Object> tick = new HashMap<>();
         long now = System.nanoTime();
 
         if (this.lastTickTime == 0) {
-            tick.put("TPS", new TPSInstance(20.0D, 20.0D, 20.0D, 20.0D, 20.0D));
-            this.addResult(server.getTicks(), tick);
+            this.addResult(server.getTicks(), new ProfilerResult("TPS", new TPSInstance(20.0D, 20.0D, 20.0D, 20.0D, 20.0D)));
             this.lastTickTime = now;
             return;
         }
@@ -43,8 +41,7 @@ public class TPSProfiler extends AbstractProfiler {
 
         this.lastTickTime = now;
 
-        tick.put("TPS", new TPSInstance(tps5Sec(), tps10Sec(), tps1Min(), tps5Min(), tps10Min()));
-        this.addResult(server.getTicks(), tick);
+        this.addResult(server.getTicks(), new ProfilerResult("TPS", new TPSInstance(tps5Sec(), tps10Sec(), tps1Min(), tps5Min(), tps10Min())));
     }
 
     public double tps5Sec() {

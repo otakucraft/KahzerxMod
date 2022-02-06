@@ -1,5 +1,6 @@
 package com.kahzerx.kahzerxmod.profiler;
 
+import com.kahzerx.kahzerxmod.profiler.instances.ProfilerResult;
 import com.kahzerx.kahzerxmod.profiler.instances.RamInstance;
 import net.minecraft.server.MinecraftServer;
 
@@ -13,8 +14,6 @@ public class RamProfiler extends AbstractProfiler {
         long allocatedMemory = runtime.totalMemory() / 1024 / 1024 / 1024;
         long freeMemory = runtime.freeMemory() / 1024 / 1024 / 1024;
 
-        HashMap<String, Object> ram = new HashMap<>();
-        ram.put("RAM", new RamInstance((double) maxMemory, (double) allocatedMemory, (double) freeMemory));
-        this.addResult(server.getTicks(), ram);
+        this.addResult(server.getTicks(), new ProfilerResult("RAM", new RamInstance((double) maxMemory, (double) allocatedMemory, (double) freeMemory)));
     }
 }

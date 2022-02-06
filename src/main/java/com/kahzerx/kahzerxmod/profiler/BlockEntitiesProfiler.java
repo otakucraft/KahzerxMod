@@ -1,6 +1,7 @@
 package com.kahzerx.kahzerxmod.profiler;
 
 import com.kahzerx.kahzerxmod.profiler.instances.BlockEntityInstance;
+import com.kahzerx.kahzerxmod.profiler.instances.ProfilerResult;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.server.MinecraftServer;
@@ -9,7 +10,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class BlockEntitiesProfiler extends AbstractProfiler {
@@ -17,9 +17,7 @@ public class BlockEntitiesProfiler extends AbstractProfiler {
 
     @Override
     public void onTick(MinecraftServer server) {
-        HashMap<String, Object> blockEntities = new HashMap<>();
-        blockEntities.put("block_entities", blockEntityList);
-        this.addResult(server.getTicks(), blockEntities);
+        this.addResult(server.getTicks(), new ProfilerResult("block_entities", blockEntityList));
         blockEntityList.clear();
     }
 

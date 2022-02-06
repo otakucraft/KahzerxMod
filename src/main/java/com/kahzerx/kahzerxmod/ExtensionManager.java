@@ -24,6 +24,10 @@ import com.kahzerx.kahzerxmod.extensions.discordExtension.discordWhitelistExtens
 import com.kahzerx.kahzerxmod.extensions.discordExtension.discordWhitelistSyncExtension.DiscordWhitelistSyncExtension;
 import com.kahzerx.kahzerxmod.extensions.discordExtension.discordWhitelistSyncExtension.DiscordWhitelistSyncJsonSettings;
 import com.kahzerx.kahzerxmod.extensions.discordExtension.discordWhitelistSyncExtension.DiscordWhitelistSyncSettings;
+import com.kahzerx.kahzerxmod.extensions.elasticExtension.ElasticExtension;
+import com.kahzerx.kahzerxmod.extensions.elasticExtension.ElasticJsonSettings;
+import com.kahzerx.kahzerxmod.extensions.elasticExtension.ElasticSettings;
+import com.kahzerx.kahzerxmod.extensions.elasticProfiler.ElasticProfilerExtension;
 import com.kahzerx.kahzerxmod.extensions.endermanNoGriefExtension.EndermanNoGriefExtension;
 import com.kahzerx.kahzerxmod.extensions.fckPrivacyExtension.FckPrivacyExtension;
 import com.kahzerx.kahzerxmod.extensions.hatExtension.HatExtension;
@@ -87,7 +91,29 @@ public class ExtensionManager {
             }
         }
 
+
+        String host = "";
+        String user = "";
+        String password = "";
+        int port = 0;
+        ElasticJsonSettings ejs = gson.fromJson(settings, ElasticJsonSettings.class);
+        if (ejs != null) {
+            for (ElasticSettings es : ejs.getSettings()) {
+                if (es == null) {
+                    continue;
+                }
+                if (es.getName().equals("elastic")) {
+                    host = es.getHost();
+                    user = es.getUser();
+                    password = es.getPassword();
+                    port = es.getPort();
+                }
+            }
+        }
+
+        ElasticExtension elasticExtension = new ElasticExtension(new ElasticSettings("elastic", isEnabled(found, "elastic"), "Connection for elastic search.", host, user, password, port));
         PermsExtension permsExtension = new PermsExtension(new ExtensionSettings("perms", isEnabled(found, "perms"), "Permission levels for other commands like /back, /c or /modTP. Enables /kPerms command."));
+
         KahzerxServer.extensions.add(permsExtension);
         KahzerxServer.extensions.add(new HomeExtension(new ExtensionSettings("home", isEnabled(found, "home"), "/home and /setHome commands.")));
         KahzerxServer.extensions.add(new BackExtension(new ExtensionSettings("back", isEnabled(found, "back"), "/back command to tp to the last death position."), permsExtension));
@@ -122,8 +148,10 @@ public class ExtensionManager {
         KahzerxServer.extensions.add(new SkullExtension(new ExtensionSettings("skull", isEnabled(found, "skull"), "Gives player heads.")));
         KahzerxServer.extensions.add(new PlayerDropsSkullExtension(new ExtensionSettings("playerDropsSkull", isEnabled(found, "playerDropsSkull"), "Players have a 12% chance of dropping skull on death by trident lightning and a 30% by natural lightning.")));
         KahzerxServer.extensions.add(new BadgeExtension(new ExtensionSettings("badge", isEnabled(found, "badge"), "Badge system, helpers can add badges to players that will display on chat(only last 3), and on chat hover."), permsExtension));
-        KahzerxServer.extensions.add(new ItemFormattedExtension(new ExtensionSettings("formattedItems",isEnabled(found, "formattedItems"), "Items renamed on anvils can set format if set on the usual mc formatting replacing § with %")));
+        KahzerxServer.extensions.add(new ItemFormattedExtension(new ExtensionSettings("formattedItems",isEnabled(found, "formattedItems"), "Items renamed on anvils can set format if set on the usual mc formatting replacing § with %.")));
         KahzerxServer.extensions.add(new SlabExtension(new ExtensionSettings("slab", isEnabled(found, "slab"), "Enchants the slab on your main hand with the /slab command so you can always place the upper slab.")));
+        KahzerxServer.extensions.add(elasticExtension);
+        KahzerxServer.extensions.add(new ElasticProfilerExtension(new ExtensionSettings("elasticProfiler", isEnabled(found, "elasticProfiler") && elasticExtension.extensionSettings().isEnabled(), "Sends profiler data to the elastic instance, elastic extension needs to be enabled."), elasticExtension));
 
         String token = "";
         boolean crossServerChat = false;
