@@ -47,6 +47,7 @@ import com.kahzerx.kahzerxmod.extensions.randomTPExtension.RandomTPExtension;
 import com.kahzerx.kahzerxmod.extensions.renewableElytraExtension.RenewableElytraExtension;
 import com.kahzerx.kahzerxmod.extensions.scoreboardExtension.ScoreboardExtension;
 import com.kahzerx.kahzerxmod.extensions.seedExtension.SeedExtension;
+import com.kahzerx.kahzerxmod.extensions.sitExtension.SitExtension;
 import com.kahzerx.kahzerxmod.extensions.skullExtension.SkullExtension;
 import com.kahzerx.kahzerxmod.extensions.slabExtension.SlabExtension;
 import com.kahzerx.kahzerxmod.extensions.solExtension.SolExtension;
@@ -152,6 +153,7 @@ public class ExtensionManager {
         KahzerxServer.extensions.add(new ItemFormattedExtension(new ExtensionSettings("formattedItems",isEnabled(found, "formattedItems"), "Items renamed on anvils can set format if set on the usual mc formatting replacing § with %.")));
         KahzerxServer.extensions.add(new SlabExtension(new ExtensionSettings("slab", isEnabled(found, "slab"), "Enchants the slab on your main hand with the /slab command so you can always place the upper slab.")));
         KahzerxServer.extensions.add(new AchusExtension(new ExtensionSettings("achus", isEnabled(found, "achus"), "Achus!!")));
+        KahzerxServer.extensions.add(new SitExtension(new ExtensionSettings("sit", isEnabled(found, "sit"), "To sit anywhere.")));
         KahzerxServer.extensions.add(elasticExtension);
         KahzerxServer.extensions.add(new ElasticProfilerExtension(new ExtensionSettings("elasticProfiler", isEnabled(found, "elasticProfiler") && elasticExtension.extensionSettings().isEnabled(), "Sends profiler data to the elastic instance, elastic extension needs to be enabled."), elasticExtension));
 
