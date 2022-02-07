@@ -445,7 +445,7 @@ public class ElasticProfilerExtension extends GenericExtension implements Extens
                     }
                 }
                 """, XContentType.JSON);
-            tpsTemplate.alias(new Alias("tps1").filter(QueryBuilders.termQuery("name", "ram")));
+            tpsTemplate.alias(new Alias("tps1").filter(QueryBuilders.termQuery("name", "tps")));
             elasticExtension.getClient().indices().putTemplate(tpsTemplate, RequestOptions.DEFAULT);
             CreateIndexRequest createTpsIndex = new CreateIndexRequest("tps-000001");
             createTpsIndex.alias(new Alias("tps-alias").writeIndex(true));

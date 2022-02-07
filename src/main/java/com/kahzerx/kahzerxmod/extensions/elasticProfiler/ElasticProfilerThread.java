@@ -39,7 +39,7 @@ public class ElasticProfilerThread extends Thread {
                         result.data().getClass().getSimpleName().replace("Instance", "").toLowerCase(Locale.ROOT) + "-alias"
                 ).source(map);
                 post.add(indexRequest);
-                if (post.size() > 1_000) {
+                if (post.size() > 3_000) {
                     BulkRequest bulkRequest = new BulkRequest();
                     for (IndexRequest i : post) {
                         bulkRequest.add(i);
