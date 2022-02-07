@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.kahzerx.kahzerxmod.config.KSettings;
 import com.kahzerx.kahzerxmod.extensions.ExtensionSettings;
+import com.kahzerx.kahzerxmod.extensions.achusExtension.AchusExtension;
 import com.kahzerx.kahzerxmod.extensions.afkExtension.AFKExtension;
 import com.kahzerx.kahzerxmod.extensions.backExtension.BackExtension;
 import com.kahzerx.kahzerxmod.extensions.badgeExtension.BadgeExtension;
@@ -150,6 +151,7 @@ public class ExtensionManager {
         KahzerxServer.extensions.add(new BadgeExtension(new ExtensionSettings("badge", isEnabled(found, "badge"), "Badge system, helpers can add badges to players that will display on chat(only last 3), and on chat hover."), permsExtension));
         KahzerxServer.extensions.add(new ItemFormattedExtension(new ExtensionSettings("formattedItems",isEnabled(found, "formattedItems"), "Items renamed on anvils can set format if set on the usual mc formatting replacing § with %.")));
         KahzerxServer.extensions.add(new SlabExtension(new ExtensionSettings("slab", isEnabled(found, "slab"), "Enchants the slab on your main hand with the /slab command so you can always place the upper slab.")));
+        KahzerxServer.extensions.add(new AchusExtension(new ExtensionSettings("achus", isEnabled(found, "achus"), "Achus!!")));
         KahzerxServer.extensions.add(elasticExtension);
         KahzerxServer.extensions.add(new ElasticProfilerExtension(new ExtensionSettings("elasticProfiler", isEnabled(found, "elasticProfiler") && elasticExtension.extensionSettings().isEnabled(), "Sends profiler data to the elastic instance, elastic extension needs to be enabled."), elasticExtension));
 

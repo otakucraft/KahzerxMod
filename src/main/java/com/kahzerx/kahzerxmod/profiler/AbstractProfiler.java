@@ -10,7 +10,7 @@ import java.util.Map;
 public abstract class AbstractProfiler {
     protected Map<Integer, ProfilerResult> results = new LinkedHashMap<>();
 
-    public abstract void onTick(MinecraftServer server);
+    public abstract void onTick(MinecraftServer server, String id);
 
     public void addResult(int tick, ProfilerResult results) {
         this.results.put(tick, results);
@@ -24,7 +24,11 @@ public abstract class AbstractProfiler {
         }
     }
 
-    public ProfilerResult getResults() {
+    public Map<Integer, ProfilerResult> getResults() {
+        return results;
+    }
+
+    public ProfilerResult getResult() {
         List<Integer> keys = results.keySet().stream().toList();
         return results.get(keys.get(keys.size() - 1));
     }

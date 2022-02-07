@@ -10,14 +10,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class BlockEntitiesProfiler extends AbstractProfiler {
-    public static List<BlockEntityInstance> blockEntityList = new ArrayList<>();
+    private static final ArrayList<BlockEntityInstance> blockEntityList = new ArrayList<>();
 
     @Override
-    public void onTick(MinecraftServer server) {
-        this.addResult(server.getTicks(), new ProfilerResult("block_entities", blockEntityList));
+    public void onTick(MinecraftServer server, String id) {
+        blockEntityList.add(new BlockEntityInstance("", "", 0.0D, 0.0D, 0.0D));
+        this.addResult(server.getTicks(), new ProfilerResult("block_entities", id, new ArrayList<>(blockEntityList)));
         blockEntityList.clear();
     }
 

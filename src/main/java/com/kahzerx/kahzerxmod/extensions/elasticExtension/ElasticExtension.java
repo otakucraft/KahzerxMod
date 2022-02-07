@@ -1,9 +1,5 @@
 package com.kahzerx.kahzerxmod.extensions.elasticExtension;
 
-import co.elastic.clients.elasticsearch.ElasticsearchClient;
-import co.elastic.clients.json.jackson.JacksonJsonpMapper;
-import co.elastic.clients.transport.ElasticsearchTransport;
-import co.elastic.clients.transport.rest_client.RestClientTransport;
 import com.kahzerx.kahzerxmod.ExtensionManager;
 import com.kahzerx.kahzerxmod.Extensions;
 import com.kahzerx.kahzerxmod.extensions.GenericExtension;
@@ -15,7 +11,9 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.LiteralText;
 import org.apache.http.HttpHost;
+import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestHighLevelClient;
 
 import java.io.IOException;
 
@@ -23,20 +21,14 @@ import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 
 public class ElasticExtension extends GenericExtension implements Extensions {
-    private RestClient restClient;
-    private ElasticsearchTransport transport;
-    private ElasticsearchClient client;
+    private RestHighLevelClient client;
     private boolean isConnected = false;
 
     public ElasticExtension(ElasticSettings settings) {
         super(settings);
     }
 
-    public boolean isConnected() {
-        return isConnected;
-    }
-
-    public ElasticsearchClient getClient() {
+    public RestHighLevelClient getClient() {
         return client;
     }
 
@@ -49,12 +41,12 @@ public class ElasticExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onExtensionEnabled() {
-        restClient = RestClient.builder(new HttpHost(this.extensionSettings().getHost(), this.extensionSettings().getPort())).build();
-        transport = new RestClientTransport(restClient, new JacksonJsonpMapper());
-        client = new ElasticsearchClient(transport);
+        client = new RestHighLevelClient(RestClient.builder(new HttpHost(this.extensionSettings().getHost(), this.extensionSettings().getPort())));
         try {
-            client.ping();
-            isConnected = true;
+            isConnected = client.ping(RequestOptions.DEFAULT);
+            if (!isConnected) {
+                onExtensionDisabled();
+            }
         } catch (IOException e) {
             onExtensionDisabled();
         }
@@ -62,8 +54,6 @@ public class ElasticExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onExtensionDisabled() {
-        restClient = null;
-        transport = null;
         client = null;
         isConnected = false;
         extensionSettings().setEnabled(false);

@@ -10,14 +10,14 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class EntityProfiler extends AbstractProfiler {
-    public static List<EntityInstance> entityList = new ArrayList<>();
+    private static final ArrayList<EntityInstance> entityList = new ArrayList<>();
 
     @Override
-    public void onTick(MinecraftServer server) {
-        this.addResult(server.getTicks(), new ProfilerResult("entities", entityList));
+    public void onTick(MinecraftServer server, String id) {
+        entityList.add(new EntityInstance("", "", 0.0D, 0.0D, 0.0D));
+        this.addResult(server.getTicks(), new ProfilerResult("entities", id, new ArrayList<>(entityList)));
         entityList.clear();
     }
 

@@ -22,11 +22,11 @@ public class TPSProfiler extends AbstractProfiler {
     private final TpsRollingAverage[] tpsAverages = {this.tps5Sec, this.tps10Sec, this.tps1Min, this.tps5Min, this.tps10Min};
 
     @Override
-    public void onTick(MinecraftServer server) {
+    public void onTick(MinecraftServer server, String id) {
         long now = System.nanoTime();
 
         if (this.lastTickTime == 0) {
-            this.addResult(server.getTicks(), new ProfilerResult("TPS", new TPSInstance(20.0D, 20.0D, 20.0D, 20.0D, 20.0D)));
+            this.addResult(server.getTicks(), new ProfilerResult("tps", id, new TPSInstance(20.0D, 20.0D, 20.0D, 20.0D, 20.0D)));
             this.lastTickTime = now;
             return;
         }
@@ -41,7 +41,7 @@ public class TPSProfiler extends AbstractProfiler {
 
         this.lastTickTime = now;
 
-        this.addResult(server.getTicks(), new ProfilerResult("TPS", new TPSInstance(tps5Sec(), tps10Sec(), tps1Min(), tps5Min(), tps10Min())));
+        this.addResult(server.getTicks(), new ProfilerResult("tps", id, new TPSInstance(tps5Sec(), tps10Sec(), tps1Min(), tps5Min(), tps10Min())));
     }
 
     public double tps5Sec() {

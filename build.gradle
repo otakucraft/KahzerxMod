@@ -39,6 +39,7 @@ dependencies {
 	}
 	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 	implementation 'co.elastic.clients:elasticsearch-java:7.16.3'
+	implementation 'org.elasticsearch.client:elasticsearch-rest-high-level-client:7.16.3'
 
 	include 'org.xerial:sqlite-jdbc:3.36.0.2'
 	include 'com.google.code.gson:gson:2.8.9'
@@ -57,6 +58,7 @@ dependencies {
 	include 'com.fasterxml.jackson.core:jackson-core:2.10.1'
 	include 'net.sf.trove4j:trove4j:3.0.3'
 	include 'co.elastic.clients:elasticsearch-java:7.16.3'
+	include 'org.elasticsearch.client:elasticsearch-rest-high-level-client:7.16.3'
 	include 'org.elasticsearch.client:elasticsearch-rest-client:7.16.2'
 	include 'org.apache.httpcomponents:httpclient:4.5.10'
 	include 'org.apache.httpcomponents:httpcore:4.4.12'

@@ -2,6 +2,7 @@ package com.kahzerx.kahzerxmod;
 
 import com.kahzerx.kahzerxmod.database.ServerDatabase;
 import com.kahzerx.kahzerxmod.profiler.*;
+import com.kahzerx.kahzerxmod.utils.DateUtils;
 import com.kahzerx.kahzerxmod.utils.FileUtils;
 import com.kahzerx.kahzerxmod.utils.MarkEnum;
 import com.mojang.brigadier.CommandDispatcher;
@@ -26,13 +27,13 @@ public class KahzerxServer {
     public static CommandDispatcher<ServerCommandSource> dispatcher;
 
     public static void onRunServer(MinecraftServer minecraftServer) {
-        profilers.add(new TPSProfiler());
-        profilers.add(new RamProfiler());
-        profilers.add(new MSPTProfiler());
-        profilers.add(new PlayersProfiler());
+        profilers.add(new ChunkProfiler());
         profilers.add(new BlockEntitiesProfiler());
         profilers.add(new EntityProfiler());
-        profilers.add(new ChunkProfiler());
+        profilers.add(new MSPTProfiler());
+        profilers.add(new PlayersProfiler());
+        profilers.add(new RamProfiler());
+        profilers.add(new TPSProfiler());
 
         KahzerxServer.minecraftServer = minecraftServer;
         ExtensionManager.manageExtensions(FileUtils.loadConfig(minecraftServer.getSavePath(WorldSavePath.ROOT).toString()));
@@ -162,10 +163,14 @@ public class KahzerxServer {
     }
 
     public static void onTick(MinecraftServer server) {
-        extensions.forEach(e -> e.onTick(server));
+        if (server.getTicks() < 20) {
+            return;
+        }
+        String id = DateUtils.getAcc();
         profilers.forEach(p -> {
-            p.onTick(server);
+            p.onTick(server, id);
             p.clearResults();
         });
+        extensions.forEach(e -> e.onTick(server));
     }
 }
