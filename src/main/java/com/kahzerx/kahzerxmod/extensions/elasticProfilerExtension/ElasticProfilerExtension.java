@@ -1,4 +1,4 @@
-package com.kahzerx.kahzerxmod.extensions.elasticProfiler;
+package com.kahzerx.kahzerxmod.extensions.elasticProfilerExtension;
 
 import com.kahzerx.kahzerxmod.ExtensionManager;
 import com.kahzerx.kahzerxmod.Extensions;

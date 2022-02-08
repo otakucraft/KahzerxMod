@@ -28,7 +28,7 @@ import com.kahzerx.kahzerxmod.extensions.discordExtension.discordWhitelistSyncEx
 import com.kahzerx.kahzerxmod.extensions.elasticExtension.ElasticExtension;
 import com.kahzerx.kahzerxmod.extensions.elasticExtension.ElasticJsonSettings;
 import com.kahzerx.kahzerxmod.extensions.elasticExtension.ElasticSettings;
-import com.kahzerx.kahzerxmod.extensions.elasticProfiler.ElasticProfilerExtension;
+import com.kahzerx.kahzerxmod.extensions.elasticProfilerExtension.ElasticProfilerExtension;
 import com.kahzerx.kahzerxmod.extensions.endermanNoGriefExtension.EndermanNoGriefExtension;
 import com.kahzerx.kahzerxmod.extensions.fckPrivacyExtension.FckPrivacyExtension;
 import com.kahzerx.kahzerxmod.extensions.hatExtension.HatExtension;

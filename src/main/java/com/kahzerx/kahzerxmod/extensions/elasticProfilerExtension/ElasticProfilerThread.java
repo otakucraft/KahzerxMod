@@ -1,4 +1,4 @@
-package com.kahzerx.kahzerxmod.extensions.elasticProfiler;
+package com.kahzerx.kahzerxmod.extensions.elasticProfilerExtension;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
