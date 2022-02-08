@@ -11,6 +11,10 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.LiteralText;
 import org.apache.http.HttpHost;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
@@ -42,7 +46,10 @@ public class ElasticExtension extends GenericExtension implements Extensions {
     @Override
     public void onExtensionEnabled() {
         try {
-            client = new RestHighLevelClient(RestClient.builder(new HttpHost(this.extensionSettings().getHost(), this.extensionSettings().getPort())));
+            CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+            credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(this.extensionSettings().getUser(), this.extensionSettings().getPassword()));
+            client = new RestHighLevelClient(RestClient.builder(new HttpHost(this.extensionSettings().getHost(), this.extensionSettings().getPort())).
+                    setHttpClientConfigCallback(httpClientBuilder -> httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider)));
             isConnected = client.ping(RequestOptions.DEFAULT);
             if (!isConnected) {
                 onExtensionDisabled();
