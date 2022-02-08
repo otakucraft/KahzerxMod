@@ -136,7 +136,7 @@ public class ElasticProfilerExtension extends GenericExtension implements Extens
             elasticExtension.getClient().ingest().putPipeline(pipelineRequest, RequestOptions.DEFAULT);
 
             Map<String, LifecycleAction> hotActionMap = new HashMap<>();
-            hotActionMap.put(RolloverAction.NAME, new RolloverAction(null, new ByteSizeValue(20, ByteSizeUnit.GB), null, null));
+            hotActionMap.put(RolloverAction.NAME, new RolloverAction(null, new ByteSizeValue(10, ByteSizeUnit.GB), null, null));
             Map<String, LifecycleAction> deleteActionMap = Collections.singletonMap(DeleteAction.NAME, new DeleteAction());
             Map<String, Phase> phases = new HashMap<>();
             phases.put("hot", new Phase("hot", TimeValue.ZERO, hotActionMap));
