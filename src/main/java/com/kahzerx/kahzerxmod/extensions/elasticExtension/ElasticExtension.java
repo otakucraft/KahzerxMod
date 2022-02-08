@@ -41,8 +41,8 @@ public class ElasticExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onExtensionEnabled() {
-        client = new RestHighLevelClient(RestClient.builder(new HttpHost(this.extensionSettings().getHost(), this.extensionSettings().getPort())));
         try {
+            client = new RestHighLevelClient(RestClient.builder(new HttpHost(this.extensionSettings().getHost(), this.extensionSettings().getPort())));
             isConnected = client.ping(RequestOptions.DEFAULT);
             if (!isConnected) {
                 onExtensionDisabled();
