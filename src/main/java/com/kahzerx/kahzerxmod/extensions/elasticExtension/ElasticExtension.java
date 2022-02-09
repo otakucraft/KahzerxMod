@@ -1,5 +1,8 @@
 package com.kahzerx.kahzerxmod.extensions.elasticExtension;
 
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.json.jackson.JacksonJsonpMapper;
+import co.elastic.clients.transport.rest_client.RestClientTransport;
 import com.kahzerx.kahzerxmod.ExtensionManager;
 import com.kahzerx.kahzerxmod.Extensions;
 import com.kahzerx.kahzerxmod.extensions.GenericExtension;
@@ -15,9 +18,7 @@ import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.impl.client.BasicCredentialsProvider;
-import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
-import org.elasticsearch.client.RestHighLevelClient;
 
 import java.io.IOException;
 
@@ -25,14 +26,14 @@ import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 
 public class ElasticExtension extends GenericExtension implements Extensions {
-    private RestHighLevelClient client;
+    private ElasticsearchClient client;
     private boolean isConnected = false;
 
     public ElasticExtension(ElasticSettings settings) {
         super(settings);
     }
 
-    public RestHighLevelClient getClient() {
+    public ElasticsearchClient getClient() {
         return client;
     }
 
@@ -48,9 +49,8 @@ public class ElasticExtension extends GenericExtension implements Extensions {
         try {
             CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
             credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(this.extensionSettings().getUser(), this.extensionSettings().getPassword()));
-            client = new RestHighLevelClient(RestClient.builder(new HttpHost(this.extensionSettings().getHost(), this.extensionSettings().getPort())).
-                    setHttpClientConfigCallback(httpClientBuilder -> httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider)));
-            isConnected = client.ping(RequestOptions.DEFAULT);
+            client = new ElasticsearchClient(new RestClientTransport(RestClient.builder(new HttpHost(this.extensionSettings().getHost(), this.extensionSettings().getPort())).setHttpClientConfigCallback(httpClientBuilder -> httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider)).build(), new JacksonJsonpMapper()));
+            isConnected = client.ping().value();
             if (!isConnected) {
                 onExtensionDisabled();
             }
