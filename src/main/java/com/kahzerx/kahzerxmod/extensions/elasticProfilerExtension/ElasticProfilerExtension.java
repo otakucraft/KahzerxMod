@@ -140,7 +140,7 @@ public class ElasticProfilerExtension extends GenericExtension implements Extens
             Map<String, LifecycleAction> deleteActionMap = Collections.singletonMap(DeleteAction.NAME, new DeleteAction());
             Map<String, Phase> phases = new HashMap<>();
             phases.put("hot", new Phase("hot", TimeValue.ZERO, hotActionMap));
-            phases.put("delete", new Phase("delete", new TimeValue(90, TimeUnit.DAYS), deleteActionMap));
+            phases.put("delete", new Phase("delete", new TimeValue(2, TimeUnit.DAYS), deleteActionMap));
             LifecyclePolicy policy = new LifecyclePolicy("profiler-policy", phases);
             PutLifecyclePolicyRequest lifecycleRequest = new PutLifecyclePolicyRequest(policy);
             elasticExtension.getClient().indexLifecycle().putLifecyclePolicy(lifecycleRequest, RequestOptions.DEFAULT);
