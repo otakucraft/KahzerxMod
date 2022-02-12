@@ -32,6 +32,7 @@ import com.kahzerx.kahzerxmod.extensions.elasticProfilerExtension.ElasticProfile
 import com.kahzerx.kahzerxmod.extensions.endermanNoGriefExtension.EndermanNoGriefExtension;
 import com.kahzerx.kahzerxmod.extensions.fckPrivacyExtension.FckPrivacyExtension;
 import com.kahzerx.kahzerxmod.extensions.hatExtension.HatExtension;
+import com.kahzerx.kahzerxmod.extensions.helperKickExtension.HelperKickExtension;
 import com.kahzerx.kahzerxmod.extensions.hereExtension.HereExtension;
 import com.kahzerx.kahzerxmod.extensions.homeExtension.HomeExtension;
 import com.kahzerx.kahzerxmod.extensions.itemFormattedExtension.ItemFormattedExtension;
@@ -121,6 +122,7 @@ public class ExtensionManager {
         KahzerxServer.extensions.add(new BackExtension(new ExtensionSettings("back", isEnabled(found, "back"), "/back command to tp to the last death position."), permsExtension));
         KahzerxServer.extensions.add(new CameraExtension(new ExtensionSettings("camera", isEnabled(found, "camera"), "/c, spectator + night vision + conduit (stolen from carpet)."), permsExtension));
         KahzerxServer.extensions.add(new ModTPExtension(new ExtensionSettings("modTP", isEnabled(found, "modTP"), "Enables /modTP that allows players with mod perms to tp to other players."), permsExtension));
+        KahzerxServer.extensions.add(new HelperKickExtension(new ExtensionSettings("helperKick", isEnabled(found, "helperKick"), "Allows helpers and above to run /kick"), permsExtension));
         KahzerxServer.extensions.add(new SurvivalExtension(new ExtensionSettings("survival", isEnabled(found, "survival"), "/s, survival - night vision - conduit (stolen from carpet).")));
         KahzerxServer.extensions.add(new PitoExtension(new ExtensionSettings("pito", isEnabled(found, "pito"), "/pito ¯\\_(ツ)_/¯")));
         KahzerxServer.extensions.add(new HereExtension(new ExtensionSettings("here", isEnabled(found, "here"), "/here, print current location + glowing 5 seconds.")));

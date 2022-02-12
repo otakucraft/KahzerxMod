@@ -21,9 +21,12 @@ public class ServerPlayNetworkHandlerMixin {
         MutableText name = (MutableText) instance.getDisplayName();
         if (BadgeExtension.isExtensionEnabled) {
             List<BadgeInstance> badges = BadgeExtension.playerBadges.get(instance.getUuidAsString());
+            if (badges.size() != 0) {
+                name.append(new LiteralText(" "));
+            }
             for (int i = badges.size() - 1; i >= 0; i--) {
                 int finalI = i;
-                name.append(new LiteralText(" " + badges.get(i).getBadge()).styled(style -> style.withColor(Formatting.byColorIndex(badges.get(finalI).getColorIndex()))));
+                name.append(new LiteralText(badges.get(i).getBadge()).styled(style -> style.withColor(Formatting.byColorIndex(badges.get(finalI).getColorIndex()))));
                 if (i < badges.size() - 2) {
                     break;
                 }
