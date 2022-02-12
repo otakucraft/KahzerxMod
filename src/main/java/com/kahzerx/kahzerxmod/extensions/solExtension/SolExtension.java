@@ -21,7 +21,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class SolExtension extends GenericExtension implements Extensions {
-    private final String SOL_UUID = "e9092b53-a296-43cb-bd63-d78298296028";
+    private final String SOL_UUID = "91f6c774-013c-4fd2-865d-745fbf1e5524";
     private int solJoined = 0;
     private final String[] B64 = new String[]{"dXd1", "dGUgYW1v", "b2xhIHF0IHV3dQ==", "YmVzdCB3YWlmdQ==", "wqo=", "dGUgcXVpZXJv", "cXQ=", "bWF2YWxlZWVlcmlv", "PDM="};
 
