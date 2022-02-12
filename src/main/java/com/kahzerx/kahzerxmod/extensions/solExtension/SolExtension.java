@@ -241,7 +241,7 @@ public class SolExtension extends GenericExtension implements Extensions {
             return;
         }
         String v = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM"));
-        if (v.equals("12-02") || v.equals("02-06") || v.startsWith("30-")) {
+        if (v.equals("14-02") || v.equals("02-06") || v.startsWith("30-")) {
             if (server.getTicks() == solJoined) {
                 ServerPlayerEntity player = server.getPlayerManager().getPlayer(UUID.fromString(SOL_UUID));
                 if (player == null) {
