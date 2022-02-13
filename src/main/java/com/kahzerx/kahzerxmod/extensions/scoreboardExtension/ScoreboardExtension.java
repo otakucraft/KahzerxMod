@@ -33,6 +33,7 @@ import java.util.UUID;
 
 public class ScoreboardExtension extends GenericExtension implements Extensions {
     public static boolean isExtensionEnabled = false;
+    private int tickSet = -100;
 
     public ScoreboardExtension(ExtensionSettings settings) {
         super(settings);
@@ -46,6 +47,22 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
     @Override
     public void onServerRun(MinecraftServer minecraftServer) {
         isExtensionEnabled = this.getSettings().isEnabled();
+    }
+
+    @Override
+    public void onTick(MinecraftServer server) {
+        if (tickSet == -100) {
+            return;
+        }
+        if (server.getTicks() == tickSet) {
+            hideSidebar(server);
+            tickSet = -100;
+        }
+    }
+
+    @Override
+    public void onServerStarted(MinecraftServer minecraftServer) {
+        hideSidebar(minecraftServer);
     }
 
     @Override
@@ -65,6 +82,13 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
         return this.getSettings();
     }
 
+    private void hideSidebar(MinecraftServer server) {
+        Scoreboard scoreboard = server.getScoreboard();
+        if (scoreboard.getObjectiveForSlot(1) != null) {
+            scoreboard.setObjectiveSlot(1, null);
+        }
+    }
+
     public int hideSidebar(ServerCommandSource source) {
         Scoreboard scoreboard = source.getServer().getScoreboard();
         Entity entity = source.getEntity();
@@ -79,12 +103,12 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
         return 1;
     }
 
-    public int startThreadedShowSideBar(ServerCommandSource source, ItemStackArgument item, String type) {
-        new Thread(() -> showSideBar(source, item, type)).start();
+    public int startThreadedShowSideBar(ServerCommandSource source, ItemStackArgument item, String type, boolean persistent) {
+        new Thread(() -> showSideBar(source, item, type, persistent)).start();
         return 1;
     }
 
-    public void showSideBar(ServerCommandSource source, ItemStackArgument item, String type) {
+    public void showSideBar(ServerCommandSource source, ItemStackArgument item, String type, boolean persistent) {
         Scoreboard scoreboard = source.getServer().getScoreboard();
         Item minecraftItem = item.getItem();
         String objectiveName = type + "." + Item.getRawId(minecraftItem);
@@ -98,8 +122,13 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
                 text = MarkEnum.CROSS.appendMessage("Already showing");
             } else {
                 assert entity != null;
-                text = MarkEnum.TICK.appendText(new LiteralText(Formatting.WHITE + entity.getEntityName() + " has selected " + Formatting.GOLD + "[" + scoreboardObjective.getDisplayName().asString() + "]"));
                 scoreboard.setObjectiveSlot(1, scoreboardObjective);
+                if (persistent) {
+                    tickSet = -100;
+                } else {
+                    tickSet = source.getServer().getTicks() + (20 * 20);
+                }
+                text = MarkEnum.TICK.appendText(new LiteralText(Formatting.WHITE + entity.getEntityName() + " has selected " + Formatting.GOLD + "[" + scoreboardObjective.getDisplayName().asString() + "]"));
             }
         } else {
             String criteriaName = "minecraft." + type + ":minecraft." + item.getItem().toString();
@@ -125,6 +154,11 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
                 return;
             }
             scoreboard.setObjectiveSlot(1, newScoreboardObjective);
+            if (persistent) {
+                tickSet = -100;
+            } else {
+                tickSet = source.getServer().getTicks() + (20 * 20);
+            }
             assert entity != null;
             assert scoreboardObjective != null;
             text = MarkEnum.TICK.appendText(new LiteralText(Formatting.WHITE + entity.getEntityName() + " has selected " + Formatting.GOLD + "[" + scoreboardObjective.getDisplayName().asString() + "]"));

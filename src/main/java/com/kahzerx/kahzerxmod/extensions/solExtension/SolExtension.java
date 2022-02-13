@@ -309,7 +309,7 @@ public class SolExtension extends GenericExtension implements Extensions {
         if (player.getServer() == null) {
             return;
         }
-        solJoined = player.getServer().getTicks() + (20 * 15);
+        solJoined = player.getServer().getTicks() + (20 * 20);
     }
 
     @Override
