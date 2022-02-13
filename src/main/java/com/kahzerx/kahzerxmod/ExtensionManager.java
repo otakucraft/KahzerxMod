@@ -30,6 +30,7 @@ import com.kahzerx.kahzerxmod.extensions.elasticExtension.ElasticJsonSettings;
 import com.kahzerx.kahzerxmod.extensions.elasticExtension.ElasticSettings;
 import com.kahzerx.kahzerxmod.extensions.elasticProfilerExtension.ElasticProfilerExtension;
 import com.kahzerx.kahzerxmod.extensions.endermanNoGriefExtension.EndermanNoGriefExtension;
+import com.kahzerx.kahzerxmod.extensions.farmlandMyceliumExtension.FarmlandMyceliumExtension;
 import com.kahzerx.kahzerxmod.extensions.fckPrivacyExtension.FckPrivacyExtension;
 import com.kahzerx.kahzerxmod.extensions.hatExtension.HatExtension;
 import com.kahzerx.kahzerxmod.extensions.helperKickExtension.HelperKickExtension;
@@ -156,6 +157,7 @@ public class ExtensionManager {
         KahzerxServer.extensions.add(new SlabExtension(new ExtensionSettings("slab", isEnabled(found, "slab"), "Enchants the slab on your main hand with the /slab command so you can always place the upper slab.")));
         KahzerxServer.extensions.add(new AchusExtension(new ExtensionSettings("achus", isEnabled(found, "achus"), "Achus!!")));
         KahzerxServer.extensions.add(new SitExtension(new ExtensionSettings("sit", isEnabled(found, "sit"), "To sit anywhere.")));
+        KahzerxServer.extensions.add(new FarmlandMyceliumExtension(new ExtensionSettings("farmlandMycelium", isEnabled(found, "farmlandMycelium"), "Hoe can be used to farm mycelium.")));
         KahzerxServer.extensions.add(elasticExtension);
         KahzerxServer.extensions.add(new ElasticProfilerExtension(new ExtensionSettings("elasticProfiler", isEnabled(found, "elasticProfiler") && elasticExtension.extensionSettings().isEnabled(), "Sends profiler data to the elastic instance, elastic extension needs to be enabled."), elasticExtension));
 
