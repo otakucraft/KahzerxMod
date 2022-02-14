@@ -1,5 +1,6 @@
 package com.kahzerx.kahzerxmod.utils;
 
+import net.minecraft.text.ClickEvent;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -10,7 +11,9 @@ public enum MarkEnum {
     CROSS("✘", Formatting.DARK_RED),
     INFO("ⓘ", Formatting.GOLD),
     RIP("☠", Formatting.DARK_RED),
-    SUN("☀", Formatting.GOLD);
+    SUN("☀", Formatting.GOLD),
+    QUESTION("?", Formatting.YELLOW),
+    OTAKU_COIN("\uD83D\uDD25", Formatting.RED);
 
     private final String identifier;
     private final Formatting formatting;
@@ -29,11 +32,11 @@ public enum MarkEnum {
     }
 
     public MutableText getFormattedIdentifier() {
-        return new LiteralText(identifier).styled(style -> style.withColor(formatting));
+        return new LiteralText(identifier).styled(style -> style.withColor(formatting).withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, identifier)));
     }
 
     public MutableText getFormattedIdentifierBold() {
-        return new LiteralText(identifier).styled(style -> style.withColor(formatting).withBold(true));
+        return new LiteralText(identifier).styled(style -> style.withColor(formatting).withBold(true).withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, identifier)));
     }
 
     public MutableText appendMessage(String message, Formatting color) {
@@ -44,8 +47,12 @@ public enum MarkEnum {
         return appendMessage(message, Formatting.WHITE);
     }
 
-    public MutableText appendText(Text t) {
-        return getFormattedIdentifier().append(new LiteralText(" ").append(t));
+    public MutableText appendText(MutableText t, Formatting color) {
+        return getFormattedIdentifier().append(new LiteralText(" ").append(t.styled(style -> style.withColor(color))));
+    }
+
+    public MutableText appendText(MutableText t) {
+        return appendText(t, Formatting.WHITE);
     }
 
     public MutableText boldAppendMessage(String message, Formatting color) {

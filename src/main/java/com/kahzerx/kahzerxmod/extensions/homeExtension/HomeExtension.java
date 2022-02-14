@@ -32,7 +32,7 @@ public class HomeExtension extends GenericExtension implements Extensions {
     public void onCreateDatabase(Connection conn) {
         this.conn = conn;
         try {
-            String createBackDatabase = "CREATE TABLE IF NOT EXISTS `home` (" +
+            String createHomeDatabase = "CREATE TABLE IF NOT EXISTS `home` (" +
                     "`uuid` VARCHAR(50) PRIMARY KEY NOT NULL," +
                     "`homeX` NUMERIC DEFAULT NULL," +
                     "`homeY` NUMERIC DEFAULT NULL," +
@@ -40,7 +40,7 @@ public class HomeExtension extends GenericExtension implements Extensions {
                     "`homeDim` NUMERIC DEFAULT NULL," +
                     "FOREIGN KEY(uuid) REFERENCES player(uuid));";
             Statement stmt = conn.createStatement();
-            stmt.executeUpdate(createBackDatabase);
+            stmt.executeUpdate(createHomeDatabase);
             stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();

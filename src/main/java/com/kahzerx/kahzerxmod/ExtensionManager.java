@@ -49,6 +49,7 @@ import com.kahzerx.kahzerxmod.extensions.randomTPExtension.RandomTPExtension;
 import com.kahzerx.kahzerxmod.extensions.renewableElytraExtension.RenewableElytraExtension;
 import com.kahzerx.kahzerxmod.extensions.scoreboardExtension.ScoreboardExtension;
 import com.kahzerx.kahzerxmod.extensions.seedExtension.SeedExtension;
+import com.kahzerx.kahzerxmod.extensions.shopExtension.ShopExtension;
 import com.kahzerx.kahzerxmod.extensions.sitExtension.SitExtension;
 import com.kahzerx.kahzerxmod.extensions.skullExtension.SkullExtension;
 import com.kahzerx.kahzerxmod.extensions.slabExtension.SlabExtension;
@@ -158,6 +159,7 @@ public class ExtensionManager {
         KahzerxServer.extensions.add(new AchusExtension(new ExtensionSettings("achus", isEnabled(found, "achus"), "Achus!!")));
         KahzerxServer.extensions.add(new SitExtension(new ExtensionSettings("sit", isEnabled(found, "sit"), "To sit anywhere.")));
         KahzerxServer.extensions.add(new FarmlandMyceliumExtension(new ExtensionSettings("farmlandMycelium", isEnabled(found, "farmlandMycelium"), "Hoe can be used to farm mycelium.")));
+        KahzerxServer.extensions.add(new ShopExtension(new ExtensionSettings("shop", isEnabled(found, "shop"), "Enables currency system along with shop commands and helpers.")));
         KahzerxServer.extensions.add(elasticExtension);
         KahzerxServer.extensions.add(new ElasticProfilerExtension(new ExtensionSettings("elasticProfiler", isEnabled(found, "elasticProfiler") && elasticExtension.extensionSettings().isEnabled(), "Sends profiler data to the elastic instance, elastic extension needs to be enabled."), elasticExtension));
 

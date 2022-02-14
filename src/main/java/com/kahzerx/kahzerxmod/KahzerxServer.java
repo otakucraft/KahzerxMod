@@ -162,6 +162,10 @@ public class KahzerxServer {
         extensions.forEach(e -> e.onAdvancement(advancement));
     }
 
+    public static void onClick(ServerPlayerEntity player) {
+        extensions.forEach(e -> e.onClick(player));
+    }
+
     public static void onTick(MinecraftServer server) {
         if (server.getTicks() < 20) {
             return;

@@ -10,6 +10,7 @@ import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Hand;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -33,11 +34,16 @@ public class PlayerEventsMixins {
         }
     }
 
-    @Mixin({PlayerEntity.class, ServerPlayerEntity.class})
+    @Mixin(ServerPlayerEntity.class)
     public static class PlayerDied {
         @Inject(method = "onDeath", at = @At("HEAD"))
         private void onPlayerDied(DamageSource source, CallbackInfo ci) {
             KahzerxServer.onPlayerDied((ServerPlayerEntity) (Object) this);
+        }
+
+        @Inject(method = "swingHand", at = @At("RETURN"))
+        private void onPlayerClicker(Hand hand, CallbackInfo ci) {
+            KahzerxServer.onClick((ServerPlayerEntity) (Object) this);
         }
     }
 
