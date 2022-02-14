@@ -2,6 +2,7 @@ package com.kahzerx.kahzerxmod.extensions.shopExtension.gui.panels;
 
 import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.GuiBase;
 import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.GuiPlayer;
+import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.MapGui;
 import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.components.back.SolidBack;
 import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.components.buttons.TextButton;
 import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.components.helpers.TextMapper;
@@ -24,7 +25,7 @@ public class GuiMain extends GuiBase {
     @Override
     public void render(GuiPlayer guiPlayer) {
         closeButton.setDimensions(guiPlayer.getPanelPixelWidth() - 100 - 10, 10, 100, 50);
-        backTest.setDimensions(0, 80, guiPlayer.getPanelPixelWidth(), guiPlayer.getPanelPixelHeight() - 80);
+        backTest.setDimensions(0, 80, guiPlayer.getPanelPixelWidth(), guiPlayer.getPanelPixelHeight() - 80 - MapGui.MAP_HEIGHT);
         super.render(guiPlayer);
     }
 

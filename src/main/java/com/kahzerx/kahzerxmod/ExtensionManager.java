@@ -25,10 +25,6 @@ import com.kahzerx.kahzerxmod.extensions.discordExtension.discordWhitelistExtens
 import com.kahzerx.kahzerxmod.extensions.discordExtension.discordWhitelistSyncExtension.DiscordWhitelistSyncExtension;
 import com.kahzerx.kahzerxmod.extensions.discordExtension.discordWhitelistSyncExtension.DiscordWhitelistSyncJsonSettings;
 import com.kahzerx.kahzerxmod.extensions.discordExtension.discordWhitelistSyncExtension.DiscordWhitelistSyncSettings;
-import com.kahzerx.kahzerxmod.extensions.elasticExtension.ElasticExtension;
-import com.kahzerx.kahzerxmod.extensions.elasticExtension.ElasticJsonSettings;
-import com.kahzerx.kahzerxmod.extensions.elasticExtension.ElasticSettings;
-import com.kahzerx.kahzerxmod.extensions.elasticProfilerExtension.ElasticProfilerExtension;
 import com.kahzerx.kahzerxmod.extensions.endermanNoGriefExtension.EndermanNoGriefExtension;
 import com.kahzerx.kahzerxmod.extensions.farmlandMyceliumExtension.FarmlandMyceliumExtension;
 import com.kahzerx.kahzerxmod.extensions.fckPrivacyExtension.FckPrivacyExtension;
@@ -96,27 +92,6 @@ public class ExtensionManager {
             }
         }
 
-
-        String host = "";
-        String user = "";
-        String password = "";
-        int port = 0;
-        ElasticJsonSettings ejs = gson.fromJson(settings, ElasticJsonSettings.class);
-        if (ejs != null) {
-            for (ElasticSettings es : ejs.getSettings()) {
-                if (es == null) {
-                    continue;
-                }
-                if (es.getName().equals("elastic")) {
-                    host = es.getHost();
-                    user = es.getUser();
-                    password = es.getPassword();
-                    port = es.getPort();
-                }
-            }
-        }
-
-        ElasticExtension elasticExtension = new ElasticExtension(new ElasticSettings("elastic", isEnabled(found, "elastic"), "Connection for elastic search.", host, user, password, port));
         PermsExtension permsExtension = new PermsExtension(new ExtensionSettings("perms", isEnabled(found, "perms"), "Permission levels for other commands like /back, /c or /modTP. Enables /kPerms command."));
 
         KahzerxServer.extensions.add(permsExtension);
@@ -160,8 +135,6 @@ public class ExtensionManager {
         KahzerxServer.extensions.add(new SitExtension(new ExtensionSettings("sit", isEnabled(found, "sit"), "To sit anywhere.")));
         KahzerxServer.extensions.add(new FarmlandMyceliumExtension(new ExtensionSettings("farmlandMycelium", isEnabled(found, "farmlandMycelium"), "Hoe can be used to farm mycelium.")));
         KahzerxServer.extensions.add(new ShopExtension(new ExtensionSettings("shop", isEnabled(found, "shop"), "Enables currency system along with shop commands and helpers.")));
-        KahzerxServer.extensions.add(elasticExtension);
-        KahzerxServer.extensions.add(new ElasticProfilerExtension(new ExtensionSettings("elasticProfiler", isEnabled(found, "elasticProfiler") && elasticExtension.extensionSettings().isEnabled(), "Sends profiler data to the elastic instance, elastic extension needs to be enabled."), elasticExtension));
 
         String token = "";
         boolean crossServerChat = false;

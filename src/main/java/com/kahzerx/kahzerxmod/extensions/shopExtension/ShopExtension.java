@@ -92,7 +92,7 @@ public class ShopExtension extends GenericExtension implements Extensions {
         if (gui.isOpen()) {
             gui.closePanel();
         } else {
-            gui.openPanel(pos, dir, 6, 4);
+            gui.openPanel(pos, dir, 6, 5);
         }
     }
 
