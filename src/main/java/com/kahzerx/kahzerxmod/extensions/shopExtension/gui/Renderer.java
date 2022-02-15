@@ -1,6 +1,7 @@
 package com.kahzerx.kahzerxmod.extensions.shopExtension.gui;
 
 import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.components.helpers.TextMapper;
+import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.images.BitMapImage;
 
 import java.util.ArrayList;
 
@@ -27,6 +28,18 @@ public class Renderer {
             int mx = i % text.getWidth();
             int my = i / text.getWidth();
             guiPlayer.setPixel(x + mx, y + my, color);
+        }
+    }
+
+    public static void drawImage(GuiPlayer guiPlayer, BitMapImage image, int x, int y) {
+        byte[] colors = image.getMapImage();
+
+        for (int i = 0; i < colors.length; i++) {
+            int mx = i % image.getWidth();
+            int my = i / image.getWidth();
+
+            if (colors[i] != 0)
+                guiPlayer.setPixel(x + mx, y + my, colors[i]);
         }
     }
 }

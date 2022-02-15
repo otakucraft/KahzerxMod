@@ -57,8 +57,8 @@ public class GuiPlayer {
                 gui.setReRender(false);
             }
             BlockHitResult hit = Box.raycast(List.of(panelBox), player.getCameraPosVec(1f), player.getCameraPosVec(1f).add(player.getRotationVec(1f).multiply(20)), new BlockPos(0, 0, 0));
-            int newX = -1;
-            int newY = -1;
+            int newX;
+            int newY;
             if (hit != null && hit.getSide() == panelFacingSide) {
                 double dx = panelCorner1.getX() - hit.getPos().getX();
                 double dy = panelCorner1.getY() - hit.getPos().getY() + 1;
@@ -250,5 +250,9 @@ public class GuiPlayer {
             return;
         }
         gui.onClick(false, this);
+    }
+
+    public ServerPlayerEntity getPlayer() {
+        return player;
     }
 }

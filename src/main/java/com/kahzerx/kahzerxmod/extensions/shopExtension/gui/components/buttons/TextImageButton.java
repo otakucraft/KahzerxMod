@@ -4,8 +4,10 @@ import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.GuiPlayer;
 import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.Renderer;
 import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.components.Component;
 import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.components.helpers.TextMapper;
+import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.images.BitMapImage;
 
-public class TextButton extends Component {
+public class TextImageButton extends Component {
+    private BitMapImage image;
     private TextMapper text;
     private byte fillColor;
     private byte hoverColor;
@@ -15,7 +17,9 @@ public class TextButton extends Component {
     private int y;
     private int width;
     private int height;
-    public TextButton(TextMapper text, byte fillColor, byte hoverColor, byte textColor, byte hoverTextColor) {
+
+    public TextImageButton(BitMapImage image, TextMapper text, byte fillColor, byte hoverColor, byte textColor, byte hoverTextColor) {
+        this.image = image;
         this.text = text;
         this.fillColor = fillColor;
         this.hoverColor = hoverColor;
@@ -36,7 +40,8 @@ public class TextButton extends Component {
         byte backColor = isMouseOver() ? hoverColor : fillColor;
         byte color = isMouseOver() ? hoverTextColor : textColor;
         Renderer.fill(guiPlayer, x, y, width, height, backColor);
-        Renderer.drawText(guiPlayer, text, x + width / 2 - text.getWidth() / 2, y + height / 2 - text.getHeight() / 2, color);
+        Renderer.drawText(guiPlayer, text, x + width / 2 - text.getWidth() / 2, y + height * 3 / 4 - text.getHeight() / 2, color);
+        Renderer.drawImage(guiPlayer, image, x + width / 2 - image.getWidth() / 2, y + height / 3 - image.getHeight() / 2);
     }
 
     @Override

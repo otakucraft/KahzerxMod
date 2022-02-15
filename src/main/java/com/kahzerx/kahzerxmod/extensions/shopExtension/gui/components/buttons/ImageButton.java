@@ -1,17 +1,18 @@
-package com.kahzerx.kahzerxmod.extensions.shopExtension.gui.components.back;
+package com.kahzerx.kahzerxmod.extensions.shopExtension.gui.components.buttons;
 
 import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.GuiPlayer;
 import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.Renderer;
 import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.components.Component;
+import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.images.BitMapImage;
 
-public class SolidBack extends Component {
-    private byte fillColor;
+public class ImageButton extends Component {
+    private BitMapImage image;
     private int x;
     private int y;
     private int width;
     private int height;
-    public SolidBack(byte fillColor) {
-        this.fillColor = fillColor;
+    public ImageButton(BitMapImage image) {
+        this.image = image;
     }
 
     public void setDimensions(int x, int y, int width, int height) {
@@ -24,7 +25,7 @@ public class SolidBack extends Component {
 
     @Override
     public void render(GuiPlayer guiPlayer) {
-        Renderer.fill(guiPlayer, x, y, width, height, fillColor);
+        Renderer.drawImage(guiPlayer, image, x + width / 2 - image.getWidth() / 2, y + height / 2 - image.getHeight() / 2);
     }
 
     public int getX() {

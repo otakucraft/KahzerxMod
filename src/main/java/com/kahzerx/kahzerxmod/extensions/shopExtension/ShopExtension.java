@@ -7,8 +7,9 @@ import com.kahzerx.kahzerxmod.extensions.GenericExtension;
 import com.kahzerx.kahzerxmod.extensions.shopExtension.bank.BankCommand;
 import com.kahzerx.kahzerxmod.extensions.shopExtension.exchange.ExchangeCommand;
 import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.GuiCommand;
-import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.panels.GuiMain;
+import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.panels.main.GuiMain;
 import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.GuiPlayer;
+import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.panels.main.MainResources;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
@@ -32,6 +33,11 @@ public class ShopExtension extends GenericExtension implements Extensions {
     @Override
     public ExtensionSettings extensionSettings() {
         return this.getSettings();
+    }
+
+    @Override
+    public void onServerRun(MinecraftServer minecraftServer) {
+        MainResources.noop();
     }
 
     @Override
@@ -87,7 +93,7 @@ public class ShopExtension extends GenericExtension implements Extensions {
         }
 
         Direction dir = player.getHorizontalFacing().getOpposite();
-        BlockPos pos = player.getBlockPos().offset(player.getHorizontalFacing(), 4);
+        BlockPos pos = player.getBlockPos().offset(player.getHorizontalFacing(), 3);
 
         if (gui.isOpen()) {
             gui.closePanel();
