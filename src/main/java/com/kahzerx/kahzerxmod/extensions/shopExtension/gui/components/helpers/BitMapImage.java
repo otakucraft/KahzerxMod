@@ -1,4 +1,4 @@
-package com.kahzerx.kahzerxmod.extensions.shopExtension.gui.images;
+package com.kahzerx.kahzerxmod.extensions.shopExtension.gui.components.helpers;
 
 import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.colors.ColorMatcher;
 

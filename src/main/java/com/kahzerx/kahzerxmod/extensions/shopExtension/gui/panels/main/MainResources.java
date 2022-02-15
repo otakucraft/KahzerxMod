@@ -1,6 +1,6 @@
 package com.kahzerx.kahzerxmod.extensions.shopExtension.gui.panels.main;
 
-import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.images.BitMapImage;
+import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.components.helpers.BitMapImage;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -48,10 +48,10 @@ public class MainResources {
             CORNER_TL = new BitMapImage(cornerTL).scaledDimensions(190, 190).forceColor(BLACK.getCode()).bake();
             BOX = new BitMapImage(ImageIO.read(MainResources.class.getClassLoader().getResource("assets/kahzerx/gui/mainMenu/box.png"))).scaledDimensions(170, 170).forceColor(BLACK.getCode()).bake();
             COIN = new BitMapImage(ImageIO.read(MainResources.class.getClassLoader().getResource("assets/kahzerx/gui/mainMenu/coin.png"))).setMatchSlow(true).scaledDimensions(140, 140).clearColors(34, 57, 58, -110).bake();
-            SHOPS = new BitMapImage(ImageIO.read(MainResources.class.getClassLoader().getResource("assets/kahzerx/gui/mainMenu/shops.png"))).scaledDimensions(120, 120).bake();
+            SHOPS = new BitMapImage(ImageIO.read(MainResources.class.getClassLoader().getResource("assets/kahzerx/gui/mainMenu/shops.png"))).scaledDimensions(100, 100).bake();
             EVENTS = new BitMapImage(ImageIO.read(MainResources.class.getClassLoader().getResource("assets/kahzerx/gui/mainMenu/events.png"))).scaledDimensions(100, 100).bake();
             TRANSFERS = new BitMapImage(ImageIO.read(MainResources.class.getClassLoader().getResource("assets/kahzerx/gui/mainMenu/transfers.png"))).scaledDimensions(100, 100).bake();
-            WAYPOINTS = new BitMapImage(ImageIO.read(MainResources.class.getClassLoader().getResource("assets/kahzerx/gui/mainMenu/waypoints.png"))).scaledDimensions(120, 120).bake();
+            WAYPOINTS = new BitMapImage(ImageIO.read(MainResources.class.getClassLoader().getResource("assets/kahzerx/gui/mainMenu/waypoints.png"))).scaledDimensions(100, 100).bake();
             RENDER = new BitMapImage(ImageIO.read(MainResources.class.getClassLoader().getResource("assets/kahzerx/gui/mainMenu/render.png"))).scaledDimensions(110, 110).bake();
         } catch (IOException e) {
             e.printStackTrace();

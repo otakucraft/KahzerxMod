@@ -4,7 +4,7 @@ import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.GuiPlayer;
 import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.Renderer;
 import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.components.Component;
 import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.components.helpers.TextMapper;
-import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.images.BitMapImage;
+import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.components.helpers.BitMapImage;
 
 public class TextImageButton extends Component {
     private BitMapImage image;

@@ -3,7 +3,7 @@ package com.kahzerx.kahzerxmod.extensions.shopExtension.gui.components.buttons;
 import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.GuiPlayer;
 import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.Renderer;
 import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.components.Component;
-import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.images.BitMapImage;
+import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.components.helpers.BitMapImage;
 
 public class ImageButton extends Component {
     private BitMapImage image;

@@ -1,7 +1,7 @@
 package com.kahzerx.kahzerxmod.extensions.shopExtension.gui;
 
 import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.components.helpers.TextMapper;
-import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.images.BitMapImage;
+import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.components.helpers.BitMapImage;
 
 import java.util.ArrayList;
 

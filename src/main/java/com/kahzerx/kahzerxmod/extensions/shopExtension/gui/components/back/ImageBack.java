@@ -3,7 +3,7 @@ package com.kahzerx.kahzerxmod.extensions.shopExtension.gui.components.back;
 import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.GuiPlayer;
 import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.Renderer;
 import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.components.Component;
-import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.images.BitMapImage;
+import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.components.helpers.BitMapImage;
 
 public class ImageBack extends Component {
     private BitMapImage image;
