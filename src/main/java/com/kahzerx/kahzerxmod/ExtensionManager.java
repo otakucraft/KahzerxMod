@@ -41,6 +41,7 @@ import com.kahzerx.kahzerxmod.extensions.permsExtension.PermsExtension;
 import com.kahzerx.kahzerxmod.extensions.pitoExtension.PitoExtension;
 import com.kahzerx.kahzerxmod.extensions.playerDropsSkullExtension.PlayerDropsSkullExtension;
 import com.kahzerx.kahzerxmod.extensions.prankExtension.PrankExtension;
+import com.kahzerx.kahzerxmod.extensions.profileExtension.ProfileExtension;
 import com.kahzerx.kahzerxmod.extensions.randomTPExtension.RandomTPExtension;
 import com.kahzerx.kahzerxmod.extensions.renewableElytraExtension.RenewableElytraExtension;
 import com.kahzerx.kahzerxmod.extensions.scoreboardExtension.ScoreboardExtension;
@@ -134,7 +135,13 @@ public class ExtensionManager {
         KahzerxServer.extensions.add(new AchusExtension(new ExtensionSettings("achus", isEnabled(found, "achus"), "Achus!!")));
         KahzerxServer.extensions.add(new SitExtension(new ExtensionSettings("sit", isEnabled(found, "sit"), "To sit anywhere.")));
         KahzerxServer.extensions.add(new FarmlandMyceliumExtension(new ExtensionSettings("farmlandMycelium", isEnabled(found, "farmlandMycelium"), "Hoe can be used to farm mycelium.")));
-        KahzerxServer.extensions.add(new ShopExtension(new ExtensionSettings("shop", isEnabled(found, "shop"), "Enables currency system along with shop commands and helpers.")));
+        ShopExtension shopExtension = new ShopExtension(new ExtensionSettings("shop", isEnabled(found, "shop"), "Enables currency system along with shop commands and helpers."));
+        KahzerxServer.extensions.add(shopExtension);
+
+        ProfileExtension profileExtension = new ProfileExtension(
+                new ExtensionSettings("profile", isEnabled(found, "profile"), "Enables the /profile command."),
+                shopExtension);
+        KahzerxServer.extensions.add(profileExtension);
 
         String token = "";
         boolean crossServerChat = false;

@@ -4,27 +4,21 @@ import com.google.common.collect.Sets;
 import com.kahzerx.kahzerxmod.Extensions;
 import com.kahzerx.kahzerxmod.extensions.ExtensionSettings;
 import com.kahzerx.kahzerxmod.extensions.GenericExtension;
+import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.panels.balance.BalanceResources;
+import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.panels.main.MainResources;
 import com.kahzerx.kahzerxmod.extensions.shopExtension.bank.BankCommand;
 import com.kahzerx.kahzerxmod.extensions.shopExtension.exchange.ExchangeCommand;
-import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.GuiCommand;
-import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.panels.main.GuiMain;
-import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.GuiPlayer;
-import com.kahzerx.kahzerxmod.extensions.shopExtension.gui.panels.main.MainResources;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 
 import java.sql.*;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Set;
 
 public class ShopExtension extends GenericExtension implements Extensions {
     private Connection conn;
-    public static HashMap<ServerPlayerEntity, GuiPlayer> guis = new HashMap<>();
 
     public ShopExtension(ExtensionSettings settings) {
         super(settings);
@@ -38,13 +32,13 @@ public class ShopExtension extends GenericExtension implements Extensions {
     @Override
     public void onServerRun(MinecraftServer minecraftServer) {
         MainResources.noop();
+        BalanceResources.noop();
     }
 
     @Override
     public void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher) {
         new ExchangeCommand().register(dispatcher, this);
         new BankCommand().register(dispatcher, this);
-        new GuiCommand().register(dispatcher, this);
     }
 
     @Override
@@ -60,45 +54,6 @@ public class ShopExtension extends GenericExtension implements Extensions {
             stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onTick(MinecraftServer server) {
-        for (ServerPlayerEntity player : guis.keySet()) {
-            if (guis.get(player).shouldRemove()) {
-                guis.get(player).closeGui();
-                guis.get(player).closePanel();
-                guis.remove(player);
-            } else {
-                guis.get(player).tick();
-            }
-        }
-    }
-
-    @Override
-    public void onClick(ServerPlayerEntity player) {
-        GuiPlayer g = guis.get(player);
-        if (g != null && g.isTracking()) {
-            g.onClick();
-        }
-    }
-
-    public void openGUI(ServerPlayerEntity player) {
-        GuiPlayer gui = guis.get(player);
-        if (gui == null) {
-            gui = new GuiPlayer(player);
-            gui.openGui(new GuiMain());
-            guis.put(player, gui);
-        }
-
-        Direction dir = player.getHorizontalFacing().getOpposite();
-        BlockPos pos = player.getBlockPos().offset(player.getHorizontalFacing(), 3);
-
-        if (gui.isOpen()) {
-            gui.closePanel();
-        } else {
-            gui.openPanel(pos, dir, 6, 5);
         }
     }
 
