@@ -42,6 +42,7 @@ public class ExchangeCommand {
                                                 return 1;
                                             }
                                             extension.updateFounds(player, Exchange.getValue(item) * count);
+                                            extension.logExchange(player, item, count);
                                             player.setStackInHand(Hand.MAIN_HAND, new ItemStack(Items.AIR));
                                             context.getSource().sendFeedback(MarkEnum.TICK.appendMessage("Añadidos ").append(MarkEnum.OTAKU_COIN.appendMessage(String.valueOf(Exchange.getValue(item) * count))), false);
                                             return 1;

@@ -4,12 +4,10 @@ import com.google.common.collect.Sets;
 import com.kahzerx.kahzerxmod.Extensions;
 import com.kahzerx.kahzerxmod.extensions.ExtensionSettings;
 import com.kahzerx.kahzerxmod.extensions.GenericExtension;
-import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.panels.balance.BalanceResources;
-import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.panels.main.MainResources;
 import com.kahzerx.kahzerxmod.extensions.shopExtension.bank.BankCommand;
 import com.kahzerx.kahzerxmod.extensions.shopExtension.exchange.ExchangeCommand;
 import com.mojang.brigadier.CommandDispatcher;
-import net.minecraft.server.MinecraftServer;
+import net.minecraft.item.Item;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
@@ -30,12 +28,6 @@ public class ShopExtension extends GenericExtension implements Extensions {
     }
 
     @Override
-    public void onServerRun(MinecraftServer minecraftServer) {
-        MainResources.noop();
-        BalanceResources.noop();
-    }
-
-    @Override
     public void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher) {
         new ExchangeCommand().register(dispatcher, this);
         new BankCommand().register(dispatcher, this);
@@ -52,8 +44,61 @@ public class ShopExtension extends GenericExtension implements Extensions {
             Statement stmt = conn.createStatement();
             stmt.executeUpdate(createBAccDatabase);
             stmt.close();
+
+            String createExchangedItems = "CREATE TABLE IF NOT EXISTS `exchanges`(" +
+                    "`uuid` VARCHAR(50) NOT NULL," +
+                    "`item` VARCHAR(50) NOT NULL," +
+                    "`amount` INTEGER NOT NULL DEFAULT 0);";
+            Statement stmt1 = conn.createStatement();
+            stmt1.executeUpdate(createExchangedItems);
+            stmt1.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void logExchange(ServerPlayerEntity player, Item item, int amount) {
+        try {
+            int prevAmount = getAlreadyExchangedItem(player, item);
+            if (prevAmount == -1) {
+                String query = "INSERT INTO exchanges(uuid, item, amount) VALUES (?, ?, ?);";
+                PreparedStatement ps = conn.prepareStatement(query);
+                ps.setString(1, player.getUuidAsString());
+                ps.setString(2, item.getTranslationKey());
+                ps.setInt(3, amount);
+                ps.executeUpdate();
+                ps.close();
+            } else {
+                String query = "UPDATE exchanges SET amount = ? WHERE uuid = ? AND item = ?;";
+                PreparedStatement ps = conn.prepareStatement(query);
+                ps.setInt(1, prevAmount + amount);
+                ps.setString(2, player.getUuidAsString());
+                ps.setString(3, item.getTranslationKey());
+                ps.executeUpdate();
+                ps.close();
+            }
+        } catch (SQLException s) {
+            s.printStackTrace();
+        }
+    }
+
+    public int getAlreadyExchangedItem(ServerPlayerEntity player, Item item) {
+        try {
+            String query = "SELECT amount FROM exchanges WHERE uuid = ? AND item = ?;";
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, player.getUuidAsString());
+            ps.setString(2, item.getTranslationKey());
+            int amount = -1;
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                amount = rs.getInt("amount");
+            }
+            rs.close();
+            ps.close();
+            return amount;
+        } catch (SQLException s) {
+            s.printStackTrace();
+            return -1;
         }
     }
 

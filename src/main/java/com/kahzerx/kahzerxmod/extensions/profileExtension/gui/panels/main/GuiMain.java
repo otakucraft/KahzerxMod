@@ -11,6 +11,7 @@ import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.components.helpers
 import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.components.labels.TextLabel;
 import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.panels.balance.GuiBalance;
 import com.kahzerx.kahzerxmod.utils.MarkEnum;
+import net.minecraft.network.packet.s2c.play.OverlayMessageS2CPacket;
 import net.minecraft.text.ClickEvent;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Formatting;
@@ -59,7 +60,13 @@ public class GuiMain extends GuiBase {
         boxBC = new ImageBack(MainResources.BOX);
         boxBR = new ImageBack(MainResources.BOX);
         coinImage = new ImageButton(MainResources.COIN);
-        coinImage.setClickCallback((boolean isKey, GuiPlayer p) -> p.openGui(new GuiBalance()));
+        coinImage.setClickCallback((boolean isKey, GuiPlayer p) -> {
+            if (p.getShopExtension().extensionSettings().isEnabled()) {
+                p.openGui(new GuiBalance());
+            } else {
+                p.getPlayer().networkHandler.sendPacket(new OverlayMessageS2CPacket(new LiteralText("Shops extension is not enabled!")));
+            }
+        });
         coinText = new TextLabel(new TextMapper("Balance", new Font("Times New Roman", Font.BOLD, 20)), BLACK.getCode());
         shopsImage = new ImageButton(MainResources.SHOPS);
         shopsImage.setClickCallback((boolean isKey, GuiPlayer p) -> System.out.println("openShopsGui"));
