@@ -1,4 +1,4 @@
-package com.kahzerx.kahzerxmod.extensions.profileExtension.gui.panels.main;
+package com.kahzerx.kahzerxmod.extensions.profileExtension.gui.panels.resources;
 
 import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.components.helpers.BitMapImage;
 

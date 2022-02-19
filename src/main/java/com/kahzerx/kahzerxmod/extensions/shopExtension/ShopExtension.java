@@ -8,15 +8,20 @@ import com.kahzerx.kahzerxmod.extensions.shopExtension.bank.BankCommand;
 import com.kahzerx.kahzerxmod.extensions.shopExtension.exchange.ExchangeCommand;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.sql.*;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Set;
 
 public class ShopExtension extends GenericExtension implements Extensions {
+    private final HashMap<ServerPlayerEntity, BankInstance> accounts = new HashMap<>();
     private Connection conn;
+    private MinecraftServer server;
 
     public ShopExtension(ExtensionSettings settings) {
         super(settings);
@@ -31,6 +36,43 @@ public class ShopExtension extends GenericExtension implements Extensions {
     public void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher) {
         new ExchangeCommand().register(dispatcher, this);
         new BankCommand().register(dispatcher, this);
+    }
+
+    @Override
+    public void onServerRun(MinecraftServer minecraftServer) {
+        this.server = minecraftServer;
+    }
+
+    @Override
+    public void onPlayerJoined(ServerPlayerEntity player) {
+        accounts.remove(player);
+        BankInstance.Exchanges ex = new BankInstance.Exchanges();
+        ex.setDiamond(getAlreadyExchangedItem(player, Items.DIAMOND));
+        ex.setDiamondBlock(getAlreadyExchangedItem(player, Items.DIAMOND_BLOCK));
+        ex.setNetheriteIngot(getAlreadyExchangedItem(player, Items.NETHERITE_INGOT));
+        ex.setNetheriteBlock(getAlreadyExchangedItem(player, Items.NETHERITE_BLOCK));
+        ex.setNetheriteScrap(getAlreadyExchangedItem(player, Items.NETHERITE_SCRAP));
+        ex.setDebris(getAlreadyExchangedItem(player, Items.ANCIENT_DEBRIS));
+        accounts.put(player, new BankInstance(getBalance(player), ex));
+    }
+
+    @Override
+    public void onPlayerLeft(ServerPlayerEntity player) {
+        accounts.remove(player);
+    }
+
+    @Override
+    public void onExtensionDisabled() {
+        Extensions.super.onExtensionDisabled();
+        accounts.clear();
+    }
+
+    @Override
+    public void onExtensionEnabled() {
+        Extensions.super.onExtensionEnabled();
+        for (ServerPlayerEntity player : this.server.getPlayerManager().getPlayerList()) {
+            this.onPlayerJoined(player);
+        }
     }
 
     @Override
@@ -68,6 +110,7 @@ public class ShopExtension extends GenericExtension implements Extensions {
                 ps.setInt(3, amount);
                 ps.executeUpdate();
                 ps.close();
+                accounts.get(player).getExchanges().setFromItem(item, amount);
             } else {
                 String query = "UPDATE exchanges SET amount = ? WHERE uuid = ? AND item = ?;";
                 PreparedStatement ps = conn.prepareStatement(query);
@@ -76,6 +119,7 @@ public class ShopExtension extends GenericExtension implements Extensions {
                 ps.setString(3, item.getTranslationKey());
                 ps.executeUpdate();
                 ps.close();
+                accounts.get(player).getExchanges().setFromItem(item, prevAmount + amount);
             }
         } catch (SQLException s) {
             s.printStackTrace();
@@ -141,6 +185,11 @@ public class ShopExtension extends GenericExtension implements Extensions {
             ps.setInt(3, actualBalance + amount);
             ps.executeUpdate();
             ps.close();
+            for (ServerPlayerEntity player : accounts.keySet()) {
+                if (player.getUuidAsString().equals(playerUUID)) {
+                    accounts.get(player).setCoins(actualBalance + amount);
+                }
+            }
         } catch (SQLException ignored) { }
     }
 
@@ -177,5 +226,9 @@ public class ShopExtension extends GenericExtension implements Extensions {
             e.printStackTrace();
         }
         return playerUUID;
+    }
+
+    public HashMap<ServerPlayerEntity, BankInstance> getAccounts() {
+        return accounts;
     }
 }

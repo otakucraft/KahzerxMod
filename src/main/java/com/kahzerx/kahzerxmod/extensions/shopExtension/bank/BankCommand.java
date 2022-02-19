@@ -37,7 +37,7 @@ public class BankCommand {
                                                 context.getSource().sendFeedback(MarkEnum.CROSS.appendMessage("Este jugador no existe!"), false);
                                                 return 1;
                                             }
-                                            if (extension.getBalance(context.getSource().getPlayer()) < amount) {
+                                            if (extension.getAccounts().get(context.getSource().getPlayer()).getCoins() < amount) {
                                                 context.getSource().sendFeedback(MarkEnum.CROSS.appendMessage("No tienes balance suficiente!"), false);
                                                 return 1;
                                             }

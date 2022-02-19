@@ -1,6 +1,5 @@
 package com.kahzerx.kahzerxmod.extensions.profileExtension.gui;
 
-import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.panels.main.GuiMain;
 import com.kahzerx.kahzerxmod.extensions.shopExtension.ShopExtension;
 import net.minecraft.network.packet.s2c.play.EntitiesDestroyS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;

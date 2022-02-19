@@ -5,9 +5,9 @@ import com.kahzerx.kahzerxmod.extensions.ExtensionSettings;
 import com.kahzerx.kahzerxmod.extensions.GenericExtension;
 import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.ProfileCommand;
 import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.GuiPlayer;
-import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.panels.balance.BalanceResources;
-import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.panels.main.GuiMain;
-import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.panels.main.MainResources;
+import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.panels.resources.ShopResources;
+import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.panels.main.MainGui;
+import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.panels.resources.MainResources;
 import com.kahzerx.kahzerxmod.extensions.shopExtension.ShopExtension;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.server.MinecraftServer;
@@ -29,7 +29,7 @@ public class ProfileExtension extends GenericExtension implements Extensions {
     @Override
     public void onServerRun(MinecraftServer minecraftServer) {
         MainResources.noop();
-        BalanceResources.noop();
+        ShopResources.noop();
     }
 
     @Override
@@ -69,7 +69,7 @@ public class ProfileExtension extends GenericExtension implements Extensions {
             gui = new GuiPlayer(player, shopExtension);
             guis.put(player, gui);
         }
-        gui.openGui(new GuiMain());
+        gui.openGui(new MainGui());
 
         Direction dir = player.getHorizontalFacing().getOpposite();
         BlockPos pos = player.getBlockPos().offset(player.getHorizontalFacing(), 3);

@@ -3,6 +3,7 @@ package com.kahzerx.kahzerxmod.extensions.profileExtension.gui;
 import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.components.Component;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public abstract class GuiBase {
     private boolean reRender = true;
@@ -16,6 +17,10 @@ public abstract class GuiBase {
 
     public void addComponent(Component c) {
         components.add(c);
+    }
+
+    public void addComponent(Component... c) {
+        components.addAll(Arrays.asList(c));
     }
 
     public void onClose(GuiPlayer guiPlayer) { }

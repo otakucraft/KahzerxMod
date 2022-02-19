@@ -9,7 +9,9 @@ import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.components.buttons
 import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.components.buttons.TextButton;
 import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.components.helpers.TextMapper;
 import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.components.labels.TextLabel;
-import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.panels.balance.GuiBalance;
+import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.panels.balance.BalanceGui;
+import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.panels.resources.MainResources;
+import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.panels.transfers.TransfersGui;
 import com.kahzerx.kahzerxmod.utils.MarkEnum;
 import net.minecraft.network.packet.s2c.play.OverlayMessageS2CPacket;
 import net.minecraft.text.ClickEvent;
@@ -20,7 +22,7 @@ import java.awt.*;
 
 import static com.kahzerx.kahzerxmod.extensions.profileExtension.gui.colors.ColorList.*;
 
-public class GuiMain extends GuiBase {
+public class MainGui extends GuiBase {
     private SolidBack mainBack;
     private TextButton closeButton;
     private ImageBack cornerBR;
@@ -45,7 +47,7 @@ public class GuiMain extends GuiBase {
     private TextLabel waypointsText;
     private ImageButton renderImage;
     private TextLabel renderText;
-    public GuiMain() {
+    public MainGui() {
         mainBack = new SolidBack(LIGHT_GRAY.getCode());
         closeButton = new TextButton(new TextMapper("Close", new Font("Times New Roman", Font.PLAIN, 30)), RED.getCode(), DARK_RED.getCode(), (byte) 84, (byte) 87);
         closeButton.setClickCallback((boolean isKey, GuiPlayer p) -> p.closePanel());
@@ -62,7 +64,7 @@ public class GuiMain extends GuiBase {
         coinImage = new ImageButton(MainResources.COIN);
         coinImage.setClickCallback((boolean isKey, GuiPlayer p) -> {
             if (p.getShopExtension().extensionSettings().isEnabled()) {
-                p.openGui(new GuiBalance());
+                p.openGui(new BalanceGui());
             } else {
                 p.getPlayer().networkHandler.sendPacket(new OverlayMessageS2CPacket(new LiteralText("Shops extension is not enabled!")));
             }
@@ -75,7 +77,13 @@ public class GuiMain extends GuiBase {
         eventsImage.setClickCallback((boolean isKey, GuiPlayer p) -> System.out.println("openEventsGui"));
         eventsText = new TextLabel(new TextMapper("Eventos", new Font("Times New Roman", Font.BOLD, 20)), BLACK.getCode());
         transfersImage = new ImageButton(MainResources.TRANSFERS);
-        transfersImage.setClickCallback((boolean isKey, GuiPlayer p) -> System.out.println("openTransfersGui"));
+        transfersImage.setClickCallback((boolean isKey, GuiPlayer p) -> {
+            if (p.getShopExtension().extensionSettings().isEnabled()) {
+                p.openGui(new TransfersGui());
+            } else {
+                p.getPlayer().networkHandler.sendPacket(new OverlayMessageS2CPacket(new LiteralText("Shops extension is not enabled!")));
+            }
+        });
         transfersText = new TextLabel(new TextMapper("Transferencias", new Font("Times New Roman", Font.BOLD, 20)), BLACK.getCode());
         waypointsImage = new ImageButton(MainResources.WAYPOINTS);
         waypointsImage.setClickCallback((boolean isKey, GuiPlayer p) -> System.out.println("openWaypointsGui"));

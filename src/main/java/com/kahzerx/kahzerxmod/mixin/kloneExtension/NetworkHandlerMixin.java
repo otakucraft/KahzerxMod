@@ -26,9 +26,7 @@ public class NetworkHandlerMixin {
     @Inject(method = "disconnect", at = @At("HEAD"), cancellable = true)
     private void onDisconnect(Text reason, CallbackInfo ci) {
         if (player instanceof KlonePlayerEntity) {
-            if (reason instanceof TranslatableText && ((TranslatableText) reason).getKey().equals("multiplayer.disconnect.idling")) {
-                ((KlonePlayerEntity) player).kill(new TranslatableText(((TranslatableText) reason).getKey()));
-            }
+            ((KlonePlayerEntity) player).kill(new TranslatableText(((TranslatableText) reason).getKey()));
             ci.cancel();
         }
     }
