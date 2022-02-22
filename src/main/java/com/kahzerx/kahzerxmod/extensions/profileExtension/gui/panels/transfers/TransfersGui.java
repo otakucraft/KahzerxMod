@@ -64,9 +64,4 @@ public class TransfersGui extends GuiBase {
             gap += 35;
         }
     }
-
-    @Override
-    public void onMouseChange(GuiPlayer guiPlayer, int newX, int newY, int oldX, int oldY) {
-        this.setReRender(true);
-    }
 }
