@@ -11,7 +11,7 @@ public enum ColorList {
     DARK_GRAY(ColorMatcher.getBestColor(80, 80, 80, 255, true)),
     ORANGE(ColorMatcher.getBestColor(242, 191, 38, 255, true));
 
-    private byte code;
+    private final byte code;
     ColorList(byte code) {
         this.code = code;
     }

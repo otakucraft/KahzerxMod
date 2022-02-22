@@ -5,7 +5,7 @@ import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.Renderer;
 import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.components.Component;
 
 public class SolidBack extends Component {
-    private byte fillColor;
+    private final byte fillColor;
     private int x;
     private int y;
     private int width;

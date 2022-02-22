@@ -7,7 +7,7 @@ import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.components.helpers
 
 public class TextLabel extends Component {
     private TextMapper text;
-    private byte textColor;
+    private final byte textColor;
     private int x;
     private int y;
     private int width;

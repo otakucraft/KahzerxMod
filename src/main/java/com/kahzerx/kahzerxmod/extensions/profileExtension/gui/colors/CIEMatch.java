@@ -1,9 +1,9 @@
 package com.kahzerx.kahzerxmod.extensions.profileExtension.gui.colors;
 
 public class CIEMatch {
-    private static double epsilon = Math.pow(6, 3) / Math.pow(29, 3);
-    private static double kappa = Math.pow(29, 3) / Math.pow(3, 3);
-    private static double const_a = Math.pow(25, 7);
+    private static final double epsilon = Math.pow(6, 3) / Math.pow(29, 3);
+    private static final double kappa = Math.pow(29, 3) / Math.pow(3, 3);
+    private static final double constA = Math.pow(25, 7);
 
     // https://github.com/jonathantneal/convert-colors/blob/master/src/lab-xyz.js
     private static double[] rgb2lab(int r, int g, int b) {
@@ -32,8 +32,7 @@ public class CIEMatch {
         f2 = f2 > epsilon ? Math.cbrt(f2) : (kappa * f2 + 16.0) / 116.0;
         f3 = f3 > epsilon ? Math.cbrt(f3) : (kappa * f3 + 16.0) / 116.0;
 
-        double[] out = new double[] { 116 * f2 - 16, 500 * (f1 - f2), 200 * (f2 - f3) };
-        return out;
+        return new double[] { 116 * f2 - 16, 500 * (f1 - f2), 200 * (f2 - f3) };
     }
 
     private static double atan2d(double y, double x) {
@@ -59,7 +58,7 @@ public class CIEMatch {
         double cBar = (c1 + c2) / 2;
 
         double cBarPow7 = Math.pow(cBar, 7);
-        double cCoeff = Math.sqrt(cBarPow7 / (cBarPow7 + const_a));
+        double cCoeff = Math.sqrt(cBarPow7 / (cBarPow7 + constA));
         double a1Prime = a1 + a1 / 2 * (1 - cCoeff);
         double a2Prime = a2 + a2 / 2 * (1 - cCoeff);
 

@@ -76,8 +76,8 @@ public class BlockInfoExtension extends GenericExtension implements Extensions {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT COUNT(*) AS rows FROM `action_logger`;");
             if (rs.next()) {
-                if (rs.getInt("rows") > Math.pow(10, 9)) {
-                    String deleteRows = "DELETE FROM `action_logger` WHERE id IN (SELECT id FROM `action_logger` LIMIT POWER(10, 8));";
+                if (rs.getInt("rows") > Math.pow(10, 8)) {
+                    String deleteRows = "DELETE FROM `action_logger` WHERE id IN (SELECT id FROM `action_logger` LIMIT POWER(10, 7));";
                     stmt.executeUpdate(deleteRows);
                 }
             }

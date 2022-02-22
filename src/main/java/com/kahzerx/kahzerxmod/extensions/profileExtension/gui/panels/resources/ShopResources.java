@@ -9,6 +9,7 @@ import java.io.IOException;
 public class ShopResources {
     public static Font US;
     public static Font US_SMALL;
+    public static Font US_SMALLEST;
     public static BitMapImage COIN;
     public static BitMapImage DEBRIS;
     public static BitMapImage DIA_BLOCK;
@@ -25,6 +26,8 @@ public class ShopResources {
             ge.registerFont(US);
             US_SMALL = US.deriveFont(Font.PLAIN, 30);
             ge.registerFont(US_SMALL);
+            US_SMALLEST = US.deriveFont(Font.PLAIN, 22);
+            ge.registerFont(US_SMALLEST);
             COIN = new BitMapImage(ImageIO.read(MainResources.class.getClassLoader().getResource("assets/kahzerx/gui/mainMenu/coin.png"))).setMatchSlow(true).scaledDimensions(100, 100).clearColors(34, 57, 58, -110).bake();
             DEBRIS = new BitMapImage(ImageIO.read(ShopResources.class.getClassLoader().getResource("assets/kahzerx/gui/balance/debris.png"))).setMatchSlow(true).scaledDimensions(70, 70).bake();
             DIA_BLOCK = new BitMapImage(ImageIO.read(ShopResources.class.getClassLoader().getResource("assets/kahzerx/gui/balance/diaBlock.png"))).setMatchSlow(true).scaledDimensions(70, 70).bake();

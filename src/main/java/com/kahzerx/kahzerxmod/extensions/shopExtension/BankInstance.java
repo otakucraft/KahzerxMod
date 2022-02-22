@@ -5,14 +5,18 @@ import com.google.common.collect.Maps;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class BankInstance {
     private int coins;
     private final Exchanges exchanges;
-    public BankInstance(int coins, Exchanges exchanges) {
+    private final Transfers transfers;
+    public BankInstance(int coins, Exchanges exchanges, Transfers transfers) {
         this.coins = coins;
         this.exchanges = exchanges;
+        this.transfers = transfers;
     }
 
     public Exchanges getExchanges() {
@@ -25,6 +29,49 @@ public class BankInstance {
 
     public void setCoins(int coins) {
         this.coins = coins;
+    }
+
+    public Transfers getTransfers() {
+        return transfers;
+    }
+
+    public static class Transfers {
+        private List<Transfer> transfers = new ArrayList<>();
+        public void addTransfer(Transfer transfer) {
+            if (transfers.size() == 9) {
+                transfers = transfers.subList(1, transfers.size() - 1);
+            }
+            transfers.add(transfer);
+        }
+
+        public void revert() {
+            List<Transfer> ts = new ArrayList<>();
+            for (int i = transfers.size() - 1; i >= 0; i--) {
+                ts.add(transfers.get(i));
+            }
+            transfers = ts;
+        }
+
+        public boolean hasNextPage() {
+            return transfers.size() == 9;
+        }
+
+        public List<Transfer> getTransfers() {
+            if (transfers.size() == 9) {
+                return transfers.subList(1, transfers.size());
+            }
+            return transfers;
+        }
+    }
+
+    public record Transfer(String destName, int amount) {
+        public String getDestName() {
+            return destName;
+        }
+
+        public int getAmount() {
+            return amount;
+        }
     }
 
     public static class Exchanges {

@@ -10,7 +10,6 @@ import java.util.ArrayList;
 public class BitMapImage {
     private int width = 0;
     private int height = 0;
-    private int size = 0;
     private byte forcedColor;
 
     private int alphaCutoff = 0;
@@ -20,7 +19,7 @@ public class BitMapImage {
     private int[] color = null;
 
     private boolean matchSlow = false;
-    private ArrayList<Byte> colorsToClear = new ArrayList<>();
+    private final ArrayList<Byte> colorsToClear = new ArrayList<>();
 
     public BitMapImage(BufferedImage image) {
         toProcess = image;
@@ -81,12 +80,12 @@ public class BitMapImage {
         if (toProcess == null) return this;
         this.width = toProcess.getWidth();
         this.height = toProcess.getHeight();
-        this.size = this.width * this.height;
+        int size = this.width * this.height;
 
         final byte[] pixels = ((DataBufferByte) toProcess.getRaster().getDataBuffer()).getData();
         final boolean hasAlphaChannel = toProcess.getAlphaRaster() != null;
 
-        mapImage = new byte[this.size];
+        mapImage = new byte[size];
 
         int mapOffset = 0;
         int pixelLength = hasAlphaChannel ? 4 : 3;

@@ -6,9 +6,9 @@ import java.awt.image.DataBufferByte;
 import java.util.ArrayList;
 
 public class TextMapper {
-    private String text;
-    private Font font;
-    private ArrayList<Integer> bitmask = new ArrayList<>();
+    private final String text;
+    private final Font font;
+    private final ArrayList<Integer> bitmask = new ArrayList<>();
     private int width;
     private int height;
 

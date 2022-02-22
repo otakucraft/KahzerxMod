@@ -53,7 +53,7 @@ public class ShopExtension extends GenericExtension implements Extensions {
         ex.setNetheriteBlock(getAlreadyExchangedItem(player, Items.NETHERITE_BLOCK));
         ex.setNetheriteScrap(getAlreadyExchangedItem(player, Items.NETHERITE_SCRAP));
         ex.setDebris(getAlreadyExchangedItem(player, Items.ANCIENT_DEBRIS));
-        accounts.put(player, new BankInstance(getBalance(player), ex));
+        accounts.put(player, new BankInstance(getBalance(player), ex, getTransfers(player)));
     }
 
     @Override
@@ -85,15 +85,20 @@ public class ShopExtension extends GenericExtension implements Extensions {
                     "FOREIGN KEY(uuid) REFERENCES player(uuid));";
             Statement stmt = conn.createStatement();
             stmt.executeUpdate(createBAccDatabase);
-            stmt.close();
 
             String createExchangedItems = "CREATE TABLE IF NOT EXISTS `exchanges`(" +
                     "`uuid` VARCHAR(50) NOT NULL," +
                     "`item` VARCHAR(50) NOT NULL," +
                     "`amount` INTEGER NOT NULL DEFAULT 0);";
-            Statement stmt1 = conn.createStatement();
-            stmt1.executeUpdate(createExchangedItems);
-            stmt1.close();
+            stmt.executeUpdate(createExchangedItems);
+
+            String createTransferredCoins = "CREATE TABLE IF NOT EXISTS `transfers`(" +
+                    "`id` INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "`uuid` VARCHAR(50) NOT NULL," +
+                    "`dest_uuid` VARCHAR(50) NOT NULL," +
+                    "`amount` INTEGER NOT NULL DEFAULT 0);";
+            stmt.executeUpdate(createTransferredCoins);
+            stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -146,6 +151,26 @@ public class ShopExtension extends GenericExtension implements Extensions {
         }
     }
 
+    public BankInstance.Transfers getTransfers(ServerPlayerEntity player) {
+        BankInstance.Transfers transfers = new BankInstance.Transfers();
+        try {
+            String query = "SELECT dest_uuid, amount FROM transfers WHERE uuid = ? ORDER BY id DESC LIMIT 9;";
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, player.getUuidAsString());
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                BankInstance.Transfer t = new BankInstance.Transfer(getPlayerName(rs.getString("dest_uuid")), rs.getInt("amount"));
+                transfers.addTransfer(t);
+            }
+            transfers.revert();
+            rs.close();
+            ps.close();
+        } catch (SQLException s) {
+            s.printStackTrace();
+        }
+        return transfers;
+    }
+
     public int getBalance(ServerPlayerEntity player) {
         return getBalance(player.getUuidAsString());
     }
@@ -193,6 +218,20 @@ public class ShopExtension extends GenericExtension implements Extensions {
         } catch (SQLException ignored) { }
     }
 
+    public void logTransfer(ServerPlayerEntity player, String destPlayerUUID, String destPlayerName, int amount) {
+        try {
+            String q = "INSERT INTO transfers(uuid, dest_uuid, amount)" +
+                    "VALUES (?, ?, ?);";
+            PreparedStatement ps = conn.prepareStatement(q);
+            ps.setString(1, player.getUuidAsString());
+            ps.setString(2, destPlayerUUID);
+            ps.setInt(3, amount);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException ignored) { }
+        accounts.get(player).getTransfers().addTransfer(new BankInstance.Transfer(destPlayerName, amount));
+    }
+
     public Collection<String> getPlayers() {
         Set<String> players = Sets.newLinkedHashSet();
         try {
@@ -226,6 +265,24 @@ public class ShopExtension extends GenericExtension implements Extensions {
             e.printStackTrace();
         }
         return playerUUID;
+    }
+
+    public String getPlayerName(String uuid) {
+        String name = "";
+        try {
+            String q = "SELECT name FROM player WHERE uuid = ?;";
+            PreparedStatement ps = conn.prepareStatement(q);
+            ps.setString(1, uuid);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                name = rs.getString("name");
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException s) {
+            s.printStackTrace();
+        }
+        return name;
     }
 
     public HashMap<ServerPlayerEntity, BankInstance> getAccounts() {

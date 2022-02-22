@@ -7,12 +7,12 @@ import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.components.helpers
 import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.components.helpers.BitMapImage;
 
 public class TextImageButton extends Component {
-    private BitMapImage image;
-    private TextMapper text;
-    private byte fillColor;
-    private byte hoverColor;
-    private byte textColor;
-    private byte hoverTextColor;
+    private final BitMapImage image;
+    private final TextMapper text;
+    private final byte fillColor;
+    private final byte hoverColor;
+    private final byte textColor;
+    private final byte hoverTextColor;
     private int x;
     private int y;
     private int width;

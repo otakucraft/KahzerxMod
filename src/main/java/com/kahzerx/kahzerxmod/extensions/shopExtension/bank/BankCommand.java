@@ -43,6 +43,7 @@ public class BankCommand {
                                             }
                                             extension.updateFounds(playerUUID, amount);
                                             extension.updateFounds(context.getSource().getPlayer(), amount * -1);
+                                            extension.logTransfer(context.getSource().getPlayer(), playerUUID, playerName, amount);
                                             context.getSource().sendFeedback(MarkEnum.TICK.appendMessage("Transferencia de ").append(MarkEnum.OTAKU_COIN.appendMessage(String.format("%d a %s completada!", amount, playerName))), false);
                                             ServerPlayerEntity destPlayer = context.getSource().getServer().getPlayerManager().getPlayer(UUID.fromString(playerUUID));
                                             if (destPlayer != null) {

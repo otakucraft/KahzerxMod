@@ -6,7 +6,7 @@ import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.components.Compone
 import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.components.helpers.BitMapImage;
 
 public class ImageBack extends Component {
-    private BitMapImage image;
+    private final BitMapImage image;
     private int x;
     private int y;
     private int width;

@@ -6,7 +6,7 @@ import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.callbacks.ClickCal
 import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.components.shapes.SimpleRect;
 
 public class Component extends GuiBase {
-    private SimpleRect bounds = new SimpleRect(0, 0, 0, 0);
+    private final SimpleRect bounds = new SimpleRect(0, 0, 0, 0);
     private boolean isMouseOver = false;
     private ClickCallback clickCallback = null;
 

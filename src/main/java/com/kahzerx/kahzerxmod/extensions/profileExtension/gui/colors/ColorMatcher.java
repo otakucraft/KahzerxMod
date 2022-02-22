@@ -1,7 +1,7 @@
 package com.kahzerx.kahzerxmod.extensions.profileExtension.gui.colors;
 
 public class ColorMatcher {
-    private static int[][] MAP_COLORS;
+    private static final int[][] MAP_COLORS;
     static {
 
         int[] colors = { 0, 8368696, 16247203, 13092807, 16711680, 10526975, 10987431, 31744, 16777215, 10791096,
@@ -16,22 +16,12 @@ public class ColorMatcher {
         int index = 0;
         for (int color : colors) {
             for (int shade = 0; shade < 4; shade++) {
-                int i = 220;
-                if (shade == 3) {
-                    i = 135;
-                }
-
-                if (shade == 2) {
-                    i = 255;
-                }
-
-                if (shade == 1) {
-                    i = 220;
-                }
-
-                if (shade == 0) {
-                    i = 180;
-                }
+                int i = switch (shade) {
+                    case 0 -> 180;
+                    case 2 -> 255;
+                    case 3 -> 135;
+                    default -> 220;
+                };
                 int r = (color >> 16 & 255) * i / 255;
                 int g = (color >> 8 & 255) * i / 255;
                 int b = (color & 255) * i / 255;

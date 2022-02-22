@@ -6,11 +6,11 @@ import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.components.Compone
 import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.components.helpers.TextMapper;
 
 public class TextButton extends Component {
-    private TextMapper text;
-    private byte fillColor;
-    private byte hoverColor;
-    private byte textColor;
-    private byte hoverTextColor;
+    private final TextMapper text;
+    private final byte fillColor;
+    private final byte hoverColor;
+    private final byte textColor;
+    private final byte hoverTextColor;
     private int x;
     private int y;
     private int width;
