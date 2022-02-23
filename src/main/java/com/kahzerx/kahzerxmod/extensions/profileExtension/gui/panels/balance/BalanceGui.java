@@ -102,12 +102,6 @@ public class BalanceGui extends GuiBase {
         updateBalance(guiPlayer);
     }
 
-    @Override
-    public void onMouseChange(GuiPlayer guiPlayer, int newX, int newY, int oldX, int oldY) {
-        updateBalance(guiPlayer);
-        super.onMouseChange(guiPlayer, newX, newY, oldX, oldY);
-    }
-
     private void updateBalance(GuiPlayer guiPlayer) {
         balance.setText(new TextMapper(String.valueOf(guiPlayer.getShopExtension().getAccounts().get(guiPlayer.getPlayer()).getCoins()), ShopResources.US));
         balance.setDimensions(guiPlayer.getPanelPixelWidth() / 2 - balance.getText().getWidth() / 2, 80 + 40 + title.getHeight() + 60, balance.getText().getWidth(), balance.getText().getHeight());

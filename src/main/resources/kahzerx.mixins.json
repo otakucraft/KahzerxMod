@@ -4,6 +4,7 @@
   "package": "com.kahzerx.kahzerxmod.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
+    "opOnWhitelistExtension.ServerConfigMixin",
     "badgeExtension.PlayerManagerMixin",
     "badgeExtension.ServerPlayNetworkHandlerMixin",
     "blockInfoExtension.BlockBreakingLoggingMixin",

@@ -37,6 +37,7 @@ import com.kahzerx.kahzerxmod.extensions.kloneExtension.KloneExtension;
 import com.kahzerx.kahzerxmod.extensions.maintenanceExtension.MaintenanceExtension;
 import com.kahzerx.kahzerxmod.extensions.memberExtension.MemberExtension;
 import com.kahzerx.kahzerxmod.extensions.modTPExtension.ModTPExtension;
+import com.kahzerx.kahzerxmod.extensions.opOnWhitelistExtension.OpOnWhitelistExtension;
 import com.kahzerx.kahzerxmod.extensions.permsExtension.PermsExtension;
 import com.kahzerx.kahzerxmod.extensions.pitoExtension.PitoExtension;
 import com.kahzerx.kahzerxmod.extensions.playerDropsSkullExtension.PlayerDropsSkullExtension;
@@ -142,6 +143,8 @@ public class ExtensionManager {
                 new ExtensionSettings("profile", isEnabled(found, "profile"), "Enables the /profile command."),
                 shopExtension);
         KahzerxServer.extensions.add(profileExtension);
+
+        KahzerxServer.extensions.add(new OpOnWhitelistExtension(new ExtensionSettings("opOnWhitelist", isEnabled(found, "opOnWhitelist"), "Auto ops and deops on whitelist add and remove.")));
 
         String token = "";
         boolean crossServerChat = false;
