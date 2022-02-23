@@ -9,9 +9,6 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.IPermissionHolder;
-import net.dv8tion.jda.api.entities.Member;
 import net.minecraft.server.MinecraftServer;
 import org.jetbrains.annotations.NotNull;
 
@@ -109,8 +106,7 @@ public class DiscordListener extends ListenerAdapter {
             return;
         }
         TextChannel ch = jda.getTextChannelById(channelId);
-        Member selfMember = ch.getGuild().getSelfMember();
-        if (ch != null && selfMember.hasAccess(ch)) {
+        if (ch != null && ch.getGuild().getSelfMember().hasAccess(ch)) {
             ch.sendMessage(discordSettings.getPrefix() + " " + msg).queue();
         } else {
             System.out.println("Unable to find this Text Channel or missing permissions to view/send messages.");
