@@ -8,7 +8,6 @@ import net.minecraft.server.ServerConfigList;
 import net.minecraft.server.WhitelistEntry;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

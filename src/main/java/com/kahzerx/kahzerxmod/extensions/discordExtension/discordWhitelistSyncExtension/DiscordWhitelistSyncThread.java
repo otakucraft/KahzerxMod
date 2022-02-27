@@ -5,7 +5,6 @@ import com.kahzerx.kahzerxmod.extensions.discordExtension.discordWhitelistExtens
 import com.kahzerx.kahzerxmod.extensions.discordExtension.utils.DiscordChatUtils;
 import com.mojang.authlib.GameProfile;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
@@ -103,7 +102,7 @@ public class DiscordWhitelistSyncThread extends Thread {
                 continue;
             }
             Role role = guild.getRoleById(discordWhitelistExtension.extensionSettings().getDiscordRole());
-            if (role != null && guild.getSelfMember().hasPermission(Permission.MANAGE_ROLES)) {
+            if (role != null) {
                 try {
                     guild.removeRoleFromMember(member, role).queue();
                 } catch (HierarchyException exception) {

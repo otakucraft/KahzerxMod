@@ -5,7 +5,6 @@ import com.kahzerx.kahzerxmod.extensions.discordExtension.discordWhitelistExtens
 import com.kahzerx.kahzerxmod.extensions.discordExtension.utils.DiscordChatUtils;
 import com.mojang.authlib.GameProfile;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
@@ -88,9 +87,9 @@ public class AddCommand extends GenericCommand {
         Guild guild = event.getGuild();
         Role role = guild.getRoleById(extension.extensionSettings().getDiscordRole());
         Member member = event.getMember();
-        if (role != null && member != null && guild.getSelfMember().hasPermission(Permission.MANAGE_ROLES)) {
+        if (role != null && member != null) {
             try {
-                guild.removeRoleFromMember(member, role).queue();
+                guild.addRoleToMember(member, role).queue();
             } catch (HierarchyException exception) {
                 exception.printStackTrace();
             }
