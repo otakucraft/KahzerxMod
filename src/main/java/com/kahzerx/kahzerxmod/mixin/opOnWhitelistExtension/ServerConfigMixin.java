@@ -33,7 +33,7 @@ public class ServerConfigMixin<K, V extends ServerConfigEntry<K>> {
                 if (!OpOnWhitelistExtension.server.getPlayerManager().isOperator(gameProfile)) {
                     OpOnWhitelistExtension.server.getPlayerManager().addToOperators(gameProfile);
                 }
-            } catch (ParseException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -53,7 +53,7 @@ public class ServerConfigMixin<K, V extends ServerConfigEntry<K>> {
                 if (OpOnWhitelistExtension.server.getPlayerManager().isOperator(gameProfile)) {
                     OpOnWhitelistExtension.server.getPlayerManager().removeFromOperators(gameProfile);
                 }
-            } catch (ParseException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
