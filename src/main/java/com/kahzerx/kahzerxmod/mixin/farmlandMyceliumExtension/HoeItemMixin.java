@@ -11,6 +11,7 @@ import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.MiningToolItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.tag.Tag;
+import net.minecraft.tag.TagKey;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -24,11 +25,12 @@ import static net.minecraft.item.HoeItem.createTillAction;
 @Mixin(HoeItem.class)
 public abstract class HoeItemMixin extends MiningToolItem {
     private static final Map<Block, Pair<Predicate<ItemUsageContext>, Consumer<ItemUsageContext>>> ACTIONS;
-    protected HoeItemMixin(float attackDamage, float attackSpeed, ToolMaterial material, Tag<Block> effectiveBlocks, Settings settings) {
-        super(attackDamage, attackSpeed, material, effectiveBlocks, settings);
-    }
     static {
         ACTIONS = Maps.newHashMap(ImmutableMap.of(Blocks.MYCELIUM, Pair.of(HoeItem::canTillFarmland, createTillAction(Blocks.FARMLAND.getDefaultState()))));
+    }
+
+    protected HoeItemMixin(float attackDamage, float attackSpeed, ToolMaterial material, TagKey<Block> effectiveBlocks, Settings settings) {
+        super(attackDamage, attackSpeed, material, effectiveBlocks, settings);
     }
 
     @Redirect(method = "useOnBlock", at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;"))
