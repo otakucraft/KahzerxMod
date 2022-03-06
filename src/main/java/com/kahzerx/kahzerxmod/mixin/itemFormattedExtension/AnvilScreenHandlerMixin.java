@@ -17,7 +17,7 @@ public class AnvilScreenHandlerMixin {
         if (ItemFormattedExtension.isExtensionEnabled) {
             return instance.setCustomName(new LiteralText(name.getString().replace("%", "§")));
         }
-        return instance;
+        return instance.setCustomName(name);
     }
 
     @Redirect(method = "updateResult", at = @At(value = "INVOKE", target = "Lnet/minecraft/inventory/Inventory;getStack(I)Lnet/minecraft/item/ItemStack;", ordinal = 0))
