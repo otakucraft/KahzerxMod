@@ -2,6 +2,7 @@ package com.kahzerx.kahzerxmod.extensions.scoreboardExtension;
 
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.command.argument.ItemStackArgumentType;
+import net.minecraft.scoreboard.ScoreboardCriterion;
 import net.minecraft.server.command.ServerCommandSource;
 
 import static net.minecraft.server.command.CommandManager.argument;
@@ -48,6 +49,8 @@ public class ScoreboardCommand {
                 then(literal("dropped").
                         then(argument("item", ItemStackArgumentType.itemStack()).
                                 executes(context -> scoreboard.startThreadedShowSideBar(context.getSource(), ItemStackArgumentType.getItemStackArgument(context, "item"), "dropped", false)))).
+//                then(literal("deaths").
+//                        executes(context -> scoreboard.startThreadedCriterion(context.getSource(), ScoreboardCriterion.DEATH_COUNT, false))).
                 then(literal("remove").
                         executes(context -> scoreboard.hideSidebar(context.getSource()))));
     }

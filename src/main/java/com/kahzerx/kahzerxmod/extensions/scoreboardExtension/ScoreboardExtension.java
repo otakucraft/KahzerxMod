@@ -108,6 +108,34 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
         return 1;
     }
 
+    public int startThreadedCriterion(ServerCommandSource source, ScoreboardCriterion criterion, boolean persistent) {
+        Scoreboard sb = source.getServer().getScoreboard();
+        String name = "K." + criterion.getName();
+        ScoreboardObjective objective = sb.getNullableObjective(name);
+        Entity entity = source.getEntity();
+        Text text;
+        if (objective != null) {
+            if (sb.getObjectiveForSlot(1) == objective) {
+                text = MarkEnum.CROSS.appendMessage("Already showing");
+            } else {
+                assert entity != null;
+                sb.setObjectiveSlot(1, objective);
+                if (persistent) {
+                    tickSet = -100;
+                } else {
+                    tickSet = source.getServer().getTicks() + (20 * 20);
+                }
+                text = MarkEnum.TICK.appendText(new LiteralText(Formatting.WHITE + entity.getEntityName() + " has selected " + Formatting.GOLD + "[" + objective.getDisplayName().asString() + "]"));
+            }
+        } else {
+            String displayName = criterion.getName().replaceAll("_", " ");
+            displayName = displayName.substring(0, 1).toUpperCase() + displayName.substring(1);
+            sb.addObjective(name, criterion, new LiteralText(displayName).formatted(Formatting.GOLD), criterion.getDefaultRenderType());
+            ScoreboardObjective newObjective = objective = sb.getNullableObjective(name);
+        }
+        return 1;
+    }
+
     public void showSideBar(ServerCommandSource source, ItemStackArgument item, String type, boolean persistent) {
         Scoreboard scoreboard = source.getServer().getScoreboard();
         Item minecraftItem = item.getItem();
@@ -163,7 +191,6 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
             assert scoreboardObjective != null;
             text = MarkEnum.TICK.appendText(new LiteralText(Formatting.WHITE + entity.getEntityName() + " has selected " + Formatting.GOLD + "[" + scoreboardObjective.getDisplayName().asString() + "]"));
         }
-        assert entity != null;
         source.getServer().getPlayerManager().broadcast(text, MessageType.CHAT, Util.NIL_UUID);
     }
 

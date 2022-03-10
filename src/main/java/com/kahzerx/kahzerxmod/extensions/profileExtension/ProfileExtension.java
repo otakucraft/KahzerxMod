@@ -64,6 +64,9 @@ public class ProfileExtension extends GenericExtension implements Extensions {
     }
 
     public void openGUI(ServerPlayerEntity player) {
+        if (!extensionSettings().isEnabled()) {
+            return;
+        }
         GuiPlayer gui = guis.get(player);
         if (gui == null) {
             gui = new GuiPlayer(player, shopExtension);
