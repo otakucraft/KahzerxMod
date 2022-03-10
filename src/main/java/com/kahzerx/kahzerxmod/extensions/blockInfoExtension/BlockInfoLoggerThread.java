@@ -16,7 +16,7 @@ public class BlockInfoLoggerThread extends Thread {
     public void run() {
         while (this.running) {
             if (shouldClear) {
-                extension.clearLogTable();
+                extension.db.getQuery().clearLogTable();
                 shouldClear = false;
             }
             if (BlockInfoExtension.queue.isEmpty()) {
@@ -25,7 +25,7 @@ public class BlockInfoLoggerThread extends Thread {
             try {
                 BlockActionLog action = BlockInfoExtension.queue.take();
                 if (this.extension.getSettings().isEnabled()) {
-                    extension.logAction(action);
+                    extension.db.getQuery().logAction(action);
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();

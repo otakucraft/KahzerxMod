@@ -14,10 +14,10 @@ import static net.minecraft.server.command.CommandManager.literal;
 public class BlockInfoCommand {
     public void register(CommandDispatcher<ServerCommandSource> dispatcher, BlockInfoExtension blockInfo) {
         ArgumentBuilder<ServerCommandSource, RequiredArgumentBuilder<ServerCommandSource, PosArgument>> bi = argument("coords", BlockPosArgumentType.blockPos()).
-                executes(context -> blockInfo.threadedGetInfo(
+                executes(context -> blockInfo.db.getQuery().threadedGetInfo(
                         context.getSource(), BlockPosArgumentType.getBlockPos(context, "coords"), 1)).
                 then(argument("int", IntegerArgumentType.integer(1)).
-                        executes(context -> blockInfo.threadedGetInfo(
+                        executes(context -> blockInfo.db.getQuery().threadedGetInfo(
                                 context.getSource(),
                                 BlockPosArgumentType.getBlockPos(context, "coords"),
                                 IntegerArgumentType.getInteger(context, "int"))));

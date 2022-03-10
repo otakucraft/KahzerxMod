@@ -122,6 +122,7 @@ public class KahzerxServer {
         db.initializeConnection(minecraftServer.getSavePath(WorldSavePath.ROOT).toString());
         db.createPlayerTable();
         extensions.forEach(e -> e.onCreateDatabase(db.getConnection()));
+        extensions.forEach(e -> e.onCreateDatabase(minecraftServer.getSavePath(WorldSavePath.ROOT).toString()));
     }
 
     public static void onServerStarted(MinecraftServer minecraftServer) {

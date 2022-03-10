@@ -15,6 +15,7 @@ public interface Extensions {
     default void onServerStarted(MinecraftServer minecraftServer) {}
     default void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher) {}
     default void onCreateDatabase(Connection conn) {}
+    default void onCreateDatabase(String worldPath) {}
     default void onServerStop() {}
     default void onAutoSave() {}
     default void onPlayerJoined(ServerPlayerEntity player) {}
