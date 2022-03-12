@@ -10,9 +10,11 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.*;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.WorldSavePath;
+import net.minecraft.world.chunk.WorldChunk;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -140,6 +142,14 @@ public class KahzerxServer {
 
     public static void onAutoSave() {
         extensions.forEach(Extensions::onAutoSave);
+    }
+
+    public static void onChunkLoad(ServerWorld world, WorldChunk chunk) {
+        extensions.forEach(e -> e.onChunkLoad(world, chunk));
+    }
+
+    public static void onChunkUnload(ServerWorld world, WorldChunk chunk) {
+        extensions.forEach(e -> e.onChunkUnload(world, chunk));
     }
 
     public static void onPlayerJoined(ServerPlayerEntity player) {
