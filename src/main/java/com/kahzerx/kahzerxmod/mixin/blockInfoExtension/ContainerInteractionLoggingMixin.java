@@ -148,7 +148,7 @@ public class ContainerInteractionLoggingMixin {
                     loggedBE.getPos().getY(),
                     loggedBE.getPos().getZ(),
                     DimUtils.getWorldID(DimUtils.getDim(loggedBE.getWorld())),
-                    oldEmpty ? 3 : 4,
+                    oldEmpty ? ActionTypes.ADDED.getId() : ActionTypes.REMOVED.getId(),
                     DateUtils.getDate()
             ));
         }

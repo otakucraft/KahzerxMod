@@ -3,18 +3,29 @@ package com.kahzerx.kahzerxmod.mixin.server;
 import com.kahzerx.kahzerxmod.KahzerxServer;
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.PlayerAdvancementTracker;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.network.ServerPlayerInteractionManager;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -31,6 +42,29 @@ public class PlayerEventsMixins {
         @Inject(method = "onPlayerConnect", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/PlayerManager;loadPlayerData(Lnet/minecraft/server/network/ServerPlayerEntity;)Lnet/minecraft/nbt/NbtCompound;", shift = At.Shift.AFTER))
         private void onPlayerJoined(ClientConnection connection, ServerPlayerEntity player, CallbackInfo ci) {
             KahzerxServer.onPlayerJoined(player);
+        }
+    }
+
+    @Mixin(ServerPlayerInteractionManager.class)
+    public static class PlayerBreak {
+        @Shadow @Final protected ServerPlayerEntity player;
+
+        @Shadow protected ServerWorld world;
+
+        @Inject(method = "tryBreakBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/Block;onBreak(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Lnet/minecraft/entity/player/PlayerEntity;)V", shift = At.Shift.BEFORE))
+        private void onBroken(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
+            KahzerxServer.onPlayerBreakBlock(player, world, pos);
+        }
+    }
+
+    @Mixin(BlockItem.class)
+    public static class PlayerPlace {
+        @Redirect(method = "place(Lnet/minecraft/item/ItemPlacementContext;)Lnet/minecraft/util/ActionResult;", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/Block;onPlaced(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/item/ItemStack;)V"))
+        private void onPlaced(Block instance, World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
+            instance.onPlaced(world, pos, state, placer, itemStack);
+            if (placer instanceof ServerPlayerEntity) {
+                KahzerxServer.onPlayerPlaceBlock((ServerPlayerEntity) placer, world, pos);
+            }
         }
     }
 

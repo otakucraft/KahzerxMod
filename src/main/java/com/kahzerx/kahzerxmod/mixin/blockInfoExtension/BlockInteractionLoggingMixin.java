@@ -1,5 +1,6 @@
 package com.kahzerx.kahzerxmod.mixin.blockInfoExtension;
 
+import com.kahzerx.kahzerxmod.extensions.blockInfoExtension.helpers.ActionTypes;
 import com.kahzerx.kahzerxmod.extensions.blockInfoExtension.helpers.BlockActionLog;
 import com.kahzerx.kahzerxmod.extensions.blockInfoExtension.BlockInfoExtension;
 import com.kahzerx.kahzerxmod.extensions.blockInfoExtension.utils.BlockInfoUtils;
@@ -30,7 +31,7 @@ public class BlockInteractionLoggingMixin {
                     hitResult.getBlockPos().getY(),
                     hitResult.getBlockPos().getZ(),
                     DimUtils.getWorldID(DimUtils.getDim(player.world)),
-                    2,
+                    ActionTypes.INTERACT.getId(),
                     DateUtils.getDate()
             );
             BlockInfoExtension.enqueue(actionLog);
@@ -43,7 +44,7 @@ public class BlockInteractionLoggingMixin {
                     hitResult.getBlockPos().getY(),
                     hitResult.getBlockPos().getZ(),
                     DimUtils.getWorldID(DimUtils.getDim(player.world)),
-                    2,
+                    ActionTypes.INTERACT.getId(),
                     DateUtils.getDate()
             );
             BlockInfoExtension.enqueue(actionLog);

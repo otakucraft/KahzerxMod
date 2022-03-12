@@ -14,6 +14,8 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.*;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.WorldSavePath;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraft.world.chunk.WorldChunk;
 
 import java.util.ArrayList;
@@ -163,6 +165,14 @@ public class KahzerxServer {
 
     public static void onPlayerDied(ServerPlayerEntity player) {
         extensions.forEach(e -> e.onPlayerDied(player));
+    }
+
+    public static void onPlayerBreakBlock(ServerPlayerEntity player, World world, BlockPos pos) {
+        extensions.forEach(e -> e.onPlayerBreakBlock(player, world, pos));
+    }
+
+    public static void onPlayerPlaceBlock(ServerPlayerEntity player, World world, BlockPos pos) {
+        extensions.forEach(e -> e.onPlayerPlaceBlock(player, world, pos));
     }
 
     public static void onChatMessage(ServerPlayerEntity player, String chatMessage) {
