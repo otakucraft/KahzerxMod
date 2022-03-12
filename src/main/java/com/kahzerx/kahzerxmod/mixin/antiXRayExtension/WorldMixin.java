@@ -10,6 +10,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.chunk.WorldChunk;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -20,6 +21,8 @@ import java.util.concurrent.Executor;
 
 @Mixin(World.class)
 public abstract class WorldMixin implements WorldInterface, WorldAccess {
+    @Shadow public abstract WorldChunk getWorldChunk(BlockPos pos);
+
     @Unique
     public ChunkBlockController chunkBlockController;
 
@@ -33,9 +36,9 @@ public abstract class WorldMixin implements WorldInterface, WorldAccess {
         return chunkBlockController;
     }
 
-    @Inject(method = "setBlockState(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;II)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/chunk/WorldChunk;setBlockState(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Z)Lnet/minecraft/block/BlockState;"), locals = LocalCapture.CAPTURE_FAILHARD)
-    public void onBlockChange(BlockPos pos, BlockState state, int flags, int maxUpdateDepth, CallbackInfoReturnable<Boolean> cir, WorldChunk worldChunk, Block block) {
-        BlockState oldState = worldChunk.getBlockState(pos);
+    @Inject(method = "setBlockState(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;II)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/chunk/WorldChunk;setBlockState(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Z)Lnet/minecraft/block/BlockState;"))
+    public void onBlockChange(BlockPos pos, BlockState state, int flags, int maxUpdateDepth, CallbackInfoReturnable<Boolean> cir) {
+        BlockState oldState = getWorldChunk(pos).getBlockState(pos);
         this.chunkBlockController.onBlockChange((World) (Object) this, pos, state, oldState, flags, maxUpdateDepth);
     }
 }

@@ -10,16 +10,15 @@ import net.minecraft.world.chunk.ChunkSection;
 import net.minecraft.world.chunk.WorldChunk;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(Chunk.class)
 public abstract class ChunkMixin {
-    @Inject(method = "fillSectionArray", at = @At("TAIL"))
-    private static void addPresetValues(HeightLimitView world, Registry<Biome> biome, ChunkSection[] sectionArray, CallbackInfo ci) {
-        for (ChunkSection section : sectionArray) {
-            ((ChunkSectionInterface) section).addBlockPresets(getWorld(world));
-        }
+    @Redirect(method = "fillSectionArray", at = @At(value = "NEW", target = "net/minecraft/world/chunk/ChunkSection"))
+    private static ChunkSection addPresetValues(int chunkPos, Registry<Biome> biomeRegistry, HeightLimitView world, Registry<Biome> biome, ChunkSection[] sectionArray) {
+        ChunkSection section = new ChunkSection(chunkPos, biomeRegistry);
+        ((ChunkSectionInterface) section).addBlockPresets(getWorld(world));
+        return section;
     }
 
     private static World getWorld(HeightLimitView heightLimitView) {

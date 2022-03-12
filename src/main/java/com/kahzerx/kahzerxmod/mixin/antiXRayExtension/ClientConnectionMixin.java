@@ -1,7 +1,5 @@
 package com.kahzerx.kahzerxmod.mixin.antiXRayExtension;
 
-import com.google.common.collect.Queues;
-import com.kahzerx.kahzerxmod.extensions.antiXRayExtension.helpers.PacketQueue;
 import com.kahzerx.kahzerxmod.extensions.antiXRayExtension.interfaces.ChunkPacketInterface;
 import io.netty.channel.Channel;
 import io.netty.util.concurrent.Future;
@@ -10,12 +8,11 @@ import net.minecraft.network.ClientConnection;
 import net.minecraft.network.Packet;
 import net.minecraft.network.packet.s2c.play.ChunkDataS2CPacket;
 import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Queue;
 
@@ -25,13 +22,7 @@ public abstract class ClientConnectionMixin {
 
     @Shadow public abstract void send(Packet<?> packet, @Nullable GenericFutureListener<? extends Future<? super Void>> callback);
 
-    private final Queue<PacketQueue> queuedPackets = Queues.newConcurrentLinkedQueue();
-
-    @Inject(method = "send(Lnet/minecraft/network/Packet;Lio/netty/util/concurrent/GenericFutureListener;)V", at = @At(value = "INVOKE", target = "Ljava/util/Queue;add(Ljava/lang/Object;)Z", shift = At.Shift.BEFORE), cancellable = true)
-    private void onAddToQueue(Packet<?> packet, GenericFutureListener<? extends Future<? super Void>> callback, CallbackInfo ci) {
-        queuedPackets.add(new PacketQueue(packet, callback));
-        ci.cancel();
-    }
+    @Shadow @Final private Queue<ClientConnection.QueuedPacket> packetQueue;
 
     @Redirect(method = "send(Lnet/minecraft/network/Packet;Lio/netty/util/concurrent/GenericFutureListener;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;sendQueuedPackets()V"))
     private void onSend(ClientConnection instance) { }
@@ -48,14 +39,14 @@ public abstract class ClientConnectionMixin {
 
     private boolean sendQueue() {
         if (this.channel != null && this.channel.isOpen()) {
-            synchronized (this.queuedPackets) {
-                while (!this.queuedPackets.isEmpty()) {
-                    PacketQueue packet = queuedPackets.peek();
-                    if (!isReady(packet.getPacket())) {
+            synchronized (this.packetQueue) {
+                while (!this.packetQueue.isEmpty()) {
+                    if (this.packetQueue.peek() instanceof ConnectionQueueAccessor packetAccessor)
+                    if (!isReady(packetAccessor.getPacket())) {
                         return false;
                     } else {
-                        this.queuedPackets.poll();
-                        this.send(packet.getPacket(), packet.getCallback());
+                        this.packetQueue.poll();
+                        this.send(packetAccessor.getPacket(), packetAccessor.getCallback());
                     }
                 }
             }

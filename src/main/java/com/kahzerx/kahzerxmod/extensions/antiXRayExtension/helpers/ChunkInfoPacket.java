@@ -5,7 +5,7 @@ import net.minecraft.network.packet.s2c.play.ChunkDataS2CPacket;
 import net.minecraft.world.chunk.WorldChunk;
 
 public class ChunkInfoPacket extends ChunkInfo<BlockState> implements Runnable {
-    private AntiXRay antiXRay;
+    private final AntiXRay antiXRay;
     private WorldChunk[] worldChunks;
     public ChunkInfoPacket(ChunkDataS2CPacket chunkPacket, WorldChunk worldChunk, AntiXRay antiXRay) {
         super(chunkPacket, worldChunk);
