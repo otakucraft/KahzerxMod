@@ -15,22 +15,25 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Iterator;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Mixin(ServerConfigList.class)
 public class ServerConfigMixin<K, V extends ServerConfigEntry<K>> {
-    private static final Logger LOGGER = LogManager.getLogger();
     @Inject(method = "add", at = @At("RETURN"))
     public void onWhitelistAdd(V entry, CallbackInfo ci) {
         if (OpOnWhitelistExtension.isExtensionEnabled && OpOnWhitelistExtension.server != null && entry instanceof WhitelistEntry) {
             try {
-                LOGGER.info(entry);
                 JSONParser parser = new JSONParser();
                 JSONObject obj = (JSONObject) parser.parse(new Gson().toJson(entry));
-                LOGGER.info(obj);
-                LOGGER.info(obj.get("key"));
-                Optional<GameProfile> profile = OpOnWhitelistExtension.server.getUserCache().getByUuid(UUID.fromString((String) ((JSONObject) obj.get("key")).get("id")));
+                Set<?> keys = obj.keySet();
+                if (keys.size() == 0) {
+                    return;
+                }
+                Optional<?> k = keys.stream().findFirst();
+                Optional<GameProfile> profile = OpOnWhitelistExtension.server.getUserCache().getByUuid(UUID.fromString((String) ((JSONObject) obj.get(k.get())).get("id")));
                 if (profile.isEmpty()) {
                     return;
                 }
@@ -50,7 +53,12 @@ public class ServerConfigMixin<K, V extends ServerConfigEntry<K>> {
             try {
                 JSONParser parser = new JSONParser();
                 JSONObject obj = (JSONObject) parser.parse(new Gson().toJson(entry));
-                Optional<GameProfile> profile = OpOnWhitelistExtension.server.getUserCache().getByUuid(UUID.fromString((String) ((JSONObject) obj.get("key")).get("id")));
+                Set<?> keys = obj.keySet();
+                if (keys.size() == 0) {
+                    return;
+                }
+                Optional<?> k = keys.stream().findFirst();
+                Optional<GameProfile> profile = OpOnWhitelistExtension.server.getUserCache().getByUuid(UUID.fromString((String) ((JSONObject) obj.get(k.get())).get("id")));
                 if (profile.isEmpty()) {
                     return;
                 }
