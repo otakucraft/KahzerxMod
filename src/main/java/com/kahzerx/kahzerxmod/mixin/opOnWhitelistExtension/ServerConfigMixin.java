@@ -25,11 +25,11 @@ public class ServerConfigMixin<K, V extends ServerConfigEntry<K>> {
     public void onWhitelistAdd(V entry, CallbackInfo ci) {
         if (OpOnWhitelistExtension.isExtensionEnabled && OpOnWhitelistExtension.server != null && entry instanceof WhitelistEntry) {
             try {
-                LOGGER.debug(entry);
+                LOGGER.info(entry);
                 JSONParser parser = new JSONParser();
                 JSONObject obj = (JSONObject) parser.parse(new Gson().toJson(entry));
-                LOGGER.debug(obj);
-                LOGGER.debug(obj.get("key"));
+                LOGGER.info(obj);
+                LOGGER.info(obj.get("key"));
                 Optional<GameProfile> profile = OpOnWhitelistExtension.server.getUserCache().getByUuid(UUID.fromString((String) ((JSONObject) obj.get("key")).get("id")));
                 if (profile.isEmpty()) {
                     return;
