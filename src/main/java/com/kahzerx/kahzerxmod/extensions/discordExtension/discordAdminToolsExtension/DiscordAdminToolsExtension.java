@@ -14,6 +14,7 @@ import com.kahzerx.kahzerxmod.extensions.discordExtension.discordExtension.Disco
 import com.kahzerx.kahzerxmod.extensions.discordExtension.discordWhitelistExtension.DiscordWhitelistExtension;
 import com.kahzerx.kahzerxmod.extensions.discordExtension.utils.DiscordChatUtils;
 import com.kahzerx.kahzerxmod.extensions.discordExtension.utils.DiscordUtils;
+import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.LongArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -91,33 +92,20 @@ public class DiscordAdminToolsExtension extends GenericExtension implements Exte
                     || message.startsWith(DiscordListener.commandPrefix + pardonCommand.getBody())
                     || message.startsWith(DiscordListener.commandPrefix + exaddCommand.getBody())
                     || message.startsWith(DiscordListener.commandPrefix + exremoveCommand.getBody())) {
-                EmbedBuilder embed = DiscordChatUtils.generateEmbed(
-                        new String[]{"**This is not the channel!!! >:(**"},
-                        discordExtension.extensionSettings().getPrefix(),
-                        true,
-                        Color.RED,
-                        true,
-                        discordExtension.extensionSettings().isShouldFeedback()
-                );
-                if (embed != null) {
-                    event.getMessage().delete().queueAfter(2, TimeUnit.SECONDS);
-                    MessageAction embedSent = event.getChannel().sendMessageEmbeds(embed.build());
-                    embedSent.queue(m -> m.delete().queueAfter(2, TimeUnit.SECONDS));
-                }
                 return true;
             }
         }
         if (message.startsWith(DiscordListener.commandPrefix + banCommand.getBody() + " ")) {
-            banCommand.execute(event, server, discordExtension.extensionSettings().getPrefix(), discordWhitelistExtension);
+            banCommand.execute(event, server, discordExtension.extensionSettings().getPrefix(), discordWhitelistExtension, this);
             return true;
         } else if (message.startsWith(DiscordListener.commandPrefix + pardonCommand.getBody() + " ")) {
-            pardonCommand.execute(event, server, discordExtension.extensionSettings().getPrefix(), discordWhitelistExtension);
+            pardonCommand.execute(event, server, discordExtension.extensionSettings().getPrefix(), discordWhitelistExtension, this);
             return true;
         } else if (message.startsWith(DiscordListener.commandPrefix + exaddCommand.getBody() + " ")) {
-            exaddCommand.execute(event, server, discordExtension.extensionSettings().getPrefix(), discordWhitelistExtension);
+            exaddCommand.execute(event, server, discordExtension.extensionSettings().getPrefix(), discordWhitelistExtension, this);
             return true;
         } else if (message.startsWith(DiscordListener.commandPrefix + exremoveCommand.getBody() + " ")) {
-            exremoveCommand.execute(event, server, discordExtension.extensionSettings().getPrefix(), discordWhitelistExtension);
+            exremoveCommand.execute(event, server, discordExtension.extensionSettings().getPrefix(), discordWhitelistExtension, this);
             return true;
         }
         return false;
@@ -126,6 +114,18 @@ public class DiscordAdminToolsExtension extends GenericExtension implements Exte
     @Override
     public void settingsCommand(LiteralArgumentBuilder<ServerCommandSource> builder) {
         builder.
+                then(literal("shouldFeedback").
+                        then(argument("feedback", BoolArgumentType.bool()).
+                                executes(context -> {
+                                    extensionSettings().setShouldFeedback(BoolArgumentType.getBool(context, "feedback"));
+                                    context.getSource().sendFeedback(new LiteralText("[shouldFeedback] > " + extensionSettings().isShouldFeedback() + "."), false);
+                                    ExtensionManager.saveSettings();
+                                    return 1;
+                                })).
+                        executes(context -> {
+                            context.getSource().sendFeedback(new LiteralText("[shouldFeedback] > " + extensionSettings().isShouldFeedback() + "."), false);
+                            return 1;
+                        })).
                 then(literal("adminChats").
                         then(literal("add").
                                 then(argument("chatID", LongArgumentType.longArg()).

@@ -1,6 +1,7 @@
 package com.kahzerx.kahzerxmod.extensions.discordExtension.commands;
 
 import com.kahzerx.kahzerxmod.extensions.discordExtension.DiscordPermission;
+import com.kahzerx.kahzerxmod.extensions.discordExtension.discordAdminToolsExtension.DiscordAdminToolsExtension;
 import com.kahzerx.kahzerxmod.extensions.discordExtension.discordWhitelistExtension.DiscordWhitelistExtension;
 import com.kahzerx.kahzerxmod.extensions.discordExtension.utils.DiscordChatUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -32,6 +33,10 @@ public class GenericCommand {
     }
 
     public void execute(MessageReceivedEvent event, MinecraftServer server, String serverPrefix, List<Long> validChannels) {
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
+    public void execute(MessageReceivedEvent event, MinecraftServer server, String serverPrefix, DiscordWhitelistExtension extension, DiscordAdminToolsExtension adminExtension) {
         throw new UnsupportedOperationException("Not implemented");
     }
 

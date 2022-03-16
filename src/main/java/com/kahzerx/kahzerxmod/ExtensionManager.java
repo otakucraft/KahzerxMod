@@ -216,6 +216,7 @@ public class ExtensionManager {
         KahzerxServer.extensions.add(discordWhitelistExtension);
 
         List<Long> adminChats = new ArrayList<>();
+        boolean feedback = true;
         DiscordAdminToolsJsonSettings datjs = gson.fromJson(settings, DiscordAdminToolsJsonSettings.class);
         if (dwjs != null) {
             for (DiscordAdminToolsSettings dats : datjs.getSettings()) {
@@ -224,6 +225,7 @@ public class ExtensionManager {
                 }
                 if (dats.getName().equals("discordAdminTools")) {
                     adminChats = dats.getAdminChats() != null ? dats.getAdminChats() : new ArrayList<>();
+                    feedback = dats.isShouldFeedback();
                     break;
                 }
             }
@@ -233,7 +235,8 @@ public class ExtensionManager {
                         "discordAdminTools",
                         isEnabled(found, "discordAdminTools") && (discordExtension.extensionSettings().isEnabled()) && (discordWhitelistExtension.extensionSettings().isEnabled()),
                         "Enables !ban, !pardon, !exadd, !exremove on discord AdminChats.",
-                        adminChats
+                        adminChats,
+                        feedback
                 ),
                 discordExtension,
                 discordWhitelistExtension));

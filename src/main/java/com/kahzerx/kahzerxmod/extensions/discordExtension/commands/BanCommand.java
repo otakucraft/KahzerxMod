@@ -1,6 +1,7 @@
 package com.kahzerx.kahzerxmod.extensions.discordExtension.commands;
 
 import com.kahzerx.kahzerxmod.extensions.discordExtension.DiscordPermission;
+import com.kahzerx.kahzerxmod.extensions.discordExtension.discordAdminToolsExtension.DiscordAdminToolsExtension;
 import com.kahzerx.kahzerxmod.extensions.discordExtension.discordWhitelistExtension.DiscordWhitelistExtension;
 import com.kahzerx.kahzerxmod.extensions.discordExtension.utils.DiscordChatUtils;
 import com.mojang.authlib.GameProfile;
@@ -20,8 +21,8 @@ public class BanCommand extends GenericCommand {
     }
 
     @Override
-    public void execute(MessageReceivedEvent event, MinecraftServer server, String serverPrefix, DiscordWhitelistExtension extension) {
-        boolean feedback = extension.getDiscordExtension().extensionSettings().isShouldFeedback();
+    public void execute(MessageReceivedEvent event, MinecraftServer server, String serverPrefix, DiscordWhitelistExtension extension, DiscordAdminToolsExtension adminExtension) {
+        boolean feedback = adminExtension.extensionSettings().isShouldFeedback();
         String[] req = event.getMessage().getContentRaw().split(" ");
         String playerName = req[1];
         if (req.length != 2) {

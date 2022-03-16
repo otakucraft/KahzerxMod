@@ -6,9 +6,19 @@ import java.util.List;
 
 public class DiscordAdminToolsSettings extends ExtensionSettings {
     private List<Long> adminChats;
-    public DiscordAdminToolsSettings(String name, boolean enabled, String description, List<Long> adminChats) {
+    private boolean shouldFeedback;
+    public DiscordAdminToolsSettings(String name, boolean enabled, String description, List<Long> adminChats, boolean shouldFeedback) {
         super(name, enabled, description);
         this.adminChats = adminChats;
+        this.shouldFeedback = shouldFeedback;
+    }
+
+    public boolean isShouldFeedback() {
+        return shouldFeedback;
+    }
+
+    public void setShouldFeedback(boolean shouldFeedback) {
+        this.shouldFeedback = shouldFeedback;
     }
 
     public List<Long> getAdminChats() {
