@@ -1,8 +1,6 @@
 package com.kahzerx.kahzerxmod;
 
 import com.kahzerx.kahzerxmod.database.ServerDatabase;
-import com.kahzerx.kahzerxmod.profiler.*;
-import com.kahzerx.kahzerxmod.utils.DateUtils;
 import com.kahzerx.kahzerxmod.utils.FileUtils;
 import com.kahzerx.kahzerxmod.utils.MarkEnum;
 import com.mojang.brigadier.CommandDispatcher;
@@ -26,18 +24,18 @@ import static net.minecraft.server.command.CommandManager.literal;
 public class KahzerxServer {
     public static MinecraftServer minecraftServer;
     public static List<Extensions> extensions = new ArrayList<>();
-    public static List<AbstractProfiler> profilers = new ArrayList<>();
+//    public static List<AbstractProfiler> profilers = new ArrayList<>();
     public static ServerDatabase db = new ServerDatabase();
     public static CommandDispatcher<ServerCommandSource> dispatcher;
 
     public static void onRunServer(MinecraftServer minecraftServer) {
-        profilers.add(new ChunkProfiler());
-        profilers.add(new BlockEntitiesProfiler());
-        profilers.add(new EntityProfiler());
-        profilers.add(new MSPTProfiler());
-        profilers.add(new PlayersProfiler());
-        profilers.add(new RamProfiler());
-        profilers.add(new TPSProfiler());
+//        profilers.add(new ChunkProfiler());
+//        profilers.add(new BlockEntitiesProfiler());
+//        profilers.add(new EntityProfiler());
+//        profilers.add(new MSPTProfiler());
+//        profilers.add(new PlayersProfiler());
+//        profilers.add(new RamProfiler());
+//        profilers.add(new TPSProfiler());
 
         KahzerxServer.minecraftServer = minecraftServer;
         ExtensionManager.manageExtensions(FileUtils.loadConfig(minecraftServer.getSavePath(WorldSavePath.ROOT).toString()));
@@ -191,11 +189,11 @@ public class KahzerxServer {
         if (server.getTicks() < 20) {
             return;
         }
-        String id = DateUtils.getAcc();
-        profilers.forEach(p -> {
-            p.onTick(server, id);
-            p.clearResults();
-        });
+//        String id = DateUtils.getAcc();
+//        profilers.forEach(p -> {
+//            p.onTick(server, id);
+//            p.clearResults();
+//        });
         extensions.forEach(e -> e.onTick(server));
     }
 }
