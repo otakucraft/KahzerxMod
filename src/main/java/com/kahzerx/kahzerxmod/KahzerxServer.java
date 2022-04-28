@@ -189,11 +189,11 @@ public class KahzerxServer {
         if (server.getTicks() < 20) {
             return;
         }
+        extensions.forEach(e -> e.onTick(server));
 //        String id = DateUtils.getAcc();
 //        profilers.forEach(p -> {
 //            p.onTick(server, id);
 //            p.clearResults();
 //        });
-        extensions.forEach(e -> e.onTick(server));
     }
 }
