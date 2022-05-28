@@ -1,44 +1,26 @@
 package com.kahzerx.kahzerxmod.mixin.farmlandMyceliumExtension;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import com.kahzerx.kahzerxmod.extensions.farmlandMyceliumExtension.FarmlandMyceliumExtension;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.HoeItem;
 import net.minecraft.item.ItemUsageContext;
-import net.minecraft.item.MiningToolItem;
-import net.minecraft.item.ToolMaterial;
-import net.minecraft.tag.Tag;
-import net.minecraft.tag.TagKey;
+import net.minecraft.util.ActionResult;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
-
-import java.util.Map;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-
-import static net.minecraft.item.HoeItem.createTillAction;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(HoeItem.class)
-public abstract class HoeItemMixin extends MiningToolItem {
-    private static final Map<Block, Pair<Predicate<ItemUsageContext>, Consumer<ItemUsageContext>>> ACTIONS;
-    static {
-        ACTIONS = Maps.newHashMap(ImmutableMap.of(Blocks.MYCELIUM, Pair.of(HoeItem::canTillFarmland, createTillAction(Blocks.FARMLAND.getDefaultState()))));
-    }
-
-    protected HoeItemMixin(float attackDamage, float attackSpeed, ToolMaterial material, TagKey<Block> effectiveBlocks, Settings settings) {
-        super(attackDamage, attackSpeed, material, effectiveBlocks, settings);
-    }
-
-    @Redirect(method = "useOnBlock", at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;"))
-    private Object onGet(Map instance, Object o) {
-        Block b = (Block) o;
+public class HoeItemMixin {
+    @Inject(method = "useOnBlock", at = @At(value = "HEAD"))
+    private void onUse(ItemUsageContext context, CallbackInfoReturnable<ActionResult> cir) {
+        World world = context.getWorld();
+        Block b = world.getBlockState(context.getBlockPos()).getBlock();
         if (b == Blocks.MYCELIUM && FarmlandMyceliumExtension.isExtensionEnabled) {
-            return ACTIONS.get(o);
+            world.setBlockState(context.getBlockPos(), Blocks.GRASS_BLOCK.getDefaultState());
+            world.updateNeighbors(context.getBlockPos(), Blocks.GRASS_BLOCK);
         }
-        return instance.get(o);
     }
 }

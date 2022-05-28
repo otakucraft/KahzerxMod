@@ -7,11 +7,13 @@ import com.kahzerx.kahzerxmod.utils.DimUtils;
 import com.kahzerx.kahzerxmod.utils.PlayerUtils;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.minecraft.block.enums.Instrument;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.network.MessageType;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Util;
 import net.minecraft.world.World;
@@ -77,7 +79,8 @@ public class HereExtension extends GenericExtension implements Extensions {
                     Util.NIL_UUID
             );
         }
-        player.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 100, 0, false, false));
+        player.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 200, 0, false, false));
+        player.getWorld().playSound(null, player.getBlockPos(), Instrument.HARP.getSound(), SoundCategory.RECORDS, 3.0f, (float)Math.pow(2.0, (double)(24 - 12) / 12.0));
         return 1;
     }
 }
