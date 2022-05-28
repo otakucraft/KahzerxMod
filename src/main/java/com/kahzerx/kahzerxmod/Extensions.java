@@ -14,7 +14,7 @@ import net.minecraft.world.chunk.WorldChunk;
 
 import java.sql.Connection;
 
-public interface Extensions {
+public interface Extensions extends Comparable<Extensions> {
     default void onServerRun(MinecraftServer minecraftServer) {}
     default void onServerStarted(MinecraftServer minecraftServer) {}
     default void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher) {}
@@ -41,4 +41,9 @@ public interface Extensions {
     }
     default void settingsCommand(LiteralArgumentBuilder<ServerCommandSource> builder) {}
     ExtensionSettings extensionSettings();
+
+    @Override
+    default int compareTo(Extensions extensions) {
+        return this.extensionSettings().getName().compareTo(extensions.extensionSettings().getName());
+    }
 }

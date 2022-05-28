@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.WorldChunk;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static net.minecraft.server.command.CommandManager.literal;
@@ -36,9 +37,9 @@ public class KahzerxServer {
 //        profilers.add(new PlayersProfiler());
 //        profilers.add(new RamProfiler());
 //        profilers.add(new TPSProfiler());
-
         KahzerxServer.minecraftServer = minecraftServer;
         ExtensionManager.manageExtensions(FileUtils.loadConfig(minecraftServer.getSavePath(WorldSavePath.ROOT).toString()));
+        Collections.sort(extensions);
 
         extensions.forEach(e -> e.onServerRun(minecraftServer));
 
@@ -76,7 +77,11 @@ public class KahzerxServer {
                                 return 1;
                             })).
                     executes(context -> {
-                        context.getSource().sendFeedback(MarkEnum.INFO.appendMessage(String.format("[%s] > %s\n%s", ex.extensionSettings().getName(), ex.extensionSettings().isEnabled(), ex.extensionSettings().getDescription())), false);
+                        context.getSource().sendFeedback(
+                                new LiteralText(ex.extensionSettings().getName() + "\n").styled(style -> style.withBold(true)).
+                                        append(MarkEnum.INFO.appendMessage(ex.extensionSettings().getDescription() + "\n", Formatting.GRAY).styled(style -> style.withBold(false))).
+                                        append(new LiteralText("Enabled: ").styled(style -> style.withBold(false).withColor(Formatting.WHITE))).
+                                        append(new LiteralText(String.format("%s", ex.extensionSettings().isEnabled())).styled(style -> style.withBold(false).withColor(ex.extensionSettings().isEnabled() ? Formatting.GREEN : Formatting.RED))), false);
                         return 1;
                     });
             ex.settingsCommand(extensionSubCommand);  // Otros ajustes por si fueran necesarios para las extensiones más complejas.
@@ -85,15 +90,15 @@ public class KahzerxServer {
         settingsCommand.executes(context -> {
             List<MutableText> extensionNames = new ArrayList<>();
             for (Extensions ex : extensions) {
-                MutableText exData = new LiteralText(ex.extensionSettings().getName() + "\n").styled(
+                MutableText exData = new LiteralText("- " + ex.extensionSettings().getName() + " ").styled(
                         style -> style.
-                                withBold(true).
+                                withBold(false).
                                 withUnderline(false).
                                 withColor(Formatting.WHITE).
                                 withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new LiteralText(ex.extensionSettings().getDescription()))));
                 exData.append(new LiteralText("[True]").styled(
                         style -> style.
-                                withBold(ex.extensionSettings().isEnabled()).
+                                withBold(false).
                                 withUnderline(ex.extensionSettings().isEnabled()).
                                 withColor(Formatting.GREEN).
                                 withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new LiteralText(String.format("Enable %s", ex.extensionSettings().getName())))).
@@ -104,13 +109,14 @@ public class KahzerxServer {
                                 withUnderline(false)));
                 exData.append(new LiteralText("[False]").styled(
                         style -> style.
-                                withBold(!ex.extensionSettings().isEnabled()).
+                                withBold(false).
                                 withUnderline(!ex.extensionSettings().isEnabled()).
                                 withColor(Formatting.RED).
                                 withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new LiteralText(String.format("Disable %s", ex.extensionSettings().getName())))).
                                 withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, String.format("/KSettings %s disable", ex.extensionSettings().getName())))));
                 extensionNames.add(exData);
             }
+            context.getSource().sendFeedback(new LiteralText("All Settings").styled(style -> style.withBold(true)), false);
             for (Text t : extensionNames) {
                 context.getSource().sendFeedback(t, false);
             }
