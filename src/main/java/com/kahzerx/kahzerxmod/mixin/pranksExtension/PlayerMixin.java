@@ -43,4 +43,4 @@ public abstract class PlayerMixin extends PlayerEntity {
         }
         cir.setReturnValue(name);
     }
- }
+}
