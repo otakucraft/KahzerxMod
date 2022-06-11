@@ -10,12 +10,11 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.block.enums.Instrument;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.network.MessageType;
+import net.minecraft.network.message.MessageType;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.text.LiteralText;
-import net.minecraft.util.Util;
+import net.minecraft.text.Text;
 import net.minecraft.world.World;
 
 public class HereExtension extends GenericExtension implements Extensions {
@@ -43,7 +42,7 @@ public class HereExtension extends GenericExtension implements Extensions {
         double z = player.getZ();
         if (player.getWorld().getRegistryKey().getValue().equals(World.OVERWORLD.getValue())) {
             src.getServer().getPlayerManager().broadcast(
-                    new LiteralText(String.format(
+                    Text.literal(String.format(
                             "%s %s %s -> %s %s",
                             PlayerUtils.getPlayerWithColor(player),
                             DimUtils.getDimensionWithColor(player.getWorld()),
@@ -51,12 +50,11 @@ public class HereExtension extends GenericExtension implements Extensions {
                             DimUtils.getDimensionWithColor(World.NETHER.getValue()),
                             DimUtils.formatCoords(x / 8, y, z / 8)
                     )),
-                    MessageType.CHAT,
-                    Util.NIL_UUID
+                    MessageType.CHAT
             );
         } else if (player.getWorld().getRegistryKey().getValue().equals(World.NETHER.getValue())) {
             src.getServer().getPlayerManager().broadcast(
-                    new LiteralText(String.format(
+                    Text.literal(String.format(
                             "%s %s %s -> %s %s",
                             PlayerUtils.getPlayerWithColor(player),
                             DimUtils.getDimensionWithColor(player.getWorld()),
@@ -64,19 +62,17 @@ public class HereExtension extends GenericExtension implements Extensions {
                             DimUtils.getDimensionWithColor(World.OVERWORLD.getValue()),
                             DimUtils.formatCoords(x *  8, y, z * 8)
                     )),
-                    MessageType.CHAT,
-                    Util.NIL_UUID
+                    MessageType.CHAT
             );
         } else if (player.getWorld().getRegistryKey().getValue().equals(World.END.getValue())) {
             src.getServer().getPlayerManager().broadcast(
-                    new LiteralText(String.format(
+                    Text.literal(String.format(
                             "%s %s %s",
                             PlayerUtils.getPlayerWithColor(player),
                             DimUtils.getDimensionWithColor(player.getWorld()),
                             DimUtils.formatCoords(x, y, z)
                     )),
-                    MessageType.CHAT,
-                    Util.NIL_UUID
+                    MessageType.CHAT
             );
         }
         player.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 200, 0, false, false));

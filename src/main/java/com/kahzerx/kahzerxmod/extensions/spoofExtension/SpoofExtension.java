@@ -15,7 +15,7 @@ import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 
 public class SpoofExtension extends GenericExtension implements Extensions {
     public SpoofExtension(ExtensionSettings settings) {
@@ -40,9 +40,9 @@ public class SpoofExtension extends GenericExtension implements Extensions {
             // Generar la pantalla de enderChest.
             player.openHandledScreen(new SimpleNamedScreenHandlerFactory((i, playerInventory, playerEntity) ->
                     GenericContainerScreenHandler.createGeneric9x3(i, playerInventory, enderChestInventory),
-                    new LiteralText(String.format("%s stop hax >:(", player.getName().getString()))));
+                    Text.literal(String.format("%s stop hax >:(", player.getName().getString()))));
         } else {
-            source.sendFeedback(new LiteralText("player offline"), false);
+            source.sendFeedback(Text.literal("player offline"), false);
         }
         return 1;
     }
@@ -91,7 +91,7 @@ public class SpoofExtension extends GenericExtension implements Extensions {
                             GenericContainerScreenHandler invCont = GenericContainerScreenHandler.createGeneric9x6(i, playerInventory, inventory);
                             invCont.addListener(listener);
                             return invCont;
-                        }, new LiteralText(String.format("%s stop hax >:(", player.getName().getString()))));
+                        }, Text.literal(String.format("%s stop hax >:(", player.getName().getString()))));
         return 1;
     }
 }

@@ -8,7 +8,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import net.minecraft.network.packet.s2c.play.OverlayMessageS2CPacket;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 
 import java.util.UUID;
 
@@ -22,7 +22,7 @@ public class BankCommand {
                 requires(server -> extension.extensionSettings().isEnabled()).
                 then(literal("balance").
                         executes(context -> {
-                            context.getSource().sendFeedback(new LiteralText("Balance: ").append(MarkEnum.OTAKU_COIN.appendMessage(String.valueOf(extension.getBalance(context.getSource().getPlayer())))), false);
+                            context.getSource().sendFeedback(Text.literal("Balance: ").append(MarkEnum.OTAKU_COIN.appendMessage(String.valueOf(extension.getBalance(context.getSource().getPlayer())))), false);
                             return 1;
                         })).
                 then(literal("transfer").
@@ -47,7 +47,7 @@ public class BankCommand {
                                             context.getSource().sendFeedback(MarkEnum.TICK.appendMessage("Transferencia de ").append(MarkEnum.OTAKU_COIN.appendMessage(String.format("%d a %s completada!", amount, playerName))), false);
                                             ServerPlayerEntity destPlayer = context.getSource().getServer().getPlayerManager().getPlayer(UUID.fromString(playerUUID));
                                             if (destPlayer != null) {
-                                                destPlayer.networkHandler.sendPacket(new OverlayMessageS2CPacket(new LiteralText(context.getSource().getPlayer().getName().getString() + " te ha transferido ").append(MarkEnum.OTAKU_COIN.appendMessage(String.valueOf(amount)))));
+                                                destPlayer.networkHandler.sendPacket(new OverlayMessageS2CPacket(Text.literal(context.getSource().getPlayer().getName().getString() + " te ha transferido ").append(MarkEnum.OTAKU_COIN.appendMessage(String.valueOf(amount)))));
                                             }
                                             return 1;
                                         })))));

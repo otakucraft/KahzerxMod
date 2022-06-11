@@ -5,6 +5,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.HungerManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.NetworkSide;
+import net.minecraft.network.encryption.PlayerPublicKey;
 import net.minecraft.network.packet.s2c.play.EntityPositionS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntitySetHeadYawS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
@@ -12,14 +13,14 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.ServerTask;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
 public class KlonePlayerEntity extends ServerPlayerEntity {
-    public KlonePlayerEntity(MinecraftServer server, ServerWorld world, GameProfile profile) {
-        super(server, world, profile);
+    public KlonePlayerEntity(MinecraftServer server, ServerWorld world, GameProfile profile, @Nullable PlayerPublicKey publicKey) {
+        super(server, world, profile, publicKey);
     }
 
     public static void createKlone(MinecraftServer server, ServerPlayerEntity player) {
@@ -27,9 +28,10 @@ public class KlonePlayerEntity extends ServerPlayerEntity {
         GameProfile profile = player.getGameProfile();
 
         server.getPlayerManager().remove(player);
-        player.networkHandler.disconnect(new LiteralText("A clone has been created.\nThe clone will leave once you rejoin.\nHappy AFK!"));
+        player.networkHandler.disconnect(Text.literal("A clone has been created.\nThe clone will leave once you rejoin.\nHappy AFK!"));
 
-        KlonePlayerEntity klonedPlayer = new KlonePlayerEntity(server, world, profile);
+        KlonePlayerEntity klonedPlayer = new KlonePlayerEntity(server, world, profile, player.getPublicKey());
+//        KlonePlayerEntity klonedPlayer = new KlonePlayerEntity(server, world, profile);
 
         klonedPlayer.refreshPositionAndAngles(player.getX(), player.getY(), player.getZ(), player.getYaw(), player.getPitch());
         server.getPlayerManager().onPlayerConnect(new KloneNetworkManager(NetworkSide.SERVERBOUND), klonedPlayer);
@@ -67,7 +69,7 @@ public class KlonePlayerEntity extends ServerPlayerEntity {
 
     @Override
     public void kill() {
-        this.kill(new LiteralText("Killed"));
+        this.kill(Text.literal("Killed"));
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.kahzerx.kahzerxmod.utils;
 
 import net.minecraft.text.ClickEvent;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -32,15 +31,15 @@ public enum MarkEnum {
     }
 
     public MutableText getFormattedIdentifier() {
-        return new LiteralText(identifier).styled(style -> style.withColor(formatting).withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, identifier)));
+        return Text.literal(identifier).styled(style -> style.withColor(formatting).withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, identifier)));
     }
 
     public MutableText getFormattedIdentifierBold() {
-        return new LiteralText(identifier).styled(style -> style.withColor(formatting).withBold(true).withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, identifier)));
+        return Text.literal(identifier).styled(style -> style.withColor(formatting).withBold(true).withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, identifier)));
     }
 
     public MutableText appendMessage(String message, Formatting color) {
-        return getFormattedIdentifier().append(new LiteralText(" " + message).styled(style -> style.withColor(color)));
+        return getFormattedIdentifier().append(Text.literal(" " + message).styled(style -> style.withColor(color)));
     }
 
     public MutableText appendMessage(String message) {
@@ -48,7 +47,7 @@ public enum MarkEnum {
     }
 
     public MutableText appendText(MutableText t, Formatting color) {
-        return getFormattedIdentifier().append(new LiteralText(" ").append(t.styled(style -> style.withColor(color))));
+        return getFormattedIdentifier().append(Text.literal(" ").append(t.styled(style -> style.withColor(color))));
     }
 
     public MutableText appendText(MutableText t) {
@@ -56,7 +55,7 @@ public enum MarkEnum {
     }
 
     public MutableText boldAppendMessage(String message, Formatting color) {
-        return getFormattedIdentifierBold().append(new LiteralText(" " + message).styled(style -> style.withColor(color).withBold(false)));
+        return getFormattedIdentifierBold().append(Text.literal(" " + message).styled(style -> style.withColor(color).withBold(false)));
     }
 
     public MutableText boldAppendMessage(String message) {

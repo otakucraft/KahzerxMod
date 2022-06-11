@@ -16,12 +16,8 @@ public class ModTPCommand {
     public void register(CommandDispatcher<ServerCommandSource> dispatcher, ModTPExtension modTPExtension) {
         dispatcher.register(literal("modTP").
                 requires(serverCommandSource -> {
-                    try {
-                        if (modTPExtension.extensionSettings().isEnabled() && modTPExtension.permsExtension.extensionSettings().isEnabled()) {
-                            return modTPExtension.permsExtension.getDBPlayerPerms(serverCommandSource.getPlayer().getUuidAsString()).getId() >= PermsLevels.MOD.getId();
-                        }
-                    } catch (CommandSyntaxException e) {
-                        e.printStackTrace();
+                    if (modTPExtension.extensionSettings().isEnabled() && modTPExtension.permsExtension.extensionSettings().isEnabled()) {
+                        return modTPExtension.permsExtension.getDBPlayerPerms(serverCommandSource.getPlayer().getUuidAsString()).getId() >= PermsLevels.MOD.getId();
                     }
                     return false;
                 }).

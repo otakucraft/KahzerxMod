@@ -27,7 +27,6 @@
     "scoreboardExtension.ScoreboardMixin",
     "seedExtension.seedCommandMixin",
     "server.ChatEventsMixin",
-    "server.ChunkEventsMixin",
     "server.CommandEventsMixin",
     "server.PlayerEventsMixins$PlayerAdvancement",
     "server.PlayerEventsMixins$PlayerBreak",

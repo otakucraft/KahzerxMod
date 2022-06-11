@@ -4,8 +4,8 @@ import com.kahzerx.kahzerxmod.extensions.blockInfoExtension.helpers.BlockActionL
 import com.kahzerx.kahzerxmod.extensions.blockInfoExtension.utils.BlockInfoUtils;
 import com.kahzerx.kahzerxmod.utils.DimUtils;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 
 import java.sql.*;
@@ -92,14 +92,14 @@ public record BlockInfoQuery(Connection connection) {
                 i++;
             }
             if (msg.isEmpty()) {
-                msg.add(new LiteralText("No logs :("));
+                msg.add(Text.literal("No logs :("));
             }
             rs.close();
             ps.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             msg.clear();
-            msg.add(new LiteralText("Error."));
+            msg.add(Text.literal("Error."));
         }
         return msg;
     }
@@ -131,7 +131,7 @@ public record BlockInfoQuery(Connection connection) {
 
         List<MutableText> msg = getBlockInfo(x, y, z, DimUtils.getWorldID(DimUtils.getDim(source.getWorld())), page);
         Collections.reverse(msg);
-        source.sendFeedback(new LiteralText("======BlockInfo======"), false);
+        source.sendFeedback(Text.literal("======BlockInfo======"), false);
         int nLine = getLines(x, y, z, DimUtils.getWorldID(DimUtils.getDim(source.getWorld())));
 
         for (MutableText line : msg) {
@@ -141,20 +141,20 @@ public record BlockInfoQuery(Connection connection) {
         if (page > nLine) {  // No pages.
             return;
         } else if (page == nLine && page == 1) {  // There is only 1 page.
-            source.sendFeedback(new LiteralText(String.format("%d/%d.", page, nLine)), false);
+            source.sendFeedback(Text.literal(String.format("%d/%d.", page, nLine)), false);
         } else if (page == 1) {  // First page but there are more
             MutableText pages = BlockInfoUtils.getPages(page, nLine);
             MutableText next = BlockInfoUtils.getNext(x, y, z, page);
-            source.sendFeedback(new LiteralText("").append(pages).append(next).append(BlockInfoUtils.getHelp(x, y, z)), false);
+            source.sendFeedback(Text.literal("").append(pages).append(next).append(BlockInfoUtils.getHelp(x, y, z)), false);
         } else if (page == nLine) {  // The last page.
             MutableText prev = BlockInfoUtils.getPrev(x, y, z, page);
             MutableText pages = BlockInfoUtils.getPages(page, nLine);
-            source.sendFeedback(new LiteralText("").append(prev).append(pages).append(BlockInfoUtils.getHelp(x, y, z)), false);
+            source.sendFeedback(Text.literal("").append(prev).append(pages).append(BlockInfoUtils.getHelp(x, y, z)), false);
         } else {  // Have pages before and after the one you are in.
             MutableText prev = BlockInfoUtils.getPrev(x, y, z, page);
             MutableText pages = BlockInfoUtils.getPages(page, nLine);
             MutableText next = BlockInfoUtils.getNext(x, y, z, page);
-            source.sendFeedback(new LiteralText("").append(prev).append(pages).append(next).append(BlockInfoUtils.getHelp(x, y, z)), false);
+            source.sendFeedback(Text.literal("").append(prev).append(pages).append(next).append(BlockInfoUtils.getHelp(x, y, z)), false);
         }
     }
 

@@ -2,7 +2,7 @@ package com.kahzerx.kahzerxmod.extensions.achusExtension;
 
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 import static net.minecraft.server.command.CommandManager.literal;
@@ -12,7 +12,7 @@ public class AchusCommand {
         dispatcher.register(literal("achus").
                 requires(server -> achus.getSettings().isEnabled()).
                 executes(context -> {
-                    context.getSource().sendFeedback(new LiteralText(Formatting.GREEN + "Salud"), false);
+                    context.getSource().sendFeedback(Text.literal(Formatting.GREEN + "Salud"), false);
                     return 1;
                 }));
     }

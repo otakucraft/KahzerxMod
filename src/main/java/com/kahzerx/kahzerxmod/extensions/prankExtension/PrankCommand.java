@@ -5,7 +5,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.minecraft.command.CommandSource;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 import static net.minecraft.server.command.CommandManager.argument;
@@ -27,12 +27,12 @@ public class PrankCommand {
                                 suggests(((context, builder) -> CommandSource.suggestMatching(new String[]{"0", "1", "2", "3", "4", "5"}, builder))).
                                 executes(context -> {
                                     PrankLevel level = PrankLevel.idToLevel(IntegerArgumentType.getInteger(context, "level"));
-                                    context.getSource().sendFeedback(MarkEnum.INFO.appendText(new LiteralText(
+                                    context.getSource().sendFeedback(MarkEnum.INFO.appendText(Text.literal(
                                             String.format("Nivel %d", level.getID())
                                     ).styled(style -> style.
                                             withBold(true).
                                             withColor(level.getFormatting())
-                                    ).append(new LiteralText(
+                                    ).append(Text.literal(
                                             String.format(": %s", level.getDescription())
                                     ).styled(style -> style.
                                             withBold(false).

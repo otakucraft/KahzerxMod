@@ -5,14 +5,15 @@ import com.kahzerx.kahzerxmod.extensions.prankExtension.PrankLevel;
 import com.kahzerx.kahzerxmod.klone.KlonePlayerEntity;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.encryption.PlayerPublicKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -27,9 +28,10 @@ import java.util.UUID;
 public abstract class PlayerMixin extends PlayerEntity {
     @Shadow @Final public MinecraftServer server;
 
-    public PlayerMixin(World world, BlockPos pos, float yaw, GameProfile profile) {
-        super(world, pos, yaw, profile);
+    public PlayerMixin(World world, BlockPos pos, float yaw, GameProfile gameProfile, @Nullable PlayerPublicKey publicKey) {
+        super(world, pos, yaw, gameProfile, publicKey);
     }
+
 
     @Inject(method = "getPlayerListName", at = @At("HEAD"), cancellable = true)
     private void onGet(CallbackInfoReturnable<Text> cir) {
@@ -39,7 +41,7 @@ public abstract class PlayerMixin extends PlayerEntity {
         }
         ServerPlayerEntity p = server.getPlayerManager().getPlayer(UUID.fromString(this.getUuidAsString()));
         if (p != null && p.getClass() == KlonePlayerEntity.class) {
-            name.append(new LiteralText(" [Bot]").styled(style -> style.withColor(Formatting.GRAY)));
+            name.append(Text.literal(" [Bot]").styled(style -> style.withColor(Formatting.GRAY)));
         }
         cir.setReturnValue(name);
     }

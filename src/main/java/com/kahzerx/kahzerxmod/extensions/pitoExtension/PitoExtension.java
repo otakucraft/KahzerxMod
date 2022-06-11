@@ -5,7 +5,7 @@ import com.kahzerx.kahzerxmod.extensions.ExtensionSettings;
 import com.kahzerx.kahzerxmod.extensions.GenericExtension;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 
 public class PitoExtension extends GenericExtension implements Extensions {
     public PitoExtension(ExtensionSettings settings) {
@@ -23,7 +23,7 @@ public class PitoExtension extends GenericExtension implements Extensions {
     }
 
     public int pitoResponse(ServerCommandSource src) {
-        src.sendFeedback(new LiteralText("Buena tula mi rey."), false);
+        src.sendFeedback(Text.literal("Buena tula mi rey."), false);
         return 1;
     }
 }

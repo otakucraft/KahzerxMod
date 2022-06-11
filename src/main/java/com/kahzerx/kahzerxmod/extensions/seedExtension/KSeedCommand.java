@@ -13,8 +13,8 @@ public class KSeedCommand {
                 requires(serverCommandSource -> serverCommandSource.hasPermissionLevel(2) || extension.getSettings().isEnabled()).
                 executes(context -> {
                     long l = context.getSource().getWorld().getSeed();
-                    Text text = Texts.bracketed((new LiteralText(String.valueOf(l))).styled((style) -> style.withColor(Formatting.GREEN).withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, String.valueOf(l))).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslatableText("chat.copy.click"))).withInsertion(String.valueOf(l))));
-                    context.getSource().sendFeedback(new TranslatableText("commands.seed.success", text), false);
+                    Text text = Texts.bracketed((Text.literal(String.valueOf(l))).styled((style) -> style.withColor(Formatting.GREEN).withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, String.valueOf(l))).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.translatable("chat.copy.click"))).withInsertion(String.valueOf(l))));
+                    context.getSource().sendFeedback(Text.translatable("commands.seed.success", text), false);
                     return (int)l;
                 }));
     }

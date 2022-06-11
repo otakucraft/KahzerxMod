@@ -7,10 +7,11 @@ import com.kahzerx.kahzerxmod.utils.MarkEnum;
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.block.Block;
+import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.ItemStackArgument;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
-import net.minecraft.network.MessageType;
+import net.minecraft.network.message.MessageType;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.scoreboard.ScoreboardCriterion;
 import net.minecraft.scoreboard.ScoreboardObjective;
@@ -21,10 +22,8 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.stat.ServerStatHandler;
 import net.minecraft.stat.Stat;
 import net.minecraft.stat.Stats;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.Util;
 import net.minecraft.world.level.ServerWorldProperties;
 
 import java.io.File;
@@ -40,8 +39,8 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
     }
 
     @Override
-    public void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher) {
-        new ScoreboardCommand().register(dispatcher, this);
+    public void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess commandRegistryAccess) {
+        new ScoreboardCommand().register(dispatcher, commandRegistryAccess, this);
     }
 
     @Override
@@ -98,7 +97,7 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
         } else {
             scoreboard.setObjectiveSlot(1, null);
             assert entity != null;
-            source.getServer().getPlayerManager().broadcast(MarkEnum.TICK.appendMessage(entity.getEntityName() + " removed the scoreboard."), MessageType.CHAT, Util.NIL_UUID);
+            source.getServer().getPlayerManager().broadcast(MarkEnum.TICK.appendMessage(entity.getEntityName() + " removed the scoreboard."), MessageType.CHAT);
         }
         return 1;
     }
@@ -125,12 +124,12 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
                 } else {
                     tickSet = source.getServer().getTicks() + (20 * 20);
                 }
-                text = MarkEnum.TICK.appendText(new LiteralText(Formatting.WHITE + entity.getEntityName() + " has selected " + Formatting.GOLD + "[" + objective.getDisplayName().asString() + "]"));
+                text = MarkEnum.TICK.appendText(Text.literal(Formatting.WHITE + entity.getEntityName() + " has selected " + Formatting.GOLD + "[" + objective.getDisplayName().getString() + "]"));
             }
         } else {
             String displayName = criterion.getName().replaceAll("_", " ");
             displayName = displayName.substring(0, 1).toUpperCase() + displayName.substring(1);
-            sb.addObjective(name, criterion, new LiteralText(displayName).formatted(Formatting.GOLD), criterion.getDefaultRenderType());
+            sb.addObjective(name, criterion, Text.literal(displayName).formatted(Formatting.GOLD), criterion.getDefaultRenderType());
             ScoreboardObjective newObjective = objective = sb.getNullableObjective(name);
         }
         return 1;
@@ -156,7 +155,7 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
                 } else {
                     tickSet = source.getServer().getTicks() + (20 * 20);
                 }
-                text = MarkEnum.TICK.appendText(new LiteralText(Formatting.WHITE + entity.getEntityName() + " has selected " + Formatting.GOLD + "[" + scoreboardObjective.getDisplayName().asString() + "]"));
+                text = MarkEnum.TICK.appendText(Text.literal(Formatting.WHITE + entity.getEntityName() + " has selected " + Formatting.GOLD + "[" + scoreboardObjective.getDisplayName().getString() + "]"));
             }
         } else {
             String criteriaName = "minecraft." + type + ":minecraft." + item.getItem().toString();
@@ -168,7 +167,7 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
             }
             ScoreboardCriterion criteria = opCriteria.get();
 
-            scoreboard.addObjective(objectiveName, criteria, new LiteralText(displayName).formatted(Formatting.GOLD), criteria.getDefaultRenderType());
+            scoreboard.addObjective(objectiveName, criteria, Text.literal(displayName).formatted(Formatting.GOLD), criteria.getDefaultRenderType());
 
             ScoreboardObjective newScoreboardObjective = scoreboardObjective = scoreboard.getNullableObjective(objectiveName);
             try {
@@ -177,7 +176,7 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
                 scoreboard.removeObjective(newScoreboardObjective);
                 text = MarkEnum.CROSS.appendMessage("Error.");
                 assert entity != null;
-                source.getServer().getPlayerManager().broadcast(text, MessageType.CHAT, Util.NIL_UUID);
+                source.getServer().getPlayerManager().broadcast(text, MessageType.CHAT);
 
                 return;
             }
@@ -189,9 +188,9 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
             }
             assert entity != null;
             assert scoreboardObjective != null;
-            text = MarkEnum.TICK.appendText(new LiteralText(Formatting.WHITE + entity.getEntityName() + " has selected " + Formatting.GOLD + "[" + scoreboardObjective.getDisplayName().asString() + "]"));
+            text = MarkEnum.TICK.appendText(Text.literal(Formatting.WHITE + entity.getEntityName() + " has selected " + Formatting.GOLD + "[" + scoreboardObjective.getDisplayName().getString() + "]"));
         }
-        source.getServer().getPlayerManager().broadcast(text, MessageType.CHAT, Util.NIL_UUID);
+        source.getServer().getPlayerManager().broadcast(text, MessageType.CHAT);
     }
 
     public void initScoreboard(ServerCommandSource source, ScoreboardObjective scoreboardObjective, Item item, String type) {

@@ -14,7 +14,7 @@ import net.minecraft.network.packet.s2c.play.TitleS2CPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -280,7 +280,7 @@ public class SolExtension extends GenericExtension implements Extensions {
                 f2.noClip = true;
                 player.getWorld().spawnEntity(f1);
                 player.getWorld().spawnEntity(f2);
-                player.networkHandler.sendPacket(new TitleS2CPacket(new LiteralText(new String(Base64.getDecoder().decode(B64[new Random().nextInt(B64.length)])))));
+                player.networkHandler.sendPacket(new TitleS2CPacket(Text.literal(new String(Base64.getDecoder().decode(B64[new Random().nextInt(B64.length)])))));
             }
             if (server.getTicks() == solJoined + 30) {
                 ServerPlayerEntity player = server.getPlayerManager().getPlayer(UUID.fromString(SOL_UUID));
