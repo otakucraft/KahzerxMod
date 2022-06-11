@@ -2,6 +2,7 @@ package com.kahzerx.kahzerxmod.mixin.server;
 
 import com.kahzerx.kahzerxmod.KahzerxServer;
 import com.mojang.brigadier.CommandDispatcher;
+import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import org.spongepowered.asm.mixin.Final;
@@ -16,7 +17,7 @@ public class CommandEventsMixin {
     @Shadow @Final private CommandDispatcher<ServerCommandSource> dispatcher;
 
     @Inject(method = "<init>", at = @At("RETURN"))
-    private void registerCommand(CommandManager.RegistrationEnvironment environment, CallbackInfo ci) {
-        KahzerxServer.onRegisterCommands(dispatcher);
+    private void registerCommand(CommandManager.RegistrationEnvironment environment, CommandRegistryAccess commandRegistryAccess, CallbackInfo ci) {
+        KahzerxServer.onRegisterCommands(dispatcher, commandRegistryAccess);
     }
 }

@@ -12,8 +12,8 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.ClickEvent;
 import net.minecraft.text.HoverEvent;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 import java.sql.*;
@@ -149,7 +149,7 @@ public class HomeExtension extends GenericExtension implements Extensions {
             );
             player.addExperience(0);  // xp resets when you tp from other dimension and needs to update smh, mojang pls.
         } else {
-            player.sendMessage(MarkEnum.INFO.appendText(new LiteralText("You don't have a home yet, use ").styled(style -> style.withColor(Formatting.WHITE)).append(getClickableSetHomeCommand())), false);
+            player.sendMessage(MarkEnum.INFO.appendText(Text.literal("You don't have a home yet, use ").styled(style -> style.withColor(Formatting.WHITE)).append(getClickableSetHomeCommand())), false);
         }
         return 1;
     }
@@ -163,7 +163,7 @@ public class HomeExtension extends GenericExtension implements Extensions {
         String playerUUID = player.getUuidAsString();
         playerHomes.put(playerUUID, newHomePos);
         src.sendFeedback(
-            new LiteralText(String.format(
+            Text.literal(String.format(
                 "Home @ %s %s",
                 DimUtils.getDimensionWithColor(player.world),
                 DimUtils.formatCoords(player.getX(), player.getY(), player.getZ())
@@ -175,8 +175,8 @@ public class HomeExtension extends GenericExtension implements Extensions {
     }
 
     public static MutableText getClickableSetHomeCommand() {
-        return new LiteralText("/setHome").styled((style -> style.withColor(Formatting.DARK_GREEN).
+        return Text.literal("/setHome").styled((style -> style.withColor(Formatting.DARK_GREEN).
                 withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/setHome")).
-                withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new LiteralText("setHome")))));
+                withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("setHome")))));
     }
 }

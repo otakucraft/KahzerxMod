@@ -6,10 +6,8 @@ import com.kahzerx.kahzerxmod.extensions.GenericExtension;
 import com.kahzerx.kahzerxmod.utils.DimUtils;
 import com.kahzerx.kahzerxmod.utils.MarkEnum;
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralText;
 import net.minecraft.util.math.BlockPos;
 
 import java.sql.*;
@@ -95,7 +93,7 @@ public class SpawnExtension extends GenericExtension implements Extensions {
             ps.executeUpdate();
             ps.close();
             source.sendFeedback(MarkEnum.TICK.appendMessage(String.format("Spawn @: %s %s", DimUtils.getDimensionWithColor(player.world), DimUtils.formatCoords(pos.getX(), pos.getY(), pos.getZ()))), false);
-        } catch (SQLException | CommandSyntaxException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return 1;

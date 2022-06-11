@@ -1,12 +1,11 @@
 package com.kahzerx.kahzerxmod.extensions.bocaExtension;
 
 import com.mojang.brigadier.CommandDispatcher;
-import net.minecraft.network.MessageType;
+import net.minecraft.network.message.MessageType;
 import net.minecraft.network.packet.s2c.play.TitleS2CPacket;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralText;
-import net.minecraft.util.Util;
+import net.minecraft.text.Text;
 
 import java.util.List;
 
@@ -20,14 +19,14 @@ public class BoquitaCommand {
                         executes(context -> {
                             List<ServerPlayerEntity> players = context.getSource().getServer().getPlayerManager().getPlayerList();
                             for (ServerPlayerEntity player : players) {
-                                player.networkHandler.sendPacket(new TitleS2CPacket(new LiteralText("§9❤§r §l§9BO§eQUI§9TA§r §9❤§r")));
+                                player.networkHandler.sendPacket(new TitleS2CPacket(Text.literal("§9❤§r §l§9BO§eQUI§9TA§r §9❤§r")));
                             }
                             return 1;
                         })).
                 executes(context -> {
-                    context.getSource().getServer().getPlayerManager().broadcast(new LiteralText(
+                    context.getSource().getServer().getPlayerManager().broadcast(Text.literal(
                             "§9❤§r §l§9BO§eQUI§9TA§r §9❤§r"
-                    ), MessageType.CHAT, Util.NIL_UUID);
+                    ), MessageType.CHAT);
                     return 1;
                 }));
     }

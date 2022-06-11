@@ -13,8 +13,8 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.ClickEvent;
 import net.minecraft.text.HoverEvent;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 
@@ -74,15 +74,15 @@ public class ExchangeCommand {
                             false);
                     context.getSource().sendFeedback(
                             MarkEnum.QUESTION.appendMessage("Confirmar exchange? ").
-                                    append(new LiteralText("[Sí]").styled(style -> style.withColor(Formatting.GREEN).
+                                    append(Text.literal("[Sí]").styled(style -> style.withColor(Formatting.GREEN).
                                             withBold(true).
                                             withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, String.format("/exchange confirm %d %s", count, item.getTranslationKey()))).
-                                            withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new LiteralText("confirmar exchange"))))).
-                                    append(new LiteralText(" ").styled(style -> style.withColor(Formatting.WHITE))).
-                                    append(new LiteralText("[No]").styled(style -> style.withColor(Formatting.DARK_RED).
+                                            withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("confirmar exchange"))))).
+                                    append(Text.literal(" ").styled(style -> style.withColor(Formatting.WHITE))).
+                                    append(Text.literal("[No]").styled(style -> style.withColor(Formatting.DARK_RED).
                                             withBold(true).
                                             withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, String.format("/exchange abort %d %s", count, item.getTranslationKey()))).
-                                            withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new LiteralText("cancelar exchange"))))),
+                                            withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("cancelar exchange"))))),
                             false
                     );
                     return 1;
@@ -95,21 +95,21 @@ public class ExchangeCommand {
     }
 
     private MutableText getExchangeHelpCommand() {
-        return new LiteralText("/exchange info").styled(style -> style.withColor(Formatting.DARK_GREEN).
+        return Text.literal("/exchange info").styled(style -> style.withColor(Formatting.DARK_GREEN).
                 withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/exchange info")).
-                withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new LiteralText("Info about the exchange"))));
+                withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Info about the exchange"))));
     }
 
     private boolean basicVerify(CommandContext<ServerCommandSource> context, ServerPlayerEntity player) {
         Item item = player.getMainHandStack().getItem();
         if (player.getMainHandStack().isEmpty()) {
             context.getSource().sendFeedback(MarkEnum.CROSS.appendMessage("Necesitas el item a cambiar en la mano!"), false);
-            context.getSource().sendFeedback(MarkEnum.INFO.appendText(new LiteralText("Usa ").append(getExchangeHelpCommand())), false);
+            context.getSource().sendFeedback(MarkEnum.INFO.appendText(Text.literal("Usa ").append(getExchangeHelpCommand())), false);
             return false;
         }
         if (!Exchange.isValidItem(item)) {
             context.getSource().sendFeedback(MarkEnum.CROSS.appendMessage("El item no es válido!"), false);
-            context.getSource().sendFeedback(MarkEnum.INFO.appendText(new LiteralText("Usa ").append(getExchangeHelpCommand())), false);
+            context.getSource().sendFeedback(MarkEnum.INFO.appendText(Text.literal("Usa ").append(getExchangeHelpCommand())), false);
             return false;
         }
         return true;

@@ -4,6 +4,7 @@ import com.kahzerx.kahzerxmod.extensions.ExtensionSettings;
 import com.kahzerx.kahzerxmod.utils.PlayerUtils;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -18,12 +19,11 @@ public interface Extensions extends Comparable<Extensions> {
     default void onServerRun(MinecraftServer minecraftServer) {}
     default void onServerStarted(MinecraftServer minecraftServer) {}
     default void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher) {}
+    default void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess commandRegistryAccess) {}
     default void onCreateDatabase(Connection conn) {}
     default void onCreateDatabase(String worldPath) {}
     default void onServerStop() {}
     default void onAutoSave() {}
-    default void onChunkLoad(ServerWorld world, WorldChunk chunk) {}
-    default void onChunkUnload(ServerWorld world, WorldChunk chunk) {}
     default void onPlayerJoined(ServerPlayerEntity player) {}
     default void onPlayerLeft(ServerPlayerEntity player) {}
     default void onPlayerDied(ServerPlayerEntity player) {}

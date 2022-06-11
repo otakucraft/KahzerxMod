@@ -2,11 +2,13 @@ package com.kahzerx.kahzerxmod.extensions.discordExtension.utils;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.minecraft.network.MessageType;
+import net.minecraft.network.message.MessageType;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.text.*;
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.HoverEvent;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.Util;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -103,23 +105,23 @@ public class DiscordChatUtils {
         }
 
         Matcher m = url_patt.matcher(msg);
-        MutableText finalMsg = new LiteralText("");
+        MutableText finalMsg = Text.literal("");
         boolean hasUrl = false;
         int prev = 0;
 
         while (m.find()) {
             hasUrl = true;
-            Text text = new LiteralText(m.group(0)).styled((style -> style.withColor(Formatting.GRAY)
+            Text text = Text.literal(m.group(0)).styled((style -> style.withColor(Formatting.GRAY)
                     .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, m.group(0)))
-                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new LiteralText("Open URL")))));
-            finalMsg = finalMsg.append(new LiteralText(msg.substring(prev, m.start()))).append(text);
+                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Open URL")))));
+            finalMsg = finalMsg.append(Text.literal(msg.substring(prev, m.start()))).append(text);
             prev = m.end();
         }
         if (server.getPlayerManager() != null) {
             if (hasUrl) {
-                server.getPlayerManager().broadcast(finalMsg.append(msg.substring(prev)), MessageType.CHAT, Util.NIL_UUID);
+                server.getPlayerManager().broadcast(finalMsg.append(msg.substring(prev)), MessageType.CHAT);
             } else {
-                server.getPlayerManager().broadcast(new LiteralText(msg), MessageType.CHAT, Util.NIL_UUID);
+                server.getPlayerManager().broadcast(Text.literal(msg), MessageType.CHAT);
             }
         } else {
             LOGGER.info(String.format("Server may not be initialized yet...\nError sending %s%n", msg));

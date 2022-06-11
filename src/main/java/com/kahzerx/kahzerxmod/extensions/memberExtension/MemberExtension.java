@@ -6,7 +6,7 @@ import com.kahzerx.kahzerxmod.extensions.GenericExtension;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 import java.util.Collection;
@@ -26,22 +26,22 @@ public class MemberExtension extends GenericExtension implements Extensions {
         Collection<String> teamNames = server.getScoreboard().getTeamNames();
         if (!teamNames.contains("ADMIN")) {
             Team team = server.getScoreboard().addTeam("ADMIN");
-            team.setPrefix(new LiteralText("[ADMIN] ").styled(style -> style.withBold(true).withColor(Formatting.GOLD)));
+            team.setPrefix(Text.literal("[ADMIN] ").styled(style -> style.withBold(true).withColor(Formatting.GOLD)));
             team.setShowFriendlyInvisibles(false);
         }
         if (!teamNames.contains("MOD")) {
             Team team = server.getScoreboard().addTeam("MOD");
-            team.setPrefix(new LiteralText("[MOD] ").styled(style -> style.withBold(true).withColor(Formatting.DARK_PURPLE)));
+            team.setPrefix(Text.literal("[MOD] ").styled(style -> style.withBold(true).withColor(Formatting.DARK_PURPLE)));
             team.setShowFriendlyInvisibles(false);
         }
         if (!teamNames.contains("HELPER")) {
             Team team = server.getScoreboard().addTeam("HELPER");
-            team.setPrefix(new LiteralText("[HELPER] ").styled(style -> style.withBold(true).withColor(Formatting.AQUA)));
+            team.setPrefix(Text.literal("[HELPER] ").styled(style -> style.withBold(true).withColor(Formatting.AQUA)));
             team.setShowFriendlyInvisibles(false);
         }
         if (!teamNames.contains("MIEMBRO")) {
             Team team = server.getScoreboard().addTeam("MIEMBRO");
-            team.setPrefix(new LiteralText("[MIEMBRO] ").styled(style -> style.withBold(true).withColor(Formatting.GREEN)));
+            team.setPrefix(Text.literal("[MIEMBRO] ").styled(style -> style.withBold(true).withColor(Formatting.GREEN)));
             team.setShowFriendlyInvisibles(false);
         }
         if (teamNames.contains("MIEMBRO")) {

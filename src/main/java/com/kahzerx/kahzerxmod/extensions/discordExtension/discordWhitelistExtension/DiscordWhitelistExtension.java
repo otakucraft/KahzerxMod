@@ -22,8 +22,7 @@ import net.dv8tion.jda.api.requests.restaction.MessageAction;
 import net.minecraft.server.*;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 
 import java.awt.*;
 import java.sql.*;
@@ -314,7 +313,7 @@ public class DiscordWhitelistExtension extends GenericExtension implements Exten
             banList.add(playerEntry);
             ServerPlayerEntity serverPlayerEntity = server.getPlayerManager().getPlayer(profile.getId());
             if (serverPlayerEntity != null) {
-                serverPlayerEntity.networkHandler.disconnect(new TranslatableText("You have been banned :)"));
+                serverPlayerEntity.networkHandler.disconnect(Text.literal("You have been banned :)"));
             }
         }
     }
@@ -331,7 +330,7 @@ public class DiscordWhitelistExtension extends GenericExtension implements Exten
             whitelist.remove(whitelistEntry);
             ServerPlayerEntity serverPlayerEntity = server.getPlayerManager().getPlayer(profile.getId());
             if (serverPlayerEntity != null) {
-                serverPlayerEntity.networkHandler.disconnect(new TranslatableText("Byee~"));
+                serverPlayerEntity.networkHandler.disconnect(Text.literal("Byee~"));
             }
         }
     }
@@ -397,28 +396,28 @@ public class DiscordWhitelistExtension extends GenericExtension implements Exten
                         then(argument("discordRole", LongArgumentType.longArg()).
                                 executes(context -> {
                                     extensionSettings().setDiscordRoleID(LongArgumentType.getLong(context, "discordRoleID"));
-                                    context.getSource().sendFeedback(new LiteralText("[discordRole] > " + extensionSettings().getDiscordRole() + "."), false);
+                                    context.getSource().sendFeedback(Text.literal("[discordRole] > " + extensionSettings().getDiscordRole() + "."), false);
                                     ExtensionManager.saveSettings();
                                     return 1;
                                 })).
                         executes(context -> {
                             String help = "Role that gets added to every discord user that !add s.";
-                            context.getSource().sendFeedback(new LiteralText(help), false);
-                            context.getSource().sendFeedback(new LiteralText("[discordRole] > " + extensionSettings().getDiscordRole() + "."), false);
+                            context.getSource().sendFeedback(Text.literal(help), false);
+                            context.getSource().sendFeedback(Text.literal("[discordRole] > " + extensionSettings().getDiscordRole() + "."), false);
                             return 1;
                         })).
                 then(literal("nPlayers").
                         then(argument("nPlayers", IntegerArgumentType.integer()).
                                 executes(context -> {
                                     extensionSettings().setNPlayers(IntegerArgumentType.getInteger(context, "nPlayers"));
-                                    context.getSource().sendFeedback(new LiteralText("[players] > " + extensionSettings().getNPlayers() + "."), false);
+                                    context.getSource().sendFeedback(Text.literal("[players] > " + extensionSettings().getNPlayers() + "."), false);
                                     ExtensionManager.saveSettings();
                                     return 1;
                                 })).
                         executes(context -> {
                             String help = "Amount of players a discord user can add to the whitelist.";
-                            context.getSource().sendFeedback(new LiteralText(help), false);
-                            context.getSource().sendFeedback(new LiteralText("[players] > " + extensionSettings().getNPlayers() + "."), false);
+                            context.getSource().sendFeedback(Text.literal(help), false);
+                            context.getSource().sendFeedback(Text.literal("[players] > " + extensionSettings().getNPlayers() + "."), false);
                             return 1;
                         })).
                 then(literal("whitelistChats").
@@ -426,10 +425,10 @@ public class DiscordWhitelistExtension extends GenericExtension implements Exten
                                 then(argument("chatID", LongArgumentType.longArg()).
                                         executes(context -> {
                                             if (extensionSettings().getWhitelistChats().contains(LongArgumentType.getLong(context, "chatID"))) {
-                                                context.getSource().sendFeedback(new LiteralText("ID already added."), false);
+                                                context.getSource().sendFeedback(Text.literal("ID already added."), false);
                                             } else {
                                                 extensionSettings().addWhitelistChatID(LongArgumentType.getLong(context, "chatID"));
-                                                context.getSource().sendFeedback(new LiteralText("ID added."), false);
+                                                context.getSource().sendFeedback(Text.literal("ID added."), false);
                                                 ExtensionManager.saveSettings();
                                             }
                                             return 1;
@@ -439,21 +438,21 @@ public class DiscordWhitelistExtension extends GenericExtension implements Exten
                                         executes(context -> {
                                             if (extensionSettings().getWhitelistChats().contains(LongArgumentType.getLong(context, "chatID"))) {
                                                 extensionSettings().removeWhitelistChatID(LongArgumentType.getLong(context, "chatID"));
-                                                context.getSource().sendFeedback(new LiteralText("ID removed."), false);
+                                                context.getSource().sendFeedback(Text.literal("ID removed."), false);
                                                 ExtensionManager.saveSettings();
                                             } else {
-                                                context.getSource().sendFeedback(new LiteralText("This ID doesn't exist."), false);
+                                                context.getSource().sendFeedback(Text.literal("This ID doesn't exist."), false);
                                             }
                                             return 1;
                                         }))).
                         then(literal("list").
                                 executes(context -> {
-                                    context.getSource().sendFeedback(new LiteralText(extensionSettings().getWhitelistChats().toString()), false);
+                                    context.getSource().sendFeedback(Text.literal(extensionSettings().getWhitelistChats().toString()), false);
                                     return 1;
                                 })).
                         executes(context -> {
                             String help = "ChatIDs where !add, !remove y !list work.";
-                            context.getSource().sendFeedback(new LiteralText(help), false);
+                            context.getSource().sendFeedback(Text.literal(help), false);
                             return 1;
                         }));
     }

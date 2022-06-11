@@ -5,7 +5,7 @@ import com.kahzerx.kahzerxmod.extensions.ExtensionSettings;
 import com.kahzerx.kahzerxmod.extensions.GenericExtension;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 
 public class MaintenanceExtension extends GenericExtension implements Extensions {
     public static boolean isExtensionEnabled = false;
@@ -31,7 +31,7 @@ public class MaintenanceExtension extends GenericExtension implements Extensions
         isExtensionEnabled = true;
         for (ServerPlayerEntity player : this.server.getPlayerManager().getPlayerList()) {
             if (!this.server.getPlayerManager().isOperator(player.getGameProfile())) {
-                player.networkHandler.disconnect(new LiteralText("Server is closed for maintenance"));
+                player.networkHandler.disconnect(Text.literal("Server is closed for maintenance"));
             }
         }
     }

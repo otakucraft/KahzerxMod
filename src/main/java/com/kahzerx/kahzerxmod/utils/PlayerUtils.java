@@ -13,7 +13,7 @@ import java.util.Set;
 
 public class PlayerUtils {
     public static String getPlayerWithColor(final ServerPlayerEntity player) {
-        return Formatting.YELLOW + player.getName().asString();
+        return Formatting.YELLOW + player.getName().getString();
     }
 
     public static Collection<String> getPlayers(ServerCommandSource source) {

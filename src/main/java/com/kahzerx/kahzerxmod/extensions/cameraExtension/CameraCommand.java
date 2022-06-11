@@ -11,12 +11,8 @@ public class CameraCommand {
     public void register(CommandDispatcher<ServerCommandSource> dispatcher, CameraExtension camera) {
         dispatcher.register(literal("c").
                 requires(serverCommandSource -> {
-                    try {
-                        if (camera.extensionSettings().isEnabled() && camera.permsExtension.extensionSettings().isEnabled()) {
-                            return camera.permsExtension.getDBPlayerPerms(serverCommandSource.getPlayer().getUuidAsString()).getId() >= PermsLevels.MOD.getId();
-                        }
-                    } catch (CommandSyntaxException e) {
-                        e.printStackTrace();
+                    if (camera.extensionSettings().isEnabled() && camera.permsExtension.extensionSettings().isEnabled()) {
+                        return camera.permsExtension.getDBPlayerPerms(serverCommandSource.getPlayer().getUuidAsString()).getId() >= PermsLevels.MOD.getId();
                     }
                     return false;
                 }).

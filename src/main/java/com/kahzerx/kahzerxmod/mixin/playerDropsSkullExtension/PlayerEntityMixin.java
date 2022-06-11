@@ -7,20 +7,22 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.encryption.PlayerPublicKey;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(ServerPlayerEntity.class)
 public abstract class PlayerEntityMixin extends PlayerEntity {
-    @Shadow public abstract World getWorld();
-
-    public PlayerEntityMixin(World world, BlockPos pos, float yaw, GameProfile profile) {
-        super(world, pos, yaw, profile);
+    public PlayerEntityMixin(World world, BlockPos pos, float yaw, GameProfile gameProfile, @Nullable PlayerPublicKey publicKey) {
+        super(world, pos, yaw, gameProfile, publicKey);
     }
+
+    @Shadow public abstract World getWorld();
 
     @Override
     protected void dropLoot(DamageSource source, boolean causedByPlayer) {
@@ -29,7 +31,7 @@ public abstract class PlayerEntityMixin extends PlayerEntity {
             if ((causedByPlayer && random.nextDouble() < 0.12D) || (!causedByPlayer && random.nextDouble() < 0.30D)) {
                 ItemStack stack = new ItemStack(Items.PLAYER_HEAD);
                 NbtCompound compound = stack.getOrCreateNbt();
-                compound.putString("SkullOwner", this.getName().asString());
+                compound.putString("SkullOwner", this.getName().getString());
                 stack.writeNbt(compound);
                 new Thread(() -> {
                     try {

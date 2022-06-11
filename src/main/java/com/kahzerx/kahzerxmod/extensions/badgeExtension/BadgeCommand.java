@@ -4,7 +4,6 @@ import com.kahzerx.kahzerxmod.extensions.permsExtension.PermsLevels;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.argument.ColorArgumentType;
 import net.minecraft.command.argument.MessageArgumentType;
@@ -17,12 +16,8 @@ public class BadgeCommand {
     public void register(CommandDispatcher<ServerCommandSource> dispatcher, BadgeExtension badge) {
         dispatcher.register(literal("badge").
                 requires(serverCommandSource -> {
-                    try {
-                        if (badge.extensionSettings().isEnabled() && badge.permsExtension.extensionSettings().isEnabled()) {
-                            return badge.permsExtension.getDBPlayerPerms(serverCommandSource.getPlayer().getUuidAsString()).getId() >= PermsLevels.HELPER.getId();
-                        }
-                    } catch (CommandSyntaxException e) {
-                        e.printStackTrace();
+                    if (badge.extensionSettings().isEnabled() && badge.permsExtension.extensionSettings().isEnabled()) {
+                        return badge.permsExtension.getDBPlayerPerms(serverCommandSource.getPlayer().getUuidAsString()).getId() >= PermsLevels.HELPER.getId();
                     }
                     return false;
                 }).

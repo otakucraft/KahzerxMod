@@ -28,7 +28,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 public class ContainerInteractionLoggingMixin {
     @Mixin(ScreenHandler.class)
-    public static class ScreenHandlerMixin implements PlayerHandler {
+    public static abstract class ScreenHandlerMixin implements PlayerHandler {
+        @Shadow public ItemStack transferSlot(PlayerEntity player, int index) {
+            this.player = player;
+            return null;
+        }
+
         @Unique private PlayerEntity player = null;
 
         @Inject(method = "addSlot", at = @At("HEAD"))
@@ -41,10 +46,11 @@ public class ContainerInteractionLoggingMixin {
             this.player = player;
         }
 
-        @Inject(method = "transferSlot", at = @At("HEAD"))
-        private void onTransferSlot(PlayerEntity player, int index, CallbackInfoReturnable<ItemStack> cir) {
-            this.player =  player;
-        }
+        // TODO esto está to mal xd
+//        @Inject(method = "transferSlot", at = @At("INVOKE"))
+//        private void onTransferSlot(PlayerEntity player, int index, CallbackInfoReturnable<ItemStack> cir) {
+//            this.player =  player;
+//        }
 
         @Inject(method = "onSlotClick", at = @At("HEAD"))
         private void onSlotClick(int slotIndex, int button, SlotActionType actionType, PlayerEntity player, CallbackInfo ci) {

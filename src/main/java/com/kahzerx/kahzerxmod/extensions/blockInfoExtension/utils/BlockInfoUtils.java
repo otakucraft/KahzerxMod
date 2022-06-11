@@ -6,8 +6,8 @@ import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.ClickEvent;
 import net.minecraft.text.HoverEvent;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 import java.sql.ResultSet;
@@ -62,35 +62,35 @@ public class BlockInfoUtils {
     }
 
     private static MutableText getDateWithHover(LocalDateTime date) {
-        return new LiteralText("[" + date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + "]").styled(style -> style.
+        return Text.literal("[" + date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + "]").styled(style -> style.
                 withColor(Formatting.GRAY).
-                withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new LiteralText(date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))))));
+                withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal(date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))))));
     }
 
     public static MutableText getPages(int page, int nLine) {
-        return new LiteralText(String.format("%d/%d", page, nLine)).styled((style -> style.withColor(Formatting.WHITE)));
+        return Text.literal(String.format("%d/%d", page, nLine)).styled((style -> style.withColor(Formatting.WHITE)));
     }
 
     public static MutableText getNext(int x, int y, int z, int page) {
-        return new LiteralText(" >>>").styled(style -> style.withColor(Formatting.GOLD).
+        return Text.literal(" >>>").styled(style -> style.withColor(Formatting.GOLD).
                 withClickEvent(new ClickEvent(
                         ClickEvent.Action.RUN_COMMAND,
                         String.format("/blockInfo %d %d %d %d", x, y, z, page + 1))).
                 withHoverEvent(new HoverEvent(
-                        HoverEvent.Action.SHOW_TEXT, new LiteralText("Next"))));
+                        HoverEvent.Action.SHOW_TEXT, Text.literal("Next"))));
     }
 
     public static MutableText getPrev(int x, int y, int z, int page) {
-        return new LiteralText("<<< ").styled(style -> style.withColor(Formatting.GOLD).
+        return Text.literal("<<< ").styled(style -> style.withColor(Formatting.GOLD).
                 withClickEvent(new ClickEvent(
                         ClickEvent.Action.RUN_COMMAND,
                         String.format("/blockInfo %d %d %d %d", x, y, z, page - 1))).
                 withHoverEvent(new HoverEvent(
-                        HoverEvent.Action.SHOW_TEXT, new LiteralText("Prev"))));
+                        HoverEvent.Action.SHOW_TEXT, Text.literal("Prev"))));
     }
 
     public static MutableText getHelp(int x, int y, int z) {
-        return new LiteralText(
+        return Text.literal(
                 String.format(". Page with /blockInfo %d %d %d <page>.", x, y, z))
                 .styled(style -> style.withColor(Formatting.WHITE));
     }

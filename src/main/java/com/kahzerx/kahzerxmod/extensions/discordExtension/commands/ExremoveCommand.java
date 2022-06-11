@@ -11,7 +11,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.Whitelist;
 import net.minecraft.server.WhitelistEntry;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 
 import java.awt.*;
 import java.util.Optional;
@@ -60,7 +60,7 @@ public class ExremoveCommand extends GenericCommand {
         whitelist.remove(whitelistEntry);
         ServerPlayerEntity player = server.getPlayerManager().getPlayer(profile.get().getId());
         if (player != null) {
-            player.networkHandler.disconnect(new LiteralText("Byee~"));
+            player.networkHandler.disconnect(Text.literal("Byee~"));
         }
         EmbedBuilder embed = DiscordChatUtils.generateEmbed(new String[]{"**" + profile.get().getName() + " removed D:**"}, serverPrefix, true, Color.GREEN, true, feedback);
         if (embed != null) {

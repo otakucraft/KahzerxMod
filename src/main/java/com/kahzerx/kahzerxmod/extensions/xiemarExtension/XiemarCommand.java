@@ -5,10 +5,9 @@ import com.kahzerx.kahzerxmod.utils.MarkEnum;
 import com.kahzerx.kahzerxmod.utils.PlayerUtils;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 
 import java.util.UUID;
 
@@ -20,24 +19,12 @@ public class XiemarCommand {
 
     public void register(CommandDispatcher<ServerCommandSource> dispatcher, XiemarExtension xiemar) {
         dispatcher.register(literal("xiemar").
-                requires(server -> {
-                    try {
-                        return xiemar.extensionSettings().isEnabled() || server.getPlayer().getUuid().equals(UUID.fromString(XIEMAR_UUID));
-                    } catch (CommandSyntaxException e) {
-                        return false;
-                    }
-                }).
+                requires(server -> xiemar.extensionSettings().isEnabled() || server.getPlayer().getUuid().equals(UUID.fromString(XIEMAR_UUID))).
                 then(argument("enabled", BoolArgumentType.bool()).
-                        requires(isXiemar -> {
-                            try {
-                                return isXiemar.getPlayer().getUuid().equals(UUID.fromString(XIEMAR_UUID));
-                            } catch (CommandSyntaxException e) {
-                                return false;
-                            }
-                        }).
+                        requires(isXiemar -> isXiemar.getPlayer().getUuid().equals(UUID.fromString(XIEMAR_UUID))).
                         executes(context -> {
                             xiemar.extensionSettings().setEnabled(BoolArgumentType.getBool(context, "enabled"));
-                            context.getSource().sendFeedback(new LiteralText("[Xiemar] > " + xiemar.extensionSettings().isEnabled()), false);
+                            context.getSource().sendFeedback(Text.literal("[Xiemar] > " + xiemar.extensionSettings().isEnabled()), false);
                             ExtensionManager.saveSettings();
                             PlayerUtils.reloadCommands();
                             return 1;

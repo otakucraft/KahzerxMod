@@ -3,7 +3,6 @@ package com.kahzerx.kahzerxmod.mixin.maintenanceExtension;
 import com.kahzerx.kahzerxmod.extensions.maintenanceExtension.MaintenanceExtension;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.server.PlayerManager;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -21,7 +20,7 @@ public abstract class PlayerManagerMixin {
     @Inject(method = "checkCanJoin", at = @At("RETURN"), cancellable = true)
     public void isMaintenance(SocketAddress address, GameProfile profile, CallbackInfoReturnable<Text> cir) {
         if (MaintenanceExtension.isExtensionEnabled && !isOperator(profile)) {
-            cir.setReturnValue(new LiteralText("Server is closed for maintenance"));
+            cir.setReturnValue(Text.literal("Server is closed for maintenance"));
         }
     }
 }

@@ -7,7 +7,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 
 public class AFKExtension extends GenericExtension implements Extensions {
     public AFKExtension(ExtensionSettings settings) {
@@ -29,7 +29,7 @@ public class AFKExtension extends GenericExtension implements Extensions {
         if (player == null) {
             return 1;
         }
-        player.networkHandler.disconnect(new LiteralText(":D"));
+        player.networkHandler.disconnect(Text.literal(":D"));
         return 1;
     }
 }

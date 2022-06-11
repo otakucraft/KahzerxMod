@@ -15,7 +15,7 @@ import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.panels.transfers.T
 import com.kahzerx.kahzerxmod.utils.MarkEnum;
 import net.minecraft.network.packet.s2c.play.OverlayMessageS2CPacket;
 import net.minecraft.text.ClickEvent;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 import java.awt.*;
@@ -66,7 +66,7 @@ public class MainGui extends GuiBase {
             if (p.getShopExtension().extensionSettings().isEnabled()) {
                 p.openGui(new BalanceGui());
             } else {
-                p.getPlayer().networkHandler.sendPacket(new OverlayMessageS2CPacket(new LiteralText("Shops extension is not enabled!")));
+                p.getPlayer().networkHandler.sendPacket(new OverlayMessageS2CPacket(Text.literal("Shops extension is not enabled!")));
             }
         });
         coinText = new TextLabel(new TextMapper("Balance", new Font("Times New Roman", Font.BOLD, 20)), BLACK.getCode());
@@ -81,7 +81,7 @@ public class MainGui extends GuiBase {
             if (p.getShopExtension().extensionSettings().isEnabled()) {
                 p.openGui(new TransfersGui());
             } else {
-                p.getPlayer().networkHandler.sendPacket(new OverlayMessageS2CPacket(new LiteralText("Shops extension is not enabled!")));
+                p.getPlayer().networkHandler.sendPacket(new OverlayMessageS2CPacket(Text.literal("Shops extension is not enabled!")));
             }
         });
         transfersText = new TextLabel(new TextMapper("Transferencias", new Font("Times New Roman", Font.BOLD, 20)), BLACK.getCode());
@@ -89,7 +89,7 @@ public class MainGui extends GuiBase {
         waypointsImage.setClickCallback((boolean isKey, GuiPlayer p) -> System.out.println("openWaypointsGui"));
         waypointsText = new TextLabel(new TextMapper("Waypoints", new Font("Times New Roman", Font.BOLD, 20)), BLACK.getCode());
         renderImage = new ImageButton(MainResources.RENDER);
-        renderImage.setClickCallback((boolean isKey, GuiPlayer p) -> p.getPlayer().sendMessage(MarkEnum.INFO.appendMessage("Puedes encontrar el render del mundo aquí: ").append(new LiteralText("https://maps.kahzerx.com/otakucraft/otakucraft3/").styled(style -> style.withColor(Formatting.GRAY).withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://maps.kahzerx.com/otakucraft/otakucraft3/")))), false));
+        renderImage.setClickCallback((boolean isKey, GuiPlayer p) -> p.getPlayer().sendMessage(MarkEnum.INFO.appendMessage("Puedes encontrar el render del mundo aquí: ").append(Text.literal("https://maps.kahzerx.com/otakucraft/otakucraft3/").styled(style -> style.withColor(Formatting.GRAY).withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://maps.kahzerx.com/otakucraft/otakucraft3/")))), false));
         renderText = new TextLabel(new TextMapper("Render", new Font("Times New Roman", Font.BOLD, 20)), BLACK.getCode());
 
         addComponent(mainBack);

@@ -5,7 +5,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.command.argument.BlockPosArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 
 import static net.minecraft.server.command.CommandManager.argument;
@@ -21,7 +21,7 @@ public class SpawnCommand {
                         ServerPlayerEntity player = context.getSource().getPlayer();
                         player.teleport(DimUtils.getWorld(pos.getDim(), context.getSource().getServer()), pos.getX(), pos.getY(), pos.getZ(), player.getYaw(), player.getPitch());
                     } else {
-                        context.getSource().sendFeedback(new LiteralText("Not configured yet..."), false);
+                        context.getSource().sendFeedback(Text.literal("Not configured yet..."), false);
                     }
                     return 1;
                 }));
