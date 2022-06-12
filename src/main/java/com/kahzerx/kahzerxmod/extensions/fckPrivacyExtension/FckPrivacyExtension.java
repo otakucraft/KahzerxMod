@@ -14,6 +14,7 @@ public class FckPrivacyExtension extends GenericExtension implements Extensions 
         super(settings);
     }
 
+    // TODO revisar esto.
     @Override
     public void onChatMessage(ServerPlayerEntity player, String chatMessage) {
         if (this.getSettings().isEnabled() && chatMessage.startsWith("/")) {

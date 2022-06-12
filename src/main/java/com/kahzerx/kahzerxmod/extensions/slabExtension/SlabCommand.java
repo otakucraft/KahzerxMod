@@ -3,6 +3,7 @@ package com.kahzerx.kahzerxmod.extensions.slabExtension;
 import com.kahzerx.kahzerxmod.extensions.slabExtension.utils.SlabUtils;
 import com.kahzerx.kahzerxmod.utils.MarkEnum;
 import com.mojang.brigadier.CommandDispatcher;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
@@ -22,7 +23,7 @@ public class SlabCommand {
                         context.getSource().sendFeedback(MarkEnum.CROSS.appendMessage("Slab is already enchanted"), false);
                         return 1;
                     }
-                    player.getMainHandStack().addEnchantment(SlabEnchantment.SLAB, 0);
+                    player.getMainHandStack().addEnchantment(Enchantments.POWER, 0);
                     context.getSource().sendFeedback(MarkEnum.TICK.appendMessage("Slab ready!"), false);
                     return 1;
                 }));

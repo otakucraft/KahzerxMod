@@ -50,7 +50,7 @@ public class HereExtension extends GenericExtension implements Extensions {
                             DimUtils.getDimensionWithColor(World.NETHER.getValue()),
                             DimUtils.formatCoords(x / 8, y, z / 8)
                     )),
-                    MessageType.CHAT
+                    MessageType.SYSTEM
             );
         } else if (player.getWorld().getRegistryKey().getValue().equals(World.NETHER.getValue())) {
             src.getServer().getPlayerManager().broadcast(
@@ -62,7 +62,7 @@ public class HereExtension extends GenericExtension implements Extensions {
                             DimUtils.getDimensionWithColor(World.OVERWORLD.getValue()),
                             DimUtils.formatCoords(x *  8, y, z * 8)
                     )),
-                    MessageType.CHAT
+                    MessageType.SYSTEM
             );
         } else if (player.getWorld().getRegistryKey().getValue().equals(World.END.getValue())) {
             src.getServer().getPlayerManager().broadcast(
@@ -72,7 +72,7 @@ public class HereExtension extends GenericExtension implements Extensions {
                             DimUtils.getDimensionWithColor(player.getWorld()),
                             DimUtils.formatCoords(x, y, z)
                     )),
-                    MessageType.CHAT
+                    MessageType.SYSTEM
             );
         }
         player.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 200, 0, false, false));

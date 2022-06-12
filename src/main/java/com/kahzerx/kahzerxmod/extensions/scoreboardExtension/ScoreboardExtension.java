@@ -97,7 +97,7 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
         } else {
             scoreboard.setObjectiveSlot(1, null);
             assert entity != null;
-            source.getServer().getPlayerManager().broadcast(MarkEnum.TICK.appendMessage(entity.getEntityName() + " removed the scoreboard."), MessageType.CHAT);
+            source.getServer().getPlayerManager().broadcast(MarkEnum.TICK.appendMessage(entity.getEntityName() + " removed the scoreboard."), MessageType.SYSTEM);
         }
         return 1;
     }
@@ -176,7 +176,7 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
                 scoreboard.removeObjective(newScoreboardObjective);
                 text = MarkEnum.CROSS.appendMessage("Error.");
                 assert entity != null;
-                source.getServer().getPlayerManager().broadcast(text, MessageType.CHAT);
+                source.getServer().getPlayerManager().broadcast(text, MessageType.SYSTEM);
 
                 return;
             }
@@ -190,7 +190,7 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
             assert scoreboardObjective != null;
             text = MarkEnum.TICK.appendText(Text.literal(Formatting.WHITE + entity.getEntityName() + " has selected " + Formatting.GOLD + "[" + scoreboardObjective.getDisplayName().getString() + "]"));
         }
-        source.getServer().getPlayerManager().broadcast(text, MessageType.CHAT);
+        source.getServer().getPlayerManager().broadcast(text, MessageType.SYSTEM);
     }
 
     public void initScoreboard(ServerCommandSource source, ScoreboardObjective scoreboardObjective, Item item, String type) {
