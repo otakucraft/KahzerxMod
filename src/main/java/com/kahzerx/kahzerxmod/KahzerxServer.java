@@ -181,6 +181,10 @@ public class KahzerxServer {
         extensions.forEach(e -> e.onChatMessage(player, chatMessage));
     }
 
+    public static void onCommand(ServerPlayerEntity player, String command) {
+        extensions.forEach(e -> e.onCommand(player, command));
+    }
+
     public static void onAdvancement(String advancement) {
         extensions.forEach(e -> e.onAdvancement(advancement));
     }

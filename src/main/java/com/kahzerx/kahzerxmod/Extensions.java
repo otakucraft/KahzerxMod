@@ -30,6 +30,7 @@ public interface Extensions extends Comparable<Extensions> {
     default void onPlayerBreakBlock(ServerPlayerEntity player, World world, BlockPos pos) {}
     default void onPlayerPlaceBlock(ServerPlayerEntity player, World world, BlockPos pos) {}
     default void onChatMessage(ServerPlayerEntity player, String chatMessage) {}
+    default void onCommand(ServerPlayerEntity player, String command) {}
     default void onAdvancement(String advancement) {}
     default void onTick(MinecraftServer server) {}
     default void onClick(ServerPlayerEntity player) {}
