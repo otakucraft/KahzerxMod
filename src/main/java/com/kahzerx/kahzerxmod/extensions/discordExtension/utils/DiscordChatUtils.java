@@ -80,8 +80,7 @@ public class DiscordChatUtils {
     }
 
     public static void sendMessage(MessageReceivedEvent event, MinecraftServer server) {
-        String msg = "[Discord] <" + event.getAuthor().getName() + "> " + event.getMessage().getContentDisplay();
-        finalSendMsg(msg, server);
+        finalSendMsg(event.getMessage().getContentDisplay(), server, event);
     }
 
     public static void sendMessageCrossServer(MessageReceivedEvent event, MinecraftServer server, String prefix) {
@@ -96,16 +95,33 @@ public class DiscordChatUtils {
         msg = msg.replace("\\", "");
         String[] tMsg = Arrays.stream(msg.split(" ")).filter(x -> !x.isEmpty()).toArray(String[]::new);
         msg = String.join(" ", tMsg);
-        finalSendMsg(msg, server);
+        finalSendMsg(msg, server, null);
     }
 
-    private static void finalSendMsg(String msg, MinecraftServer server) {
+    private static void finalSendMsg(String msg, MinecraftServer server, MessageReceivedEvent fromDiscordUser) {
         if (msg.length() >= 256) {
             msg = msg.substring(0, 253) + "...";
         }
 
         Matcher m = url_patt.matcher(msg);
         MutableText finalMsg = Text.literal("");
+        if (fromDiscordUser != null) {
+            finalMsg.append(Text.literal("[Discord]").styled(style -> style.withColor(Formatting.GRAY)));
+            finalMsg.append(Text.literal(" ").styled(style -> style.withColor(Formatting.RESET)));
+            MutableText hover = Text.literal(String.format("Author: %s\n", fromDiscordUser.getAuthor().getName()));
+            if (fromDiscordUser.getMember() != null && fromDiscordUser.getMember().getNickname() != null) {
+                hover.append(Text.literal(String.format("NickName: %s\n", fromDiscordUser.getMember().getNickname())));
+            }
+            hover.append(Text.literal(String.format("UserID: %s\n", fromDiscordUser.getAuthor().getId())));
+            hover.append(Text.literal(String.format("MessageID: %s\nChannelID: %s", fromDiscordUser.getMessageId(), fromDiscordUser.getChannel().getId())));
+            finalMsg.append(Text.literal("<" + fromDiscordUser.getAuthor().getName() + ">").styled(style -> style.withHoverEvent(
+                    new HoverEvent(
+                            HoverEvent.Action.SHOW_TEXT,
+                            hover
+                    )
+            )));
+            finalMsg.append(Text.literal(" ").styled(style -> style.withColor(Formatting.RESET)));
+        }
         boolean hasUrl = false;
         int prev = 0;
 
@@ -121,7 +137,7 @@ public class DiscordChatUtils {
             if (hasUrl) {
                 server.getPlayerManager().broadcast(finalMsg.append(msg.substring(prev)), MessageType.SYSTEM);
             } else {
-                server.getPlayerManager().broadcast(Text.literal(msg), MessageType.SYSTEM);
+                server.getPlayerManager().broadcast(finalMsg.append(Text.literal(msg)), MessageType.SYSTEM);
             }
         } else {
             LOGGER.info(String.format("Server may not be initialized yet...\nError sending %s%n", msg));
