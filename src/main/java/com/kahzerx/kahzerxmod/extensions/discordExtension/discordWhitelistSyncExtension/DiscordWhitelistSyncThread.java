@@ -1,6 +1,7 @@
 package com.kahzerx.kahzerxmod.extensions.discordExtension.discordWhitelistSyncExtension;
 
 import com.kahzerx.kahzerxmod.extensions.discordExtension.DiscordListener;
+import com.kahzerx.kahzerxmod.extensions.discordExtension.discordExtension.DiscordExtension;
 import com.kahzerx.kahzerxmod.extensions.discordExtension.discordWhitelistExtension.DiscordWhitelistExtension;
 import com.kahzerx.kahzerxmod.extensions.discordExtension.utils.DiscordChatUtils;
 import com.mojang.authlib.GameProfile;
@@ -25,19 +26,18 @@ import org.json.simple.parser.ParseException;
 import java.awt.*;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
-public class DiscordWhitelistSyncThread extends Thread {
+public class DiscordWhitelistSyncThread extends TimerTask {
     private static final Logger LOGGER = LogManager.getLogger();
 
     private final DiscordWhitelistExtension discordWhitelistExtension;
+    private final DiscordExtension discordExtension;
     private final DiscordWhitelistSyncExtension discordWhitelistSyncExtension;
     private final MinecraftServer server;
-    public DiscordWhitelistSyncThread(String name, MinecraftServer server, DiscordWhitelistExtension discordWhitelistExtension, DiscordWhitelistSyncExtension discordWhitelistSyncExtension) {
-        super(name);
+    public DiscordWhitelistSyncThread(MinecraftServer server, DiscordExtension discordExtension, DiscordWhitelistExtension discordWhitelistExtension, DiscordWhitelistSyncExtension discordWhitelistSyncExtension) {
+        this.discordExtension = discordExtension;
         this.discordWhitelistExtension = discordWhitelistExtension;
         this.discordWhitelistSyncExtension = discordWhitelistSyncExtension;
         this.server = server;
@@ -46,6 +46,9 @@ public class DiscordWhitelistSyncThread extends Thread {
     @Override
     public void run() {
         if (DiscordListener.jda == null) {
+            return;
+        }
+        if (!this.discordExtension.extensionSettings().isEnabled() || !this.discordWhitelistExtension.extensionSettings().isEnabled() || !this.discordWhitelistSyncExtension.extensionSettings().isEnabled()) {
             return;
         }
         LOGGER.info("STARTING WHITELIST SYNC.");
