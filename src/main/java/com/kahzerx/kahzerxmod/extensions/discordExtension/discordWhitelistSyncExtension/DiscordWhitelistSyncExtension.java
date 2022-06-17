@@ -36,20 +36,11 @@ public class DiscordWhitelistSyncExtension extends GenericExtension implements E
             this.timer.purge();
         }
         this.timer = new Timer("WHITELIST_SYNC");
-        this.timer.schedule(new DiscordWhitelistSyncThread(minecraftServer, this.discordExtension, this.discordWhitelistExtension, this), 1_000, 5 * 60 * 1_000);
+        this.timer.schedule(new DiscordWhitelistSyncThread(minecraftServer, this.discordExtension, this.discordWhitelistExtension, this), 1_000, 30 * 1_000);
     }
 
     @Override
     public void onServerStop() {
-        if (!this.getSettings().isEnabled()) {
-            return;
-        }
-        if (!discordExtension.getSettings().isEnabled()) {
-            return;
-        }
-        if (!discordWhitelistExtension.getSettings().isEnabled()) {
-            return;
-        }
         if (this.timer != null) {
             this.timer.cancel();
             this.timer.purge();
