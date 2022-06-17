@@ -51,14 +51,16 @@ public class DiscordWhitelistSyncThread extends TimerTask {
         if (!this.discordExtension.extensionSettings().isEnabled() || !this.discordWhitelistExtension.extensionSettings().isEnabled() || !this.discordWhitelistSyncExtension.extensionSettings().isEnabled()) {
             return;
         }
-        LOGGER.info("STARTING WHITELIST SYNC.");
-        database2WhitelistSync();
-        if (discordWhitelistSyncExtension.extensionSettings().isAggressive()) {
-            server.getPlayerManager().reloadWhitelist();
-            whitelist2Database();
-            database2Whitelist();
-        }
-        LOGGER.info("WHITELIST SYNC FINISHED.");
+        try {
+            LOGGER.info("STARTING WHITELIST SYNC.");
+            database2WhitelistSync();
+            if (discordWhitelistSyncExtension.extensionSettings().isAggressive()) {
+                server.getPlayerManager().reloadWhitelist();
+                whitelist2Database();
+                database2Whitelist();
+            }
+            LOGGER.info("WHITELIST SYNC FINISHED.");
+        } catch (NullPointerException ignored) {}
     }
 
     private void database2WhitelistSync() {

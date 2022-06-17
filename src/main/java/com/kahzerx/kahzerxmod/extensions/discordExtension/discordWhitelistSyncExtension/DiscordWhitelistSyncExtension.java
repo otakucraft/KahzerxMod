@@ -30,7 +30,7 @@ public class DiscordWhitelistSyncExtension extends GenericExtension implements E
     }
 
     @Override
-    public void onServerRun(MinecraftServer minecraftServer) {
+    public void onServerStarted(MinecraftServer minecraftServer) {
         if (this.timer != null) {
             this.timer.cancel();
             this.timer.purge();
