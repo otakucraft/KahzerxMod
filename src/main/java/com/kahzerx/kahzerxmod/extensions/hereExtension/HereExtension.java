@@ -14,6 +14,7 @@ import net.minecraft.network.message.MessageType;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
 
@@ -32,7 +33,7 @@ public class HereExtension extends GenericExtension implements Extensions {
         return this.getSettings();
     }
 
-    public int sendLocation(ServerCommandSource src) throws CommandSyntaxException {
+    public int sendLocation(ServerCommandSource src, ServerPlayerEntity toPlayer) {
         ServerPlayerEntity player = src.getPlayer();
         if (player == null) {
             return 1;
@@ -40,40 +41,47 @@ public class HereExtension extends GenericExtension implements Extensions {
         double x = player.getX();
         double y = player.getY();
         double z = player.getZ();
+        MutableText msg;
         if (player.getWorld().getRegistryKey().getValue().equals(World.OVERWORLD.getValue())) {
-            src.getServer().getPlayerManager().broadcast(
-                    Text.literal(String.format(
-                            "%s %s %s -> %s %s",
-                            PlayerUtils.getPlayerWithColor(player),
-                            DimUtils.getDimensionWithColor(player.getWorld()),
-                            DimUtils.formatCoords(x, y, z),
-                            DimUtils.getDimensionWithColor(World.NETHER.getValue()),
-                            DimUtils.formatCoords(x / 8, y, z / 8)
-                    )),
-                    MessageType.SYSTEM
-            );
+            msg = Text.literal(String.format(
+                    "%s %s %s -> %s %s",
+                    PlayerUtils.getPlayerWithColor(player),
+                    DimUtils.getDimensionWithColor(player.getWorld()),
+                    DimUtils.formatCoords(x, y, z),
+                    DimUtils.getDimensionWithColor(World.NETHER.getValue()),
+                    DimUtils.formatCoords(x / 8, y, z / 8)
+            ));
+            if (toPlayer != null) {
+                toPlayer.sendMessage(msg, MessageType.SYSTEM);
+            } else {
+                src.getServer().getPlayerManager().broadcast(msg, MessageType.SYSTEM);
+            }
         } else if (player.getWorld().getRegistryKey().getValue().equals(World.NETHER.getValue())) {
-            src.getServer().getPlayerManager().broadcast(
-                    Text.literal(String.format(
-                            "%s %s %s -> %s %s",
-                            PlayerUtils.getPlayerWithColor(player),
-                            DimUtils.getDimensionWithColor(player.getWorld()),
-                            DimUtils.formatCoords(x, y, z),
-                            DimUtils.getDimensionWithColor(World.OVERWORLD.getValue()),
-                            DimUtils.formatCoords(x *  8, y, z * 8)
-                    )),
-                    MessageType.SYSTEM
-            );
+            msg = Text.literal(String.format(
+                    "%s %s %s -> %s %s",
+                    PlayerUtils.getPlayerWithColor(player),
+                    DimUtils.getDimensionWithColor(player.getWorld()),
+                    DimUtils.formatCoords(x, y, z),
+                    DimUtils.getDimensionWithColor(World.OVERWORLD.getValue()),
+                    DimUtils.formatCoords(x *  8, y, z * 8)
+            ));
+            if (toPlayer != null) {
+                toPlayer.sendMessage(msg, MessageType.SYSTEM);
+            } else {
+                src.getServer().getPlayerManager().broadcast(msg, MessageType.SYSTEM);
+            }
         } else if (player.getWorld().getRegistryKey().getValue().equals(World.END.getValue())) {
-            src.getServer().getPlayerManager().broadcast(
-                    Text.literal(String.format(
-                            "%s %s %s",
-                            PlayerUtils.getPlayerWithColor(player),
-                            DimUtils.getDimensionWithColor(player.getWorld()),
-                            DimUtils.formatCoords(x, y, z)
-                    )),
-                    MessageType.SYSTEM
-            );
+            msg = Text.literal(String.format(
+                    "%s %s %s",
+                    PlayerUtils.getPlayerWithColor(player),
+                    DimUtils.getDimensionWithColor(player.getWorld()),
+                    DimUtils.formatCoords(x, y, z)
+            ));
+            if (toPlayer != null) {
+                toPlayer.sendMessage(msg, MessageType.SYSTEM);
+            } else {
+                src.getServer().getPlayerManager().broadcast(msg, MessageType.SYSTEM);
+            }
         }
         player.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 200, 0, false, false));
         player.getWorld().playSound(null, player.getBlockPos(), Instrument.HARP.getSound(), SoundCategory.RECORDS, 3.0f, (float)Math.pow(2.0, (double)(24 - 12) / 12.0));
