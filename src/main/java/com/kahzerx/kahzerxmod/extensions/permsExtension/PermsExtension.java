@@ -4,6 +4,7 @@ import com.google.common.collect.Sets;
 import com.kahzerx.kahzerxmod.Extensions;
 import com.kahzerx.kahzerxmod.extensions.ExtensionSettings;
 import com.kahzerx.kahzerxmod.extensions.GenericExtension;
+import com.kahzerx.kahzerxmod.extensions.memberExtension.MemberExtension;
 import com.kahzerx.kahzerxmod.utils.MarkEnum;
 import com.kahzerx.kahzerxmod.utils.PlayerUtils;
 import com.mojang.brigadier.CommandDispatcher;
@@ -20,14 +21,22 @@ import java.util.Set;
 public class PermsExtension extends GenericExtension implements Extensions {
     private final HashMap<String, PermsLevels> playerPerms = new HashMap<>();
     private Connection conn;
+    private MinecraftServer minecraftServer;
+    private MemberExtension memberExtension;
 
-    public PermsExtension(ExtensionSettings settings) {
+    public PermsExtension(ExtensionSettings settings, MemberExtension memberExtension) {
         super(settings);
+        this.memberExtension = memberExtension;
     }
 
     @Override
     public ExtensionSettings extensionSettings() {
         return this.getSettings();
+    }
+
+    @Override
+    public void onServerRun(MinecraftServer minecraftServer) {
+        this.minecraftServer = minecraftServer;
     }
 
     @Override
@@ -69,6 +78,9 @@ public class PermsExtension extends GenericExtension implements Extensions {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        if (!memberExtension.extensionSettings().isEnabled() || !this.extensionSettings().isEnabled()) {
+            return;
+        }
         MinecraftServer server = player.getServer();
         if (server == null) {
             return;
@@ -81,6 +93,26 @@ public class PermsExtension extends GenericExtension implements Extensions {
         if (!actual.isEqual(shouldTeam)) {
             server.getScoreboard().addPlayerToTeam(player.getName().getString(), shouldTeam);
         }
+    }
+
+    @Override
+    public void onExtensionDisabled() {
+        if (this.minecraftServer != null) {
+            for (ServerPlayerEntity player : this.minecraftServer.getPlayerManager().getPlayerList()) {
+                this.onPlayerLeft(player);
+            }
+        }
+        Extensions.super.onExtensionDisabled();
+    }
+
+    @Override
+    public void onExtensionEnabled() {
+        if (this.minecraftServer != null) {
+            for (ServerPlayerEntity player : this.minecraftServer.getPlayerManager().getPlayerList()) {
+                this.onPlayerJoined(player);
+            }
+        }
+        Extensions.super.onExtensionEnabled();
     }
 
     @Override
@@ -166,10 +198,6 @@ public class PermsExtension extends GenericExtension implements Extensions {
         }
 
         return 1;
-    }
-
-    public HashMap<String, PermsLevels> getPlayerPerms() {
-        return playerPerms;
     }
 
     public Collection<String> getPlayers() {

@@ -94,8 +94,10 @@ public class ExtensionManager {
             }
         }
 
-        PermsExtension permsExtension = new PermsExtension(new ExtensionSettings("perms", isEnabled(found, "perms"), "Permission levels for other commands like /back, /c or /modTP. Enables /kPerms command."));
+        MemberExtension memberExtension = new MemberExtension(new ExtensionSettings("member", isEnabled(found, "member"), "Gives member role on player first joined, it also creates member, mod and admin teams if not exist."));
+        PermsExtension permsExtension = new PermsExtension(new ExtensionSettings("perms", isEnabled(found, "perms"), "Permission levels for other commands like /back, /c or /modTP. Enables /kPerms command."), memberExtension);
 
+        KahzerxServer.extensions.add(memberExtension);
         KahzerxServer.extensions.add(permsExtension);
         KahzerxServer.extensions.add(new HomeExtension(new ExtensionSettings("home", isEnabled(found, "home"), "/home and /setHome commands.")));
         KahzerxServer.extensions.add(new BackExtension(new ExtensionSettings("back", isEnabled(found, "back"), "/back command to tp to the last death position."), permsExtension));
@@ -109,7 +111,6 @@ public class ExtensionManager {
         KahzerxServer.extensions.add(new AFKExtension(new ExtensionSettings("afk", isEnabled(found, "afk"), "/afk idk everyone keeps asking for this thing, it literally kicks you from the server.")));
         KahzerxServer.extensions.add(new RandomTPExtension(new ExtensionSettings("randomTP", isEnabled(found, "randomTP"), "randomTP in a 10k block radius.")));
         KahzerxServer.extensions.add(new BlockInfoExtension(new ExtensionSettings("blockInfo", isEnabled(found, "blockInfo"), "Player action logging and /blockInfo command.")));
-        KahzerxServer.extensions.add(new MemberExtension(new ExtensionSettings("member", isEnabled(found, "member"), "Gives member role on player first joined, it also creates member, mod and admin teams if not exist.")));
         KahzerxServer.extensions.add(new SeedExtension(new ExtensionSettings("seed", isEnabled(found, "seed"), "Enables seed command for everyone in the server.")));
         KahzerxServer.extensions.add(new FckPrivacyExtension(new ExtensionSettings("fckPrivacy", isEnabled(found, "fckPrivacy"), "Saves every executed command including private messages in the logs file, like /msg name hello.")));
         KahzerxServer.extensions.add(new SpoofExtension(new ExtensionSettings("spoof", isEnabled(found, "spoof"), "Enables /spoof command that allows OP players to see other connected players enderchest and inventories, player inventory may not work correctly so unless you know what you are doing is not recommended to move items from the slots.")));

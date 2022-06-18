@@ -82,7 +82,7 @@ public class KahzerxServer {
                             })).
                     executes(context -> {
                         context.getSource().sendFeedback(
-                                Text.literal(ex.extensionSettings().getName() + "\n").styled(style -> style.withBold(true)).
+                                Text.literal("\n" + ex.extensionSettings().getName() + "\n").styled(style -> style.withBold(true)).
                                         append(MarkEnum.INFO.appendMessage(ex.extensionSettings().getDescription() + "\n", Formatting.GRAY).styled(style -> style.withBold(false))).
                                         append(Text.literal("Enabled: ").styled(style -> style.withBold(false).withColor(Formatting.WHITE))).
                                         append(Text.literal(String.format("%s", ex.extensionSettings().isEnabled())).styled(style -> style.withBold(false).withColor(ex.extensionSettings().isEnabled() ? Formatting.GREEN : Formatting.RED))), false);
