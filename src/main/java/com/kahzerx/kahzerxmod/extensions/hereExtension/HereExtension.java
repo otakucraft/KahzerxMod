@@ -6,7 +6,6 @@ import com.kahzerx.kahzerxmod.extensions.GenericExtension;
 import com.kahzerx.kahzerxmod.utils.DimUtils;
 import com.kahzerx.kahzerxmod.utils.PlayerUtils;
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.block.enums.Instrument;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
