@@ -3,8 +3,11 @@ package com.kahzerx.kahzerxmod.mixin.farmlandMyceliumExtension;
 import com.kahzerx.kahzerxmod.extensions.farmlandMyceliumExtension.FarmlandMyceliumExtension;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.HoeItem;
 import net.minecraft.item.ItemUsageContext;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -25,6 +28,10 @@ public class HoeItemMixin {
             world.setBlockState(context.getBlockPos(), Blocks.GRASS_BLOCK.getDefaultState());
             world.updateNeighbors(context.getBlockPos(), Blocks.GRASS_BLOCK);
             replaced = true;
+            PlayerEntity player = context.getPlayer();
+            if (player != null) {
+                player.playSound(SoundEvents.ITEM_HOE_TILL, SoundCategory.BLOCKS, 1.0f, 1.0f);
+            }
         }
     }
 
