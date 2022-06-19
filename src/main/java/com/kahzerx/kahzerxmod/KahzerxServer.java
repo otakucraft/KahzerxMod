@@ -193,6 +193,14 @@ public class KahzerxServer {
         extensions.forEach(e -> e.onClick(player));
     }
 
+    public static void onSleep(ServerPlayerEntity player) {
+        extensions.forEach(e -> e.onPlayerSleep(player));
+    }
+
+    public static void onWakeUp(ServerPlayerEntity player) {
+        extensions.forEach(e -> e.onPlayerWakeUp(player));
+    }
+
     public static void onTick(MinecraftServer server) {
         if (server.getTicks() < 20) {
             return;

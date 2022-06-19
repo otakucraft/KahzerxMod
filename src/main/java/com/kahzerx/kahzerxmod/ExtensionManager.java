@@ -8,6 +8,7 @@ import com.kahzerx.kahzerxmod.extensions.achusExtension.AchusExtension;
 import com.kahzerx.kahzerxmod.extensions.afkExtension.AFKExtension;
 import com.kahzerx.kahzerxmod.extensions.backExtension.BackExtension;
 import com.kahzerx.kahzerxmod.extensions.badgeExtension.BadgeExtension;
+import com.kahzerx.kahzerxmod.extensions.bedTimeExtension.BedTimeExtension;
 import com.kahzerx.kahzerxmod.extensions.blockInfoExtension.BlockInfoExtension;
 import com.kahzerx.kahzerxmod.extensions.bocaExtension.BocaExtension;
 import com.kahzerx.kahzerxmod.extensions.cameraExtension.CameraExtension;
@@ -146,6 +147,7 @@ public class ExtensionManager {
         KahzerxServer.extensions.add(profileExtension);
 
         KahzerxServer.extensions.add(new OpOnWhitelistExtension(new ExtensionSettings("opOnWhitelist", isEnabled(found, "opOnWhitelist"), "Auto ops and deops on whitelist add and remove.")));
+        KahzerxServer.extensions.add(new BedTimeExtension(new ExtensionSettings("bedTime", isEnabled(found, "bedTime"), "Notifies when a player goes to sleep")));
 
         String token = "";
         boolean crossServerChat = false;

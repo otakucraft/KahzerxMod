@@ -32,6 +32,7 @@
     "server.PlayerEventsMixins$PlayerConn",
     "server.PlayerEventsMixins$PlayerDied",
     "server.PlayerEventsMixins$PlayerPlace",
+    "server.PlayerEventsMixins$PlayerSleeping",
     "server.ServerEventsMixin",
     "slabExtension.SlabBlockExtension",
     "solExtension.FireworkRocketEntityMixin",

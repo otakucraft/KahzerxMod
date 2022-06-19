@@ -34,6 +34,8 @@ public interface Extensions extends Comparable<Extensions> {
     default void onAdvancement(String advancement) {}
     default void onTick(MinecraftServer server) {}
     default void onClick(ServerPlayerEntity player) {}
+    default void onPlayerSleep(ServerPlayerEntity player) {}
+    default void onPlayerWakeUp(ServerPlayerEntity player) {}
     default void onExtensionEnabled() {
         PlayerUtils.reloadCommands();
     }

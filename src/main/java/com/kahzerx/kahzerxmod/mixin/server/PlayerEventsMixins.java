@@ -89,4 +89,19 @@ public class PlayerEventsMixins {
             KahzerxServer.onAdvancement(text.getString().replace("_", "\\_"));
         }
     }
+
+    @Mixin(ServerPlayerEntity.class)
+    public static class PlayerSleeping {
+        @Inject(method = "sleep", at = @At("HEAD"))
+        private void onSleep(BlockPos pos, CallbackInfo ci) {
+            KahzerxServer.onSleep((ServerPlayerEntity) (Object) this);
+        }
+
+        @Inject(method = "wakeUp", at = @At("HEAD"))
+        private void onWakeUp(boolean skipSleepTimer, boolean updateSleepingPlayers, CallbackInfo ci) {
+            if (updateSleepingPlayers) {
+                KahzerxServer.onWakeUp((ServerPlayerEntity) (Object) this);
+            }
+        }
+    }
 }
