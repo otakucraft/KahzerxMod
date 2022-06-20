@@ -17,7 +17,7 @@ public class DiscordSendCommand {
                         executes(context -> {
                             context.getSource().getServer().getPlayerManager().broadcast(
                                     MessageArgumentType.getMessage(context, "message"),
-                                    MessageType.CHAT
+                                    MessageType.SYSTEM
                             );
                             DiscordListener.sendDiscordMessage(MessageArgumentType.getMessage(context, "message").getString());
                             return 1;
