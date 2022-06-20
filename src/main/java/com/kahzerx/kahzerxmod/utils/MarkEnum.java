@@ -13,7 +13,7 @@ public enum MarkEnum {
     SUN("☀", Formatting.GOLD),
     QUESTION("?", Formatting.YELLOW),
     OTAKU_COIN("\uD83D\uDD25", Formatting.RED),
-    SLEEP("ZZZ", Formatting.BLUE);
+    SLEEP("zZz", Formatting.BLUE);
 
     private final String identifier;
     private final Formatting formatting;
