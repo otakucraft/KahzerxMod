@@ -107,32 +107,32 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
         return 1;
     }
 
-    public int startThreadedCriterion(ServerCommandSource source, ScoreboardCriterion criterion, boolean persistent) {
-        Scoreboard sb = source.getServer().getScoreboard();
-        String name = "K." + criterion.getName();
-        ScoreboardObjective objective = sb.getNullableObjective(name);
-        Entity entity = source.getEntity();
-        Text text;
-        if (objective != null) {
-            if (sb.getObjectiveForSlot(1) == objective) {
-                text = MarkEnum.CROSS.appendMessage("Already showing");
-            } else {
-                assert entity != null;
-                sb.setObjectiveSlot(1, objective);
-                if (persistent) {
-                    tickSet = -100;
-                } else {
-                    tickSet = source.getServer().getTicks() + (20 * 20);
-                }
-                text = MarkEnum.TICK.appendText(Text.literal(Formatting.WHITE + entity.getEntityName() + " has selected " + Formatting.GOLD + "[" + objective.getDisplayName().getString() + "]"));
-            }
-        } else {
-            String displayName = criterion.getName().replaceAll("_", " ");
-            displayName = displayName.substring(0, 1).toUpperCase() + displayName.substring(1);
-            sb.addObjective(name, criterion, Text.literal(displayName).formatted(Formatting.GOLD), criterion.getDefaultRenderType());
-            ScoreboardObjective newObjective = objective = sb.getNullableObjective(name);
+    public int startThreadedCommandScoreboard(String name, String sbName, String command, ServerCommandSource source, boolean persistent) {
+        Scoreboard scoreboard = source.getServer().getScoreboard();
+        if (scoreboard.getNullableObjective(name) == null) {
+            source.getServer().getCommandManager().execute(source.getServer().getCommandSource(), command);
+            scoreboard.getNullableObjective(name).setDisplayName(Text.literal(sbName).styled(style -> style.withColor(Formatting.GOLD)));
         }
+        ScoreboardObjective scoreboardObjective = scoreboard.getNullableObjective(name);
+        source.getServer().getPlayerManager().broadcast(display(scoreboard, scoreboardObjective, source.getServer().getTicks(), source.getEntity(), persistent), MessageType.SYSTEM);
         return 1;
+    }
+
+    public Text display(Scoreboard scoreboard, ScoreboardObjective scoreboardObjective, int tick, Entity entity, boolean persistent) {
+        Text text;
+        if (scoreboard.getObjectiveForSlot(1) == scoreboardObjective) {
+            text = MarkEnum.CROSS.appendMessage("Already showing");
+        } else {
+            assert entity != null;
+            scoreboard.setObjectiveSlot(1, scoreboardObjective);
+            if (persistent) {
+                tickSet = -100;
+            } else {
+                tickSet = tick + (20 * 20);
+            }
+            text = MarkEnum.TICK.appendText(Text.literal(Formatting.WHITE + entity.getEntityName() + " has selected " + Formatting.GOLD + "[" + scoreboardObjective.getDisplayName().getString() + "]"));
+        }
+        return text;
     }
 
     public void showSideBar(ServerCommandSource source, ItemStackArgument item, String type, boolean persistent) {
@@ -145,18 +145,7 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
         Text text;
 
         if (scoreboardObjective != null) {
-            if (scoreboard.getObjectiveForSlot(1) == scoreboardObjective) {
-                text = MarkEnum.CROSS.appendMessage("Already showing");
-            } else {
-                assert entity != null;
-                scoreboard.setObjectiveSlot(1, scoreboardObjective);
-                if (persistent) {
-                    tickSet = -100;
-                } else {
-                    tickSet = source.getServer().getTicks() + (20 * 20);
-                }
-                text = MarkEnum.TICK.appendText(Text.literal(Formatting.WHITE + entity.getEntityName() + " has selected " + Formatting.GOLD + "[" + scoreboardObjective.getDisplayName().getString() + "]"));
-            }
+            text = display(scoreboard, scoreboardObjective, source.getServer().getTicks(), entity, persistent);
         } else {
             String criteriaName = "minecraft." + type + ":minecraft." + item.getItem().toString();
             String capitalize = type.substring(0, 1).toUpperCase() + type.substring(1);
