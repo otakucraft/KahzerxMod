@@ -3,10 +3,12 @@ package com.kahzerx.kahzerxmod.extensions.scoreboardExtension;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.command.CommandRegistryAccess;
+import net.minecraft.command.EntitySelectorReader;
 import net.minecraft.command.argument.ItemStackArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.stat.Stats;
 
+import static com.mojang.brigadier.arguments.StringArgumentType.word;
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 
@@ -46,6 +48,14 @@ public class ScoreboardCommand {
                         executes(context -> scoreboard.startThreadedCommandScoreboard("K.killed_mobs", "killed mobs", "scoreboard objectives add K.killed_mobs minecraft.custom:minecraft.mob_kills", context.getSource(), Stats.MOB_KILLS, persistent))).
                 then(literal("cm_flight").
                         executes(context -> scoreboard.startThreadedCommandScoreboard("K.cm_flight", "cm flight", "scoreboard objectives add K.cm_flight minecraft.custom:minecraft.aviate_one_cm", context.getSource(), Stats.AVIATE_ONE_CM, persistent))).
+                then(literal("cm_pig").
+                        executes(context -> scoreboard.startThreadedCommandScoreboard("K.cm_pig", "cm pig", "scoreboard objectives add K.cm_pig minecraft.custom:minecraft.pig_one_cm", context.getSource(), Stats.PIG_ONE_CM, persistent))).
+                then(literal("jump").
+                        executes(context -> scoreboard.startThreadedCommandScoreboard("K.jump", "jump", "scoreboard objectives add K.jump minecraft.custom:minecraft.jump", context.getSource(), Stats.JUMP, persistent))).
+                then(literal("pot_flower").
+                        executes(context -> scoreboard.startThreadedCommandScoreboard("K.pot_flower", "potted flowers", "scoreboard objectives add K.pot_flower minecraft.custom:minecraft.pot_flower", context.getSource(), Stats.POT_FLOWER, persistent))).
+                then(literal("bell_ring").
+                        executes(context -> scoreboard.startThreadedCommandScoreboard("K.bell_ring", "bell ring", "scoreboard objectives add K.bell_ring minecraft.custom:minecraft.bell_ring", context.getSource(), Stats.BELL_RING, persistent))).
                 then(literal("remove").
                         executes(context -> scoreboard.hideSidebar(context.getSource())));
     }
