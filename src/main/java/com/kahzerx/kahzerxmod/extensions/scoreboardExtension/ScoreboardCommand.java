@@ -42,6 +42,10 @@ public class ScoreboardCommand {
                                 executes(context -> scoreboard.startThreadedShowSideBar(context.getSource(), ItemStackArgumentType.getItemStackArgument(context, "item"), "dropped", persistent)))).
                 then(literal("deaths").
                         executes(context -> scoreboard.startThreadedCommandScoreboard("K.deaths", "deaths", "scoreboard objectives add K.deaths deathCount", context.getSource(), Stats.DEATHS, persistent))).
+                then(literal("killed_mobs").
+                        executes(context -> scoreboard.startThreadedCommandScoreboard("K.killed_mobs", "killed mobs", "scoreboard objectives add K.killed_mobs minecraft.custom:minecraft.mob_kills", context.getSource(), Stats.MOB_KILLS, persistent))).
+                then(literal("cm_flight").
+                        executes(context -> scoreboard.startThreadedCommandScoreboard("K.cm_flight", "cm flight", "scoreboard objectives add K.cm_flight minecraft.custom:minecraft.aviate_one_cm", context.getSource(), Stats.AVIATE_ONE_CM, persistent))).
                 then(literal("remove").
                         executes(context -> scoreboard.hideSidebar(context.getSource())));
     }
