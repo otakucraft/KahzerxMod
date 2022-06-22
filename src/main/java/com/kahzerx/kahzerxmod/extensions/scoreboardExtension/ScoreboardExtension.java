@@ -110,6 +110,11 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
     }
 
     public int startThreadedCommandScoreboard(String name, String sbName, String command, ServerCommandSource source, Identifier id, boolean persistent) {
+        new Thread(() -> startCustomSB(name, sbName, command, source, id, persistent)).start();
+        return 1;
+    }
+
+    public void startCustomSB(String name, String sbName, String command, ServerCommandSource source, Identifier id, boolean persistent) {
         Scoreboard scoreboard = source.getServer().getScoreboard();
         if (scoreboard.getNullableObjective(name) == null) {
             source.getServer().getCommandManager().execute(source.getServer().getCommandSource(), command);
@@ -119,7 +124,6 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
         }
         ScoreboardObjective scoreboardObjective = scoreboard.getNullableObjective(name);
         source.getServer().getPlayerManager().broadcast(display(scoreboard, scoreboardObjective, source.getServer().getTicks(), source.getEntity(), persistent), MessageType.SYSTEM);
-        return 1;
     }
 
     public Text display(Scoreboard scoreboard, ScoreboardObjective scoreboardObjective, int tick, Entity entity, boolean persistent) {
