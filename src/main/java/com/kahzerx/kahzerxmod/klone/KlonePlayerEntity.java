@@ -6,6 +6,7 @@ import net.minecraft.entity.player.HungerManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.NetworkSide;
 import net.minecraft.network.encryption.PlayerPublicKey;
+import net.minecraft.network.packet.s2c.play.DeathMessageS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntityPositionS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntitySetHeadYawS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
@@ -13,7 +14,11 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.ServerTask;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.HoverEvent;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
+import net.minecraft.world.GameRules;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
@@ -88,10 +93,21 @@ public class KlonePlayerEntity extends ServerPlayerEntity {
     @Override
     public void onDeath(DamageSource source) {
         this.getOut();
-        super.onDeath(source);
         this.setHealth(20);
         this.hungerManager = new HungerManager();
-        this.kill(this.getDamageTracker().getDeathMessage());
+        Text text = this.getDamageTracker().getDeathMessage();
+        if (this.world.getGameRules().getBoolean(GameRules.SHOW_DEATH_MESSAGES)) {
+            this.networkHandler.sendPacket(new DeathMessageS2CPacket(this.getDamageTracker(), text), future -> {
+                if (!future.isSuccess()) {
+                    int i = 256;
+                    String string = text.asTruncatedString(256);
+                    MutableText text2 = Text.translatable("death.attack.message_too_long", Text.literal(string).formatted(Formatting.YELLOW));
+                    MutableText text3 = Text.translatable("death.attack.even_more_magic", this.getDisplayName()).styled(style -> style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, text2)));
+                    this.networkHandler.sendPacket(new DeathMessageS2CPacket(this.getDamageTracker(), text3));
+                }
+            });
+        }
+        this.kill(text);
     }
 
     @Override

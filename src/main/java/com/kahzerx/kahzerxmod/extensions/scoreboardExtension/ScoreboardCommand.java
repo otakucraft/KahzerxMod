@@ -3,12 +3,10 @@ package com.kahzerx.kahzerxmod.extensions.scoreboardExtension;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.command.CommandRegistryAccess;
-import net.minecraft.command.EntitySelectorReader;
 import net.minecraft.command.argument.ItemStackArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.stat.Stats;
 
-import static com.mojang.brigadier.arguments.StringArgumentType.word;
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 
