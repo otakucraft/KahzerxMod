@@ -10,6 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.ItemStackArgument;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.network.message.MessageType;
 import net.minecraft.scoreboard.Scoreboard;
@@ -21,7 +22,6 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.stat.ServerStatHandler;
 import net.minecraft.stat.Stat;
-import net.minecraft.stat.StatType;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -31,6 +31,9 @@ import net.minecraft.world.level.ServerWorldProperties;
 import java.io.File;
 import java.util.Optional;
 import java.util.UUID;
+
+
+// TODO There is a MASSIVE refactor to be done here...
 
 public class ScoreboardExtension extends GenericExtension implements Extensions {
     public static boolean isExtensionEnabled = false;
@@ -109,6 +112,11 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
         return 1;
     }
 
+    public int startThreadedKilledScoreboard(ServerCommandSource source, Identifier id, String type, boolean persistent) {
+        new Thread(() -> showSideBar(source, id, type, persistent)).start();
+        return 1;
+    }
+
     public int startThreadedCommandScoreboard(String name, String sbName, String command, ServerCommandSource source, Identifier id, boolean persistent) {
         new Thread(() -> startCustomSB(name, sbName, command, source, id, persistent)).start();
         return 1;
@@ -141,6 +149,56 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
             text = MarkEnum.TICK.appendText(Text.literal(Formatting.WHITE + entity.getEntityName() + " has selected " + Formatting.GOLD + "[" + scoreboardObjective.getDisplayName().getString() + "]"));
         }
         return text;
+    }
+
+
+    public void showSideBar(ServerCommandSource source, Identifier id, String type, boolean persistent) {
+        Scoreboard scoreboard = source.getServer().getScoreboard();
+        Optional<EntityType<?>> optEntity = EntityType.get(id.toString());
+        if (optEntity.isEmpty()) {
+            source.getServer().getPlayerManager().broadcast(MarkEnum.CROSS.appendMessage("Error on get entity!"), MessageType.SYSTEM);
+            return;
+        }
+        EntityType<?> entityType = optEntity.get();
+        String objectiveName = type + "." + id;
+        ScoreboardObjective scoreboardObjective = scoreboard.getNullableObjective(objectiveName);
+
+        Entity entity = source.getEntity();
+        Text text;
+        if (scoreboardObjective != null) {
+            text = display(scoreboard, scoreboardObjective, source.getServer().getTicks(), entity, persistent);
+        } else {
+            String criteriaName = "minecraft." + type + ":minecraft." + entityType.getUntranslatedName();
+            String capitalize = type.substring(0, 1).toUpperCase() + type.substring(1);
+            String displayName = capitalize + " " + entityType.getUntranslatedName().replaceAll("_", " ");
+            Optional<ScoreboardCriterion> opCriteria = ScoreboardCriterion.getOrCreateStatCriterion(criteriaName);
+            if (opCriteria.isEmpty()) {
+                return;
+            }
+            ScoreboardCriterion criteria = opCriteria.get();
+            scoreboard.addObjective(objectiveName, criteria, Text.literal(displayName).formatted(Formatting.GOLD), criteria.getDefaultRenderType());
+            ScoreboardObjective newScoreboardObjective = scoreboardObjective = scoreboard.getNullableObjective(objectiveName);
+            try {
+                initScoreboard(source, newScoreboardObjective, entityType, type);
+            } catch (Exception e) {
+                scoreboard.removeObjective(newScoreboardObjective);
+                text = MarkEnum.CROSS.appendMessage("Error on init scoreboard");
+                assert entity != null;
+                source.getServer().getPlayerManager().broadcast(text, MessageType.SYSTEM);
+
+                return;
+            }
+            scoreboard.setObjectiveSlot(1, newScoreboardObjective);
+            if (persistent) {
+                tickSet = -100;
+            } else {
+                tickSet = source.getServer().getTicks() + (20 * 20);
+            }
+            assert entity != null;
+            assert scoreboardObjective != null;
+            text = MarkEnum.TICK.appendText(Text.literal(Formatting.WHITE + entity.getEntityName() + " has selected " + Formatting.GOLD + "[" + scoreboardObjective.getDisplayName().getString() + "]"));
+        }
+        source.getServer().getPlayerManager().broadcast(text, MessageType.SYSTEM);
     }
 
     public void showSideBar(ServerCommandSource source, ItemStackArgument item, String type, boolean persistent) {
@@ -248,6 +306,46 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
                 finalStat = Stats.PICKED_UP.getOrCreateStat(item);
             } else if (type.equalsIgnoreCase("dropped")) {
                 finalStat = Stats.DROPPED.getOrCreateStat(item);
+            }
+            int value;
+            String playerName;
+            if (player != null) {
+                value = player.getStatHandler().getStat(finalStat);
+                playerName = player.getEntityName();
+            } else {
+                ServerStatHandler serverStatHandler = new ServerStatHandler(server, stat);
+                value = serverStatHandler.getStat(finalStat);
+                Optional<GameProfile> gameProfile = server.getUserCache().getByUuid(uuid);
+
+                if (gameProfile.isEmpty()) {
+                    continue;
+                }
+                playerName = gameProfile.get().getName();
+            }
+            if (value == 0) {
+                continue;
+            }
+            ScoreboardPlayerScore scoreboardPlayerScore = scoreboard.getPlayerScore(playerName, scoreboardObjective);
+            scoreboardPlayerScore.setScore(value);
+        }
+    }
+
+    public void initScoreboard(ServerCommandSource source, ScoreboardObjective scoreboardObjective, EntityType<?> entityType, String type) {
+        Scoreboard scoreboard = source.getServer().getScoreboard();
+        MinecraftServer server = source.getServer();
+        File file = new File(((ServerWorldProperties) server.getOverworld().getLevelProperties()).getLevelName(), "stats");
+        File[] stats = file.listFiles();
+        assert stats != null;
+        for (File stat : stats) {
+            String fileName = stat.getName();
+            String uuidString = fileName.substring(0, fileName.lastIndexOf(".json"));
+            UUID uuid = UUID.fromString(uuidString);
+            ServerPlayerEntity player = server.getPlayerManager().getPlayer(uuid);
+            Stat<?> finalStat = null;
+            if (type.equalsIgnoreCase("killed")) {
+                finalStat = Stats.KILLED.getOrCreateStat(entityType);
+            } else if (type.equalsIgnoreCase("killed_by")) {
+                finalStat = Stats.KILLED_BY.getOrCreateStat(entityType);
             }
             int value;
             String playerName;

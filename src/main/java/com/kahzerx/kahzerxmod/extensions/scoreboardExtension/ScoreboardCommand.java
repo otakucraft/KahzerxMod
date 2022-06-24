@@ -3,7 +3,9 @@ package com.kahzerx.kahzerxmod.extensions.scoreboardExtension;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.command.CommandRegistryAccess;
+import net.minecraft.command.argument.EntitySummonArgumentType;
 import net.minecraft.command.argument.ItemStackArgumentType;
+import net.minecraft.command.suggestion.SuggestionProviders;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.stat.Stats;
 
@@ -40,6 +42,14 @@ public class ScoreboardCommand {
                 then(literal("dropped").
                         then(argument("item", ItemStackArgumentType.itemStack(commandRegistryAccess)).
                                 executes(context -> scoreboard.startThreadedShowSideBar(context.getSource(), ItemStackArgumentType.getItemStackArgument(context, "item"), "dropped", persistent)))).
+                then(literal("killed").
+                        then(argument("entity", EntitySummonArgumentType.entitySummon()).
+                                suggests(SuggestionProviders.SUMMONABLE_ENTITIES).
+                                executes(context -> scoreboard.startThreadedKilledScoreboard(context.getSource(), EntitySummonArgumentType.getEntitySummon(context, "entity"), "killed", persistent)))).
+                then(literal("killed_by").
+                        then(argument("entity", EntitySummonArgumentType.entitySummon()).
+                                suggests(SuggestionProviders.SUMMONABLE_ENTITIES).
+                                executes(context -> scoreboard.startThreadedKilledScoreboard(context.getSource(), EntitySummonArgumentType.getEntitySummon(context, "entity"), "killed_by", persistent)))).
                 then(literal("deaths").
                         executes(context -> scoreboard.startThreadedCommandScoreboard("K.deaths", "deaths", "scoreboard objectives add K.deaths deathCount", context.getSource(), Stats.DEATHS, persistent))).
                 then(literal("killed_mobs").
