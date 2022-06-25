@@ -23,7 +23,6 @@
     "playerDropsSkullExtension.PlayerEntityMixin",
     "pranksExtension.PlayerMixin",
     "renewableElytraExtension.PhantomEntityMixin",
-    "scoreboardExtension.EntitySummonMixin",
     "scoreboardExtension.ScoreboardMixin",
     "seedExtension.seedCommandMixin",
     "server.ChatEventsMixin",
