@@ -6,9 +6,13 @@ import com.kahzerx.kahzerxmod.extensions.GenericExtension;
 import com.kahzerx.kahzerxmod.utils.MarkEnum;
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.suggestion.SuggestionProvider;
+import com.mojang.brigadier.suggestion.Suggestions;
 import net.minecraft.block.Block;
 import net.minecraft.command.CommandRegistryAccess;
+import net.minecraft.command.CommandSource;
 import net.minecraft.command.argument.ItemStackArgument;
+import net.minecraft.command.suggestion.SuggestionProviders;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
@@ -26,16 +30,25 @@ import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Util;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.level.ServerWorldProperties;
 
 import java.io.File;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Stream;
 
 
 // TODO There is a MASSIVE refactor to be done here...
 
 public class ScoreboardExtension extends GenericExtension implements Extensions {
+    public static final SuggestionProvider<ServerCommandSource> SB_KILLED_ENTITIES = SuggestionProviders.register(new Identifier("sb_killed_entities"), ((context, builder) -> {
+        Stream<EntityType<?>> entities = Registry.ENTITY_TYPE.stream().filter(EntityType::isSummonable);
+        return CommandSource.suggestFromIdentifier(Stream.concat(Stream.of(EntityType.PLAYER), entities), builder, EntityType::getId, entityType -> Text.translatable(Util.createTranslationKey("entity", EntityType.getId(entityType))));
+    }));
+
     public static boolean isExtensionEnabled = false;
     private int tickSet = -100;
 
@@ -62,6 +75,10 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
             hideSidebar(server);
             tickSet = -100;
         }
+    }
+
+    public SuggestionProvider<ServerCommandSource> killedSuggestion() {
+        return SB_KILLED_ENTITIES;
     }
 
     @Override

@@ -44,11 +44,11 @@ public class ScoreboardCommand {
                                 executes(context -> scoreboard.startThreadedShowSideBar(context.getSource(), ItemStackArgumentType.getItemStackArgument(context, "item"), "dropped", persistent)))).
                 then(literal("killed").
                         then(argument("entity", EntitySummonArgumentType.entitySummon()).
-                                suggests(SuggestionProviders.SUMMONABLE_ENTITIES).
+                                suggests(scoreboard.killedSuggestion()).
                                 executes(context -> scoreboard.startThreadedKilledScoreboard(context.getSource(), EntitySummonArgumentType.getEntitySummon(context, "entity"), "killed", persistent)))).
                 then(literal("killed_by").
                         then(argument("entity", EntitySummonArgumentType.entitySummon()).
-                                suggests(SuggestionProviders.SUMMONABLE_ENTITIES).
+                                suggests(scoreboard.killedSuggestion()).
                                 executes(context -> scoreboard.startThreadedKilledScoreboard(context.getSource(), EntitySummonArgumentType.getEntitySummon(context, "entity"), "killed_by", persistent)))).
                 then(literal("deaths").
                         executes(context -> scoreboard.startThreadedCommandScoreboard("K.deaths", "deaths", "scoreboard objectives add K.deaths deathCount", context.getSource(), Stats.DEATHS, persistent))).
