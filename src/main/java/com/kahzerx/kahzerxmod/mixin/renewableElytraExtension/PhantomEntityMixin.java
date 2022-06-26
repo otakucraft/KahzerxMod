@@ -11,6 +11,8 @@ import net.minecraft.item.Items;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 
+import java.util.Random;
+
 @Mixin(PhantomEntity.class)
 public class PhantomEntityMixin extends FlyingEntity {
     protected PhantomEntityMixin(EntityType<? extends FlyingEntity> entityType, World world) {
@@ -20,7 +22,7 @@ public class PhantomEntityMixin extends FlyingEntity {
     @Override
     protected void dropLoot(DamageSource source, boolean causedByPlayer) {
         super.dropLoot(source, causedByPlayer);
-        if (RenewableElytraExtension.isExtensionEnabled && source.getAttacker() instanceof ShulkerEntity && random.nextDouble() < 0.25D) {
+        if (RenewableElytraExtension.isExtensionEnabled && source.getAttacker() instanceof ShulkerEntity && new Random().nextDouble() < 0.25D) {
             this.dropStack(new ItemStack(Items.ELYTRA));
         }
     }
