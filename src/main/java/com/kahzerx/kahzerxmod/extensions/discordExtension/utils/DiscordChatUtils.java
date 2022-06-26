@@ -83,6 +83,15 @@ public class DiscordChatUtils {
     }
 
     public static void sendMessageCrossServer(MessageReceivedEvent event, MinecraftServer server, String prefix) {
+        if (prefix.equals("")) {
+            return;
+        }
+
+        Matcher m = Pattern.compile("^(`<|:)(\\w+)(>`|:)").matcher(event.getMessage().getContentDisplay());
+        if (m.find()) {  // El mensaje recibido no tiene prefix.
+            return;
+        }
+
         prefix = prefix.strip();
         String msg = "[" + prefix + "] " + event.getMessage().getContentDisplay().replace("`", "");
         msg = msg.substring(msg.indexOf(" ") + 1);
