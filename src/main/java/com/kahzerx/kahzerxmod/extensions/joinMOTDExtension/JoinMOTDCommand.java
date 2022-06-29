@@ -2,10 +2,10 @@ package com.kahzerx.kahzerxmod.extensions.joinMOTDExtension;
 
 import com.kahzerx.kahzerxmod.ExtensionManager;
 import com.kahzerx.kahzerxmod.extensions.permsExtension.PermsLevels;
+import com.kahzerx.kahzerxmod.utils.MarkEnum;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.command.argument.MessageArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.Text;
 
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
@@ -26,8 +26,15 @@ public class JoinMOTDCommand {
                                     ExtensionManager.saveSettings();
                                     return 1;
                                 }))).
+                then(literal("clear").
+                        executes(context -> {
+                            joinMOTD.extensionSettings().setMessage("");
+                            ExtensionManager.saveSettings();
+                            return 1;
+                        })).
                 executes(context -> {
-                    context.getSource().sendFeedback(Text.literal("a"), false);
+                    context.getSource().sendFeedback(MarkEnum.TICK.appendMessage("Actual MOTD!"), false);
+                    context.getSource().sendFeedback(joinMOTD.getFormatted(joinMOTD.extensionSettings().getMessage()), false);
                     return 1;
                 }));
     }
