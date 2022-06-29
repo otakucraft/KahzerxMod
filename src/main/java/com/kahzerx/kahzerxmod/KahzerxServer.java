@@ -161,6 +161,10 @@ public class KahzerxServer {
         extensions.forEach(e -> e.onPlayerJoined(player));
     }
 
+    public static void onPlayerConnected(ServerPlayerEntity player) {
+        extensions.forEach(e -> e.onPlayerConnected(player));
+    }
+
     public static void onPlayerLeft(ServerPlayerEntity player) {
         extensions.forEach(e -> e.onPlayerLeft(player));
     }

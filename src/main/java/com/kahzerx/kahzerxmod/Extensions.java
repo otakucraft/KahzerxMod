@@ -25,6 +25,7 @@ public interface Extensions extends Comparable<Extensions> {
     default void onServerStop() {}
     default void onAutoSave() {}
     default void onPlayerJoined(ServerPlayerEntity player) {}
+    default void onPlayerConnected(ServerPlayerEntity player) {}
     default void onPlayerLeft(ServerPlayerEntity player) {}
     default void onPlayerDied(ServerPlayerEntity player) {}
     default void onPlayerBreakBlock(ServerPlayerEntity player, World world, BlockPos pos) {}

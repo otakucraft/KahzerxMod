@@ -41,6 +41,11 @@ public class PlayerEventsMixins {
         private void onPlayerJoined(ClientConnection connection, ServerPlayerEntity player, CallbackInfo ci) {
             KahzerxServer.onPlayerJoined(player);
         }
+
+        @Inject(method = "onPlayerConnect", at = @At("TAIL"))
+        private void onPlayerConnected(ClientConnection connection, ServerPlayerEntity player, CallbackInfo ci) {
+            KahzerxServer.onPlayerConnected(player);
+        }
     }
 
     @Mixin(ServerPlayerInteractionManager.class)

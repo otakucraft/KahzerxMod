@@ -34,6 +34,9 @@ import com.kahzerx.kahzerxmod.extensions.helperKickExtension.HelperKickExtension
 import com.kahzerx.kahzerxmod.extensions.hereExtension.HereExtension;
 import com.kahzerx.kahzerxmod.extensions.homeExtension.HomeExtension;
 import com.kahzerx.kahzerxmod.extensions.itemFormattedExtension.ItemFormattedExtension;
+import com.kahzerx.kahzerxmod.extensions.joinMOTDExtension.JoinMOTDExtension;
+import com.kahzerx.kahzerxmod.extensions.joinMOTDExtension.JoinMOTDJsonSettings;
+import com.kahzerx.kahzerxmod.extensions.joinMOTDExtension.JoinMOTDSettings;
 import com.kahzerx.kahzerxmod.extensions.kloneExtension.KloneExtension;
 import com.kahzerx.kahzerxmod.extensions.maintenanceExtension.MaintenanceExtension;
 import com.kahzerx.kahzerxmod.extensions.memberExtension.MemberExtension;
@@ -147,7 +150,23 @@ public class ExtensionManager {
         KahzerxServer.extensions.add(profileExtension);
 
         KahzerxServer.extensions.add(new OpOnWhitelistExtension(new ExtensionSettings("opOnWhitelist", isEnabled(found, "opOnWhitelist"), "Auto ops and deops on whitelist add and remove.")));
-        KahzerxServer.extensions.add(new BedTimeExtension(new ExtensionSettings("bedTime", isEnabled(found, "bedTime"), "Notifies when a player goes to sleep")));
+        KahzerxServer.extensions.add(new BedTimeExtension(new ExtensionSettings("bedTime", isEnabled(found, "bedTime"), "Notifies when a player goes to sleep.")));
+
+        String message = "";
+        JoinMOTDJsonSettings jmjs = gson.fromJson(settings, JoinMOTDJsonSettings.class);
+        if (jmjs != null) {
+            for (JoinMOTDSettings jms : jmjs.getSettings()) {
+                if (jms == null) {
+                    continue;
+                }
+                if (jms.getName().equals("joinMOTD")) {
+                    message = jms.getMessage() != null ? jms.getMessage() : "";
+                    break;
+                }
+            }
+        }
+        JoinMOTDExtension joinMOTDExtension = new JoinMOTDExtension(new JoinMOTDSettings("joinMOTD", isEnabled(found, "joinMOTD"), "Sends a custon message on player join.", message), permsExtension);
+        KahzerxServer.extensions.add(joinMOTDExtension);
 
         String token = "";
         boolean crossServerChat = false;
