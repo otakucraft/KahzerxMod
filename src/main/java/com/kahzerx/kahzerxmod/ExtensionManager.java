@@ -143,10 +143,7 @@ public class ExtensionManager {
         KahzerxServer.extensions.add(new FarmlandMyceliumExtension(new ExtensionSettings("farmlandMycelium", isEnabled(found, "farmlandMycelium"), "Hoe can be used to farm mycelium.")));
         ShopExtension shopExtension = new ShopExtension(new ExtensionSettings("shop", isEnabled(found, "shop"), "Enables currency system along with shop commands and helpers."));
         KahzerxServer.extensions.add(shopExtension);
-
-        ProfileExtension profileExtension = new ProfileExtension(
-                new ExtensionSettings("profile", isEnabled(found, "profile"), "Enables the /profile command."),
-                shopExtension);
+        ProfileExtension profileExtension = new ProfileExtension(new ExtensionSettings("profile", isEnabled(found, "profile"), "Enables the /profile command."), shopExtension);
         KahzerxServer.extensions.add(profileExtension);
 
         KahzerxServer.extensions.add(new OpOnWhitelistExtension(new ExtensionSettings("opOnWhitelist", isEnabled(found, "opOnWhitelist"), "Auto ops and deops on whitelist add and remove.")));

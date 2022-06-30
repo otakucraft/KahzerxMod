@@ -100,7 +100,9 @@ public class JoinMOTDExtension extends GenericExtension implements Extensions {
             }
             actualStartPos = correctStyles.get(i).ends() + 1;
         }
-        text.append(message.substring(actualStartPos));
+        if (actualStartPos != 0) {
+            text.append(message.substring(actualStartPos));
+        }
         return text;
     }
 
