@@ -57,7 +57,12 @@ public class TransfersGui extends GuiBase {
 
         int gap = 0;
         for (int i = transfers.size() - 1; i >=0; i--) {
-            TextLabel label = new TextLabel(new TextMapper(String.format("- Has transferido %d a %s", transfers.get(i).getAmount(), transfers.get(i).getDestName()), ShopResources.US_SMALLEST), DARK_GRAY.getCode());
+            TextLabel label;
+            if (transfers.get(i).isReceived()) {
+                label = new TextLabel(new TextMapper(String.format("- %s te ha transferido %d", transfers.get(i).getDestName(), transfers.get(i).getAmount()), ShopResources.US_SMALLEST), DARK_GRAY.getCode());
+            } else {
+                label = new TextLabel(new TextMapper(String.format("- Has transferido %d a %s", transfers.get(i).getAmount(), transfers.get(i).getDestName()), ShopResources.US_SMALLEST), DARK_GRAY.getCode());
+            }
             label.setDimensions(title.getX() - (title.getText().getWidth() / 2) + 20, title.getY() + 55 + gap, label.getText().getWidth(), label.getText().getHeight());
             label.render(guiPlayer);
             label.setReRender(true);

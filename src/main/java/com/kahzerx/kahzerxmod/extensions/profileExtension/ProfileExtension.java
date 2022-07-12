@@ -16,6 +16,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 
 public class ProfileExtension extends GenericExtension implements Extensions {
@@ -44,15 +45,17 @@ public class ProfileExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onTick(MinecraftServer server) {
-        for (ServerPlayerEntity player : guis.keySet()) {
-            if (guis.get(player).shouldClose()) {
-                guis.get(player).closeGui();
-                guis.get(player).closePanel();
-                guis.remove(player);
-            } else {
-                guis.get(player).tick();
+        try {
+            for (ServerPlayerEntity player : guis.keySet()) {
+                if (guis.get(player).shouldClose()) {
+                    guis.get(player).closeGui();
+                    guis.get(player).closePanel();
+                    guis.remove(player);
+                } else {
+                    guis.get(player).tick();
+                }
             }
-        }
+        } catch (ConcurrentModificationException ignored) { }
     }
 
     @Override

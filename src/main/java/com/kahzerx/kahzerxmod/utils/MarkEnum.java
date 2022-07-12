@@ -59,6 +59,14 @@ public enum MarkEnum {
         return getFormattedIdentifierBold().append(Text.literal(" " + message).styled(style -> style.withColor(color).withBold(false)));
     }
 
+    public MutableText appendSuffix(String message, Formatting color) {
+        return Text.literal(message + " ").styled(style -> style.withColor(color).withBold(false)).append(getFormattedIdentifier());
+    }
+
+    public MutableText appendSuffix(String message) {
+        return appendSuffix(message, Formatting.WHITE);
+    }
+
     public MutableText boldAppendMessage(String message) {
         return boldAppendMessage(message, Formatting.WHITE);
     }

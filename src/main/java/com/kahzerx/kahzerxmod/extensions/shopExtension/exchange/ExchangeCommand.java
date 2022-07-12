@@ -85,11 +85,42 @@ public class ExchangeCommand {
                                             withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("cancelar exchange"))))),
                             false
                     );
+                    context.getSource().sendFeedback(
+                            MarkEnum.INFO.appendMessage("Esta operación no se puede revertir", Formatting.DARK_RED),
+                            false
+                    );
                     return 1;
                 }).
                 then(literal("info").
                         executes(context -> {
-                            context.getSource().sendFeedback(MarkEnum.OTAKU_COIN.appendMessage("a"), false);
+                            context.getSource().sendFeedback(
+                                    Text.literal("\n").
+                                    append(MarkEnum.OTAKU_COIN.getFormattedIdentifier().append(Text.literal(" ").styled(style -> style.
+                                            withUnderline(false)))).
+                                    append(Text.literal("Economía").styled(style -> style.
+                                            withColor(Formatting.GREEN).withUnderline(true))).
+                                    append(Text.literal(" ").append(MarkEnum.OTAKU_COIN.getFormattedIdentifier()).append("\n\n").styled(style -> style.
+                                            withUnderline(false))).
+                                    append(Text.literal("✧ Diamond").styled(style -> style.
+                                            withColor(Formatting.AQUA))).
+                                    append(MarkEnum.OTAKU_COIN.appendSuffix(": 5").append("\n")).
+                                    append(Text.literal("✦ Netherite Scrap").styled(style -> style.
+                                            withColor(Formatting.GRAY))).
+                                    append(MarkEnum.OTAKU_COIN.appendSuffix(": 10").append("\n")).
+                                    append(Text.literal("✦ Ancient Debris").styled(style -> style.
+                                            withColor(Formatting.GRAY))).
+                                    append(MarkEnum.OTAKU_COIN.appendSuffix(": 10").append("\n")).
+                                    append(Text.literal("✦ Netherite Ingot").styled(style -> style.
+                                            withColor(Formatting.GRAY))).
+                                    append(MarkEnum.OTAKU_COIN.appendSuffix(": 50").append("\n")).
+                                    append(Text.literal("✧ Diamond Block").styled(style -> style.
+                                            withColor(Formatting.AQUA))).
+                                    append(MarkEnum.OTAKU_COIN.appendSuffix(": 50").append("\n")).
+                                    append(Text.literal("✦ Netherite Block").styled(style -> style.
+                                            withColor(Formatting.GRAY))).
+                                    append(MarkEnum.OTAKU_COIN.appendSuffix(": 475")),
+                                    false
+                            );
                             return 1;
                         })));
     }

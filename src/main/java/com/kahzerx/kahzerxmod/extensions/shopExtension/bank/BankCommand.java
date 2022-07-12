@@ -30,11 +30,19 @@ public class BankCommand {
                                 suggests((c, b) -> suggestMatching(extension.getPlayers(), b)).
                                 then(argument("amount", IntegerArgumentType.integer(1)).
                                         executes(context -> {
+                                            ServerPlayerEntity sourcePlayer = context.getSource().getPlayer();
+                                            if (sourcePlayer == null) {
+                                                return 1;
+                                            }
                                             String playerName = StringArgumentType.getString(context, "player");
                                             String playerUUID = extension.getPlayerUUID(playerName);
                                             int amount = IntegerArgumentType.getInteger(context, "amount");
                                             if (playerUUID == null) {
                                                 context.getSource().sendFeedback(MarkEnum.CROSS.appendMessage("Este jugador no existe!"), false);
+                                                return 1;
+                                            }
+                                            if (sourcePlayer.getUuidAsString().equals(playerUUID)) {
+                                                context.getSource().sendFeedback(MarkEnum.CROSS.appendMessage("No te puedes hacer transferencias a ti mismo!"), false);
                                                 return 1;
                                             }
                                             if (extension.getAccounts().get(context.getSource().getPlayer()).getCoins() < amount) {

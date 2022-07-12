@@ -64,13 +64,17 @@ public class BankInstance {
         }
     }
 
-    public record Transfer(String destName, int amount) {
+    public record Transfer(String destName, int amount, boolean received) {
         public String getDestName() {
             return destName;
         }
 
         public int getAmount() {
             return amount;
+        }
+
+        public boolean isReceived() {
+            return received;
         }
     }
 

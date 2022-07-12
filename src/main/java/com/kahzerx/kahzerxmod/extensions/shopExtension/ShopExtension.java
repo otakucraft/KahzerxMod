@@ -17,6 +17,7 @@ import java.sql.*;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.UUID;
 
 public class ShopExtension extends GenericExtension implements Extensions {
     private final HashMap<ServerPlayerEntity, BankInstance> accounts = new HashMap<>();
@@ -154,13 +155,19 @@ public class ShopExtension extends GenericExtension implements Extensions {
     public BankInstance.Transfers getTransfers(ServerPlayerEntity player) {
         BankInstance.Transfers transfers = new BankInstance.Transfers();
         try {
-            String query = "SELECT dest_uuid, amount FROM transfers WHERE uuid = ? ORDER BY id DESC LIMIT 9;";
+            String query = "SELECT uuid, dest_uuid, amount FROM transfers WHERE uuid = ? OR dest_uuid = ? ORDER BY id DESC LIMIT 9;";
             PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, player.getUuidAsString());
             ps.setString(1, player.getUuidAsString());
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                BankInstance.Transfer t = new BankInstance.Transfer(getPlayerName(rs.getString("dest_uuid")), rs.getInt("amount"));
-                transfers.addTransfer(t);
+                if (rs.getString("dest_uuid").equals(player.getUuidAsString())) {
+                    BankInstance.Transfer t = new BankInstance.Transfer(getPlayerName(rs.getString("uuid")), rs.getInt("amount"), true);
+                    transfers.addTransfer(t);
+                } else {
+                    BankInstance.Transfer t = new BankInstance.Transfer(getPlayerName(rs.getString("dest_uuid")), rs.getInt("amount"), false);
+                    transfers.addTransfer(t);
+                }
             }
             transfers.revert();
             rs.close();
@@ -229,7 +236,14 @@ public class ShopExtension extends GenericExtension implements Extensions {
             ps.executeUpdate();
             ps.close();
         } catch (SQLException ignored) { }
-        accounts.get(player).getTransfers().addTransfer(new BankInstance.Transfer(destPlayerName, amount));
+        accounts.get(player).getTransfers().addTransfer(new BankInstance.Transfer(destPlayerName, amount, false));
+        MinecraftServer server = player.getServer();
+        if (server != null) {
+            ServerPlayerEntity destPlayer = server.getPlayerManager().getPlayer(UUID.fromString(destPlayerUUID));
+            if (destPlayer != null) {
+                accounts.get(destPlayer).getTransfers().addTransfer(new BankInstance.Transfer(player.getName().getString(), amount, true));
+            }
+        }
     }
 
     public Collection<String> getPlayers() {
