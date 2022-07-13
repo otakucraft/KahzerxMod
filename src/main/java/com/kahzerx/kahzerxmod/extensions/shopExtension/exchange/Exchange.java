@@ -27,4 +27,8 @@ public class Exchange {
     public static int getValue(Item item) {
         return VALID_EXCHANGES.get(item);
     }
+
+    public static HashMap<Item, Integer> getValidExchanges() {
+        return VALID_EXCHANGES;
+    }
 }

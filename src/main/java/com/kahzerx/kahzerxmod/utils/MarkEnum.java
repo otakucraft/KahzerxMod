@@ -13,7 +13,9 @@ public enum MarkEnum {
     SUN("☀", Formatting.GOLD),
     QUESTION("?", Formatting.YELLOW),
     OTAKU_COIN("\uD83D\uDD25", Formatting.RED),
-    SLEEP("zZz", Formatting.BLUE);
+    SLEEP("zZz", Formatting.BLUE),
+    DIAMOND_LIKE("✧", Formatting.AQUA),
+    NETHERITE_LIKE("✦", Formatting.GRAY);
 
     private final String identifier;
     private final Formatting formatting;
@@ -32,7 +34,7 @@ public enum MarkEnum {
     }
 
     public MutableText getFormattedIdentifier() {
-        return Text.literal(identifier).styled(style -> style.withColor(formatting).withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, identifier)));
+        return Text.literal(identifier).styled(style -> style.withColor(formatting).withBold(false).withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, identifier)));
     }
 
     public MutableText getFormattedIdentifierBold() {

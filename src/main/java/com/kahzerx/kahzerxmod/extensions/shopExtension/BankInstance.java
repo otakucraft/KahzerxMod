@@ -87,6 +87,9 @@ public class BankInstance {
             ));
         }
 
+        public int getFromItem(Item item) {
+            return exchangedItems.get(item);
+        }
         public int getDiamond() {
             return exchangedItems.get(Items.DIAMOND);
         }
