@@ -54,7 +54,7 @@ public class ShopExtension extends GenericExtension implements Extensions {
         ex.setNetheriteBlock(getAlreadyExchangedItem(player, Items.NETHERITE_BLOCK));
         ex.setNetheriteScrap(getAlreadyExchangedItem(player, Items.NETHERITE_SCRAP));
         ex.setDebris(getAlreadyExchangedItem(player, Items.ANCIENT_DEBRIS));
-        accounts.put(player, new BankInstance(getBalance(player), ex, getTransfers(player)));
+        accounts.put(player, new BankInstance(getBalance(player), ex, getTransfers(player, 1)));
     }
 
     @Override
@@ -152,13 +152,14 @@ public class ShopExtension extends GenericExtension implements Extensions {
         }
     }
 
-    public BankInstance.Transfers getTransfers(ServerPlayerEntity player) {
+    public BankInstance.Transfers getTransfers(ServerPlayerEntity player, int page) {
         BankInstance.Transfers transfers = new BankInstance.Transfers();
         try {
-            String query = "SELECT uuid, dest_uuid, amount FROM transfers WHERE uuid = ? OR dest_uuid = ? ORDER BY id DESC LIMIT 9;";
+            String query = "SELECT uuid, dest_uuid, amount FROM transfers WHERE uuid = ? OR dest_uuid = ? ORDER BY id DESC LIMIT 9 OFFSET ?;";
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, player.getUuidAsString());
-            ps.setString(1, player.getUuidAsString());
+            ps.setString(2, player.getUuidAsString());
+            ps.setInt(3, (page - 1) * 9);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 if (rs.getString("dest_uuid").equals(player.getUuidAsString())) {

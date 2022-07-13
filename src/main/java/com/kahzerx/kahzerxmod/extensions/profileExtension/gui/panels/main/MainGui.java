@@ -71,25 +71,31 @@ public class MainGui extends GuiBase {
         });
         coinText = new TextLabel(new TextMapper("Balance", new Font("Times New Roman", Font.BOLD, 20)), BLACK.getCode());
         shopsImage = new ImageButton(MainResources.SHOPS);
-        shopsImage.setClickCallback((boolean isKey, GuiPlayer p) -> System.out.println("openShopsGui"));
+        shopsImage.setClickCallback((boolean isKey, GuiPlayer p) -> {
+            p.getPlayer().networkHandler.sendPacket(new OverlayMessageS2CPacket(Text.literal("No disponible")));
+        });
         shopsText = new TextLabel(new TextMapper("Tiendas", new Font("Times New Roman", Font.BOLD, 20)), BLACK.getCode());
         eventsImage = new ImageButton(MainResources.EVENTS);
-        eventsImage.setClickCallback((boolean isKey, GuiPlayer p) -> System.out.println("openEventsGui"));
+        eventsImage.setClickCallback((boolean isKey, GuiPlayer p) -> {
+            p.getPlayer().networkHandler.sendPacket(new OverlayMessageS2CPacket(Text.literal("No disponible")));
+        });
         eventsText = new TextLabel(new TextMapper("Eventos", new Font("Times New Roman", Font.BOLD, 20)), BLACK.getCode());
         transfersImage = new ImageButton(MainResources.TRANSFERS);
         transfersImage.setClickCallback((boolean isKey, GuiPlayer p) -> {
             if (p.getShopExtension().extensionSettings().isEnabled()) {
-                p.openGui(new TransfersGui());
+                p.openGui(new TransfersGui(1));
             } else {
                 p.getPlayer().networkHandler.sendPacket(new OverlayMessageS2CPacket(Text.literal("Shops extension is not enabled!")));
             }
         });
         transfersText = new TextLabel(new TextMapper("Transferencias", new Font("Times New Roman", Font.BOLD, 20)), BLACK.getCode());
         waypointsImage = new ImageButton(MainResources.WAYPOINTS);
-        waypointsImage.setClickCallback((boolean isKey, GuiPlayer p) -> System.out.println("openWaypointsGui"));
+        waypointsImage.setClickCallback((boolean isKey, GuiPlayer p) -> {
+            p.getPlayer().networkHandler.sendPacket(new OverlayMessageS2CPacket(Text.literal("No disponible")));
+        });
         waypointsText = new TextLabel(new TextMapper("Waypoints", new Font("Times New Roman", Font.BOLD, 20)), BLACK.getCode());
         renderImage = new ImageButton(MainResources.RENDER);
-        renderImage.setClickCallback((boolean isKey, GuiPlayer p) -> p.getPlayer().sendMessage(MarkEnum.INFO.appendMessage("Puedes encontrar el render del mundo aquí: ").append(Text.literal("https://maps.kahzerx.com/otakucraft/otakucraft3/").styled(style -> style.withColor(Formatting.GRAY).withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://maps.kahzerx.com/otakucraft/otakucraft3/")))), false));
+        renderImage.setClickCallback((boolean isKey, GuiPlayer p) -> p.getPlayer().sendMessage(MarkEnum.INFO.appendMessage("Puedes encontrar el render del mundo aquí: ").append(Text.literal("https://maps.kahzerx.com/otakucraft/otakucraft4/").styled(style -> style.withColor(Formatting.GRAY).withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://maps.kahzerx.com/otakucraft/otakucraft4/")))), false));
         renderText = new TextLabel(new TextMapper("Render", new Font("Times New Roman", Font.BOLD, 20)), BLACK.getCode());
 
         addComponent(mainBack);

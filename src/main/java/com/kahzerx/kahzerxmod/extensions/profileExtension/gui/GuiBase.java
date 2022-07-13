@@ -19,6 +19,10 @@ public abstract class GuiBase {
         components.add(c);
     }
 
+    public void removeComponent(Component c) {
+        components.remove(c);
+    }
+
     public void addComponent(Component... c) {
         components.addAll(Arrays.asList(c));
     }

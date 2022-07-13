@@ -52,10 +52,6 @@ public class BankInstance {
             transfers = ts;
         }
 
-        public boolean hasNextPage() {
-            return transfers.size() == 9;
-        }
-
         public List<Transfer> getTransfers() {
             if (transfers.size() == 9) {
                 return transfers.subList(1, transfers.size());

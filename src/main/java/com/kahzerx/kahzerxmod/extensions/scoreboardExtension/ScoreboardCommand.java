@@ -58,6 +58,8 @@ public class ScoreboardCommand {
                         executes(context -> scoreboard.startThreadedCommandScoreboard("K.cm_flight", "cm flight", "scoreboard objectives add K.cm_flight minecraft.custom:minecraft.aviate_one_cm", context.getSource(), Stats.AVIATE_ONE_CM, persistent))).
                 then(literal("cm_pig").
                         executes(context -> scoreboard.startThreadedCommandScoreboard("K.cm_pig", "cm pig", "scoreboard objectives add K.cm_pig minecraft.custom:minecraft.pig_one_cm", context.getSource(), Stats.PIG_ONE_CM, persistent))).
+                then(literal("cm_swim").
+                        executes(context -> scoreboard.startThreadedCommandScoreboard("K.cm_swim", "cm swim", "scoreboard objectives add K.cm_swim minecraft.custom:minecraft.swim_one_cm", context.getSource(), Stats.SWIM_ONE_CM, persistent))).
                 then(literal("jump").
                         executes(context -> scoreboard.startThreadedCommandScoreboard("K.jump", "jump", "scoreboard objectives add K.jump minecraft.custom:minecraft.jump", context.getSource(), Stats.JUMP, persistent))).
                 then(literal("pot_flower").

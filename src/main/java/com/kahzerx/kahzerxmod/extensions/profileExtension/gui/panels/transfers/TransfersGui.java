@@ -20,16 +20,26 @@ public class TransfersGui extends GuiBase {
     private final SolidBack mainBack;
     private final TextButton closeButton;
     private final TextButton backButton;
+    private final TextButton backPageButton;
+    private final TextButton nextPageButton;
+    private final TextLabel pagination;
     private final TextLabel title;
     private final SolidBack strip1;
     private final SolidBack strip2;
-    public TransfersGui() {
+    private final int page;
+    public TransfersGui(int page) {
+        this.page = page;
         mainBack = new SolidBack(LIGHT_YELLOW.getCode());
         closeButton = new TextButton(new TextMapper("Close", new Font("Times New Roman", Font.PLAIN, 30)), RED.getCode(), DARK_RED.getCode(), (byte) 84, (byte) 87);
         closeButton.setClickCallback((boolean isKey, GuiPlayer p) -> p.closePanel());
         backButton = new TextButton(new TextMapper("Back", new Font("Times New Roman", Font.PLAIN, 30)), LIGHT_GRAY.getCode(), GRAY.getCode(), (byte) 84, (byte) 87);
         backButton.setClickCallback((boolean isKey, GuiPlayer p) -> p.openGui(new MainGui()));
         title = new TextLabel(new TextMapper(" TUS TRANSFERENCIAS ", ShopResources.US), DARK_GRAY.getCode());
+        backPageButton = new TextButton(new TextMapper("<", new Font("Times New Roman", Font.PLAIN, 30)), LIGHT_GRAY.getCode(), GRAY.getCode(), (byte) 84, (byte) 87);
+        backPageButton.setClickCallback((boolean isKey, GuiPlayer p) -> p.openGui(new TransfersGui(page - 1)));
+        nextPageButton = new TextButton(new TextMapper(">", new Font("Times New Roman", Font.PLAIN, 30)), LIGHT_GRAY.getCode(), GRAY.getCode(), (byte) 84, (byte) 87);
+        nextPageButton.setClickCallback((boolean isKey, GuiPlayer p) -> p.openGui(new TransfersGui(page + 1)));
+        pagination = new TextLabel(new TextMapper(String.valueOf(page), new Font("Times New Roman", Font.BOLD, 35)), WHITE.getCode());
 
         strip1 = new SolidBack(ORANGE.getCode());
         strip2 = new SolidBack(ORANGE.getCode());
@@ -38,6 +48,8 @@ public class TransfersGui extends GuiBase {
         addComponent(closeButton, backButton);
         addComponent(title);
         addComponent(strip1, strip2);
+        addComponent(nextPageButton, backPageButton);
+        addComponent(pagination);
     }
 
     @Override
@@ -51,9 +63,23 @@ public class TransfersGui extends GuiBase {
         strip1.setDimensions(guiPlayer.getPanelPixelWidth() - 45, 80, 15, guiPlayer.getPanelPixelHeight() - 80 - MapGui.MAP_HEIGHT);
         strip2.setDimensions(guiPlayer.getPanelPixelWidth() - 15, 80, 15, guiPlayer.getPanelPixelHeight() - 80 - MapGui.MAP_HEIGHT);
 
-        super.render(guiPlayer);
+        List<BankInstance.Transfer> transfers = guiPlayer.getShopExtension().getTransfers(guiPlayer.getPlayer(), this.page).getTransfers();
+        List<BankInstance.Transfer> transfers2 = guiPlayer.getShopExtension().getTransfers(guiPlayer.getPlayer(), this.page + 1).getTransfers();
 
-        List<BankInstance.Transfer> transfers = guiPlayer.getShopExtension().getTransfers(guiPlayer.getPlayer()).getTransfers();
+        if (this.page > 1) {
+            backPageButton.setDimensions(10, guiPlayer.getPanelPixelHeight() - 100 - 10, 70, 50);
+        } else {
+            removeComponent(backPageButton);
+        }
+        if (this.page < 30 && transfers.size() == 8 && transfers2.size() != 0) {
+            nextPageButton.setDimensions(guiPlayer.getPanelPixelWidth() - 70 - 10, guiPlayer.getPanelPixelHeight() - 100 - 10, 70, 50);
+        } else {
+            removeComponent(nextPageButton);
+        }
+
+        pagination.setDimensions((guiPlayer.getPanelPixelWidth() / 2) - (pagination.getWidth() / 2), guiPlayer.getPanelPixelHeight() - 75 - 10, pagination.getWidth(), pagination.getHeight());
+
+        super.render(guiPlayer);
 
         int gap = 0;
         for (int i = transfers.size() - 1; i >=0; i--) {
