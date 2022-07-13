@@ -82,7 +82,7 @@ public class TransfersGui extends GuiBase {
         super.render(guiPlayer);
 
         int gap = 0;
-        for (int i = transfers.size() - 1; i >=0; i--) {
+        for (int i = transfers.size() - 1; i >= 0; i--) {
             TextLabel label;
             if (transfers.get(i).isReceived()) {
                 label = new TextLabel(new TextMapper(String.format("- %s te ha transferido %d", transfers.get(i).getDestName(), transfers.get(i).getAmount()), ShopResources.US_SMALLEST), DARK_GRAY.getCode());
