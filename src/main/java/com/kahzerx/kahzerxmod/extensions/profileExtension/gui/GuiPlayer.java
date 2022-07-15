@@ -32,11 +32,13 @@ public class GuiPlayer {
     private BlockPos panelCorner1;
     private BlockPos panelCorner2;
     private Box panelBox;
+    private boolean isBank;
 
-    public GuiPlayer(ServerPlayerEntity player, ShopExtension shopExtension) {
+    public GuiPlayer(ServerPlayerEntity player, ShopExtension shopExtension, boolean isBank) {
         this.player = player;
         this.shopExtension = shopExtension;
         isOpen = false;
+        this.isBank = isBank;
     }
 
     public boolean isOpen() {
@@ -234,12 +236,12 @@ public class GuiPlayer {
         return panelPixelHeight;
     }
 
-    public boolean setPixel(int x, int y, byte color) {
+    public void setPixel(int x, int y, byte color) {
         if (x < 0 || y < 0) {
-            return false;
+            return;
         }
         if (x >= panelPixelWidth || y >= panelPixelHeight) {
-            return false;
+            return;
         }
 
         int mapX = x / MapGui.MAP_WIDTH;
@@ -247,7 +249,7 @@ public class GuiPlayer {
 
         int index = mapX + mapY * panelWidth;
 
-        return maps.get(index).setPixel(x - mapX * MapGui.MAP_WIDTH, y - mapY * MapGui.MAP_HEIGHT, color);
+        maps.get(index).setPixel(x - mapX * MapGui.MAP_WIDTH, y - mapY * MapGui.MAP_HEIGHT, color);
     }
 
     public void onClick() {
@@ -263,5 +265,9 @@ public class GuiPlayer {
 
     public ShopExtension getShopExtension() {
         return shopExtension;
+    }
+
+    public boolean isBank() {
+        return isBank;
     }
 }

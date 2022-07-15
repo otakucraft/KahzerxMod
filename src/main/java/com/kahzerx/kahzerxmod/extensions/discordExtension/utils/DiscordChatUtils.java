@@ -28,7 +28,11 @@ public class DiscordChatUtils {
         try {
             EmbedBuilder emb = new EmbedBuilder();
             emb.setColor(n != 0 ? Color.GREEN : Color.RED);
-            emb.setTitle(prefix.replace("`", ""));
+            String title = prefix.replace("`", "");
+            if (title.isEmpty()) {
+                title = "server";
+            }
+            emb.setTitle(title);
             if (n > 1) {
                 emb.setDescription("**" + n + " online players** \n\n" + msg.toString());
             } else {
@@ -50,6 +54,8 @@ public class DiscordChatUtils {
             emb.setColor(color);
             if (!serverPrefix.equals("")) {
                 emb.setTitle(serverPrefix.replace("`", ""));
+            } else {
+                emb.setTitle("server");
             }
             if (hasOne) {
                 emb.setDescription(msg[0].replace("_", "\\_"));

@@ -141,7 +141,7 @@ public class ExtensionManager {
         KahzerxServer.extensions.add(new AchusExtension(new ExtensionSettings("achus", isEnabled(found, "achus"), "Achus!!")));
         KahzerxServer.extensions.add(new SitExtension(new ExtensionSettings("sit", isEnabled(found, "sit"), "To sit anywhere.")));
         KahzerxServer.extensions.add(new FarmlandMyceliumExtension(new ExtensionSettings("farmlandMycelium", isEnabled(found, "farmlandMycelium"), "Hoe can be used to farm mycelium.")));
-        ShopExtension shopExtension = new ShopExtension(new ExtensionSettings("shop", isEnabled(found, "shop"), "Enables currency system along with shop commands and helpers."));
+        ShopExtension shopExtension = new ShopExtension(new ExtensionSettings("shop", isEnabled(found, "shop"), "Enables currency system along with shop commands and helpers."), permsExtension);
         KahzerxServer.extensions.add(shopExtension);
         ProfileExtension profileExtension = new ProfileExtension(new ExtensionSettings("profile", isEnabled(found, "profile"), "Enables the /profile command."), shopExtension);
         KahzerxServer.extensions.add(profileExtension);

@@ -10,6 +10,7 @@ import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.components.helpers
 import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.components.labels.TextLabel;
 import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.panels.main.MainGui;
 import com.kahzerx.kahzerxmod.extensions.profileExtension.gui.panels.resources.ShopResources;
+import com.kahzerx.kahzerxmod.extensions.shopExtension.BankInstance;
 
 import java.awt.*;
 
@@ -103,21 +104,23 @@ public class BalanceGui extends GuiBase {
     }
 
     private void updateBalance(GuiPlayer guiPlayer) {
-        balance.setText(new TextMapper(String.valueOf(guiPlayer.getShopExtension().getAccounts().get(guiPlayer.getPlayer()).getCoins()), ShopResources.US));
+        BankInstance bankInstance = guiPlayer.isBank() ? guiPlayer.getShopExtension().getBankAccount() : guiPlayer.getShopExtension().getAccounts().get(guiPlayer.getPlayer());
+
+        balance.setText(new TextMapper(String.valueOf(bankInstance.getCoins()), ShopResources.US));
         balance.setDimensions(guiPlayer.getPanelPixelWidth() / 2 - balance.getText().getWidth() / 2, 80 + 40 + title.getHeight() + 60, balance.getText().getWidth(), balance.getText().getHeight());
         coinImage.setDimensions((guiPlayer.getPanelPixelWidth() / 2 - balance.getText().getWidth() / 2) - coinImage.getImage().getWidth(), 80 + 40 + title.getHeight() + 40, coinImage.getImage().getWidth(), coinImage.getImage().getHeight());
 
-        int nethBlockCount = guiPlayer.getShopExtension().getAccounts().get(guiPlayer.getPlayer()).getExchanges().getNetheriteBlock();
+        int nethBlockCount = bankInstance.getExchanges().getNetheriteBlock();
         setLabel(nethBlockCount, netheriteBlockLabel, netheriteBlockImage);
-        int debrisCount = guiPlayer.getShopExtension().getAccounts().get(guiPlayer.getPlayer()).getExchanges().getDebris();
+        int debrisCount = bankInstance.getExchanges().getDebris();
         setLabel(debrisCount, debrisLabel, debrisImage);
-        int diaBlockCount = guiPlayer.getShopExtension().getAccounts().get(guiPlayer.getPlayer()).getExchanges().getDiamondBlock();
+        int diaBlockCount = bankInstance.getExchanges().getDiamondBlock();
         setLabel(diaBlockCount, diaBlockLabel, diaBlockImage);
-        int netheriteIngotCount = guiPlayer.getShopExtension().getAccounts().get(guiPlayer.getPlayer()).getExchanges().getNetheriteIngot();
+        int netheriteIngotCount = bankInstance.getExchanges().getNetheriteIngot();
         setLabel(netheriteIngotCount, netheriteIngotLabel, netheriteIngotImage);
-        int scrapCount = guiPlayer.getShopExtension().getAccounts().get(guiPlayer.getPlayer()).getExchanges().getNetheriteScrap();
+        int scrapCount = bankInstance.getExchanges().getNetheriteScrap();
         setLabel(scrapCount, scrapLabel, scrapImage);
-        int diaCount = guiPlayer.getShopExtension().getAccounts().get(guiPlayer.getPlayer()).getExchanges().getDiamond();
+        int diaCount = bankInstance.getExchanges().getDiamond();
         setLabel(diaCount, diaLabel, diaImage);
 
         super.render(guiPlayer);

@@ -54,6 +54,8 @@ public class TransfersGui extends GuiBase {
 
     @Override
     public void render(GuiPlayer guiPlayer) {
+        String uuid = guiPlayer.isBank() ? "00000000-0000-0000-0000-000000000000" : guiPlayer.getPlayer().getUuidAsString();
+
         mainBack.setDimensions(0, 80, guiPlayer.getPanelPixelWidth(), guiPlayer.getPanelPixelHeight() - 80 - MapGui.MAP_HEIGHT);
         closeButton.setDimensions(guiPlayer.getPanelPixelWidth() - 100 - 10, 10, 100, 50);
         backButton.setDimensions(10, 10, 100, 50);
@@ -63,8 +65,8 @@ public class TransfersGui extends GuiBase {
         strip1.setDimensions(guiPlayer.getPanelPixelWidth() - 45, 80, 15, guiPlayer.getPanelPixelHeight() - 80 - MapGui.MAP_HEIGHT);
         strip2.setDimensions(guiPlayer.getPanelPixelWidth() - 15, 80, 15, guiPlayer.getPanelPixelHeight() - 80 - MapGui.MAP_HEIGHT);
 
-        List<BankInstance.Transfer> transfers = guiPlayer.getShopExtension().getTransfers(guiPlayer.getPlayer(), this.page).getTransfers();
-        List<BankInstance.Transfer> transfers2 = guiPlayer.getShopExtension().getTransfers(guiPlayer.getPlayer(), this.page + 1).getTransfers();
+        List<BankInstance.Transfer> transfers = guiPlayer.getShopExtension().getDB().getQuery().getTransfers(uuid, this.page).getTransfers();
+        List<BankInstance.Transfer> transfers2 = guiPlayer.getShopExtension().getDB().getQuery().getTransfers(uuid, this.page + 1).getTransfers();
 
         if (this.page > 1) {
             backPageButton.setDimensions(10, guiPlayer.getPanelPixelHeight() - 100 - 10, 70, 50);

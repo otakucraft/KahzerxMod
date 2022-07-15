@@ -24,6 +24,7 @@ public interface Extensions extends Comparable<Extensions> {
     default void onCreateDatabase(String worldPath) {}
     default void onServerStop() {}
     default void onAutoSave() {}
+    default void onAutoSave(MinecraftServer server) {}
     default void onPlayerJoined(ServerPlayerEntity player) {}
     default void onPlayerConnected(ServerPlayerEntity player) {}
     default void onPlayerLeft(ServerPlayerEntity player) {}

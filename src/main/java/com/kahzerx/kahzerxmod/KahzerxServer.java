@@ -159,6 +159,10 @@ public class KahzerxServer {
         extensions.forEach(Extensions::onAutoSave);
     }
 
+    public static void onAutoSave(MinecraftServer server) {
+        extensions.forEach(e -> e.onAutoSave(server));
+    }
+
     public static void onPlayerJoined(ServerPlayerEntity player) {
         db.getQuery().insertPlayerUUID(player.getUuidAsString(), player.getName().getString());
         extensions.forEach(e -> e.onPlayerJoined(player));

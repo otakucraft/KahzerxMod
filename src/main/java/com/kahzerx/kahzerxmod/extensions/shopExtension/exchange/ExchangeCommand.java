@@ -60,8 +60,8 @@ public class ExchangeCommand {
                                                     context.getSource().sendFeedback(MarkEnum.CROSS.appendMessage("No tienes suficientes otakucoins!"), false);
                                                     return 1;
                                                 }
-                                                extension.updateFounds(player, moneyEQ * -1);
-                                                extension.logExchange(player, foundItem, sentCount * -1);
+                                                extension.getDB().getQuery().updateFounds(player, moneyEQ * -1, extension.getAccounts());
+                                                extension.getDB().getQuery().logExchange(player, foundItem, sentCount * -1, extension.getAccounts());
                                                 if (!player.getInventory().insertStack(new ItemStack(foundItem, sentCount))) {
                                                     ItemEntity e = player.dropStack(new ItemStack(foundItem, sentCount), 0);
                                                     if (e != null) {
@@ -94,8 +94,8 @@ public class ExchangeCommand {
                                                 context.getSource().sendFeedback(MarkEnum.CROSS.appendMessage("El stack de tu mano ha cambiado!"), false);
                                                 return 1;
                                             }
-                                            extension.updateFounds(player, Exchange.getValue(item) * count);
-                                            extension.logExchange(player, item, count);
+                                            extension.getDB().getQuery().updateFounds(player, Exchange.getValue(item) * count, extension.getAccounts());
+                                            extension.getDB().getQuery().logExchange(player, item, count, extension.getAccounts());
                                             player.setStackInHand(Hand.MAIN_HAND, new ItemStack(Items.AIR));
                                             context.getSource().sendFeedback(MarkEnum.TICK.appendMessage("Añadidos ").append(MarkEnum.OTAKU_COIN.appendMessage(String.valueOf(Exchange.getValue(item) * count))), false);
                                             return 1;

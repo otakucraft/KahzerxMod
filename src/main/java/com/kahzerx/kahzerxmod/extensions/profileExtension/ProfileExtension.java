@@ -21,7 +21,7 @@ import java.util.HashMap;
 
 public class ProfileExtension extends GenericExtension implements Extensions {
     public static HashMap<ServerPlayerEntity, GuiPlayer> guis = new HashMap<>();
-    public ShopExtension shopExtension;
+    private final ShopExtension shopExtension;
     public ProfileExtension(ExtensionSettings settings, ShopExtension shopExtension) {
         super(settings);
         this.shopExtension = shopExtension;
@@ -66,13 +66,13 @@ public class ProfileExtension extends GenericExtension implements Extensions {
         }
     }
 
-    public void openGUI(ServerPlayerEntity player) {
+    public void openGUI(ServerPlayerEntity player, boolean isBank) {
         if (!extensionSettings().isEnabled()) {
             return;
         }
         GuiPlayer gui = guis.get(player);
         if (gui == null) {
-            gui = new GuiPlayer(player, shopExtension);
+            gui = new GuiPlayer(player, shopExtension, isBank);
             guis.put(player, gui);
         }
         gui.openGui(new MainGui());
@@ -85,5 +85,9 @@ public class ProfileExtension extends GenericExtension implements Extensions {
         } else {
             gui.openPanel(pos, dir, 6, 5);
         }
+    }
+
+    public ShopExtension getShopExtension() {
+        return shopExtension;
     }
 }

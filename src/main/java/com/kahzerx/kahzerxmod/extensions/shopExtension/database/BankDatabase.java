@@ -1,19 +1,19 @@
-package com.kahzerx.kahzerxmod.extensions.blockInfoExtension.database;
+package com.kahzerx.kahzerxmod.extensions.shopExtension.database;
 
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class BlockInfoDatabase {
+public class BankDatabase {
     private Connection connection = null;
-    private BlockInfoQuery query = null;
+    private BankQuery query = null;
 
     public void initializeConnection(String dirName) {
         try {
             Class.forName("org.sqlite.JDBC");
             String DATABASE_DIR = "KData";
-            String DATABASE_NAME = "KBlockInfo.db";
+            String DATABASE_NAME = "KBank.db";
 
             @SuppressWarnings("unused")
             boolean createDir = new File(String.format("%s/%s", dirName, DATABASE_DIR)).mkdirs();
@@ -23,7 +23,7 @@ public class BlockInfoDatabase {
                     DATABASE_DIR,
                     DATABASE_NAME
             ));
-            query = new BlockInfoQuery(connection);
+            query = new BankQuery(connection);
 
             connection.createStatement().executeUpdate("PRAGMA foreign_keys=ON");
             connection.createStatement().executeUpdate("PRAGMA secure_delete=ON");
@@ -56,7 +56,7 @@ public class BlockInfoDatabase {
         return connection;
     }
 
-    public BlockInfoQuery getQuery() {
+    public BankQuery getQuery() {
         return query;
     }
 }

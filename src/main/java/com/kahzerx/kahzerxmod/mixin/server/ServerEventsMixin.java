@@ -30,6 +30,7 @@ public class ServerEventsMixin {
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;saveAll(ZZZ)Z"))
     private void onSave(CallbackInfo ci) {
         KahzerxServer.onAutoSave();
+        KahzerxServer.onAutoSave((MinecraftServer) (Object) this);
     }
 
     @Inject(method = "tick", at = @At("HEAD"))
