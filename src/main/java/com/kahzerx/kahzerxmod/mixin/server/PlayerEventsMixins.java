@@ -73,7 +73,7 @@ public class PlayerEventsMixins {
 
     @Mixin(ServerPlayerEntity.class)
     public static class PlayerDied {
-        @Inject(method = "onDeath", at = @At("HEAD"))
+        @Inject(method = "onDeath", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/damage/DamageTracker;getDeathMessage()Lnet/minecraft/text/Text;"))
         private void onPlayerDied(DamageSource source, CallbackInfo ci) {
             KahzerxServer.onPlayerDied((ServerPlayerEntity) (Object) this);
         }
