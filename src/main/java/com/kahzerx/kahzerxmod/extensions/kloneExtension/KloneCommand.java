@@ -16,5 +16,12 @@ public class KloneCommand {
                     KlonePlayerEntity.createKlone(context.getSource().getServer(), sourcePlayer);
                     return 1;
                 }));
+        dispatcher.register(literal("clown").
+                requires(isEnabled -> klone.extensionSettings().isEnabled()).
+                executes(context -> {
+                    ServerPlayerEntity sourcePlayer = context.getSource().getPlayer();
+                    KlonePlayerEntity.createKlone(context.getSource().getServer(), sourcePlayer);
+                    return 1;
+                }));
     }
 }
