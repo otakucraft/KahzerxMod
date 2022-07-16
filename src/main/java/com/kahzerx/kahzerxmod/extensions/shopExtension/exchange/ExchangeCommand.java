@@ -7,7 +7,6 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -19,6 +18,7 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ItemScatterer;
 
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
@@ -62,13 +62,8 @@ public class ExchangeCommand {
                                                 }
                                                 extension.getDB().getQuery().updateFounds(player, moneyEQ * -1, extension.getAccounts());
                                                 extension.getDB().getQuery().logExchange(player, foundItem, sentCount * -1, extension.getAccounts());
-                                                if (!player.getInventory().insertStack(new ItemStack(foundItem, sentCount))) {
-                                                    ItemEntity e = player.dropStack(new ItemStack(foundItem, sentCount), 0);
-                                                    if (e != null) {
-                                                        e.resetPickupDelay();
-                                                        e.setOwner(player.getUuid());
-                                                    }
-                                                }
+
+                                                ItemScatterer.spawn(player.getWorld(), player.getX(), player.getY(), player.getZ(), new ItemStack(foundItem, sentCount));
                                                 context.getSource().sendFeedback(MarkEnum.TICK.appendMessage("Cambio realizado!"), false);
                                             } else {
                                                 context.getSource().sendFeedback(MarkEnum.CROSS.appendMessage("Demasiados items!"), false);
@@ -134,6 +129,7 @@ public class ExchangeCommand {
                         context.getSource().sendFeedback(getFormattedGetBack(Items.NETHERITE_SCRAP, exchanges.getNetheriteScrap(), true), false);
                         context.getSource().sendFeedback(getFormattedGetBack(Items.ANCIENT_DEBRIS, exchanges.getDebris(), true), false);
                         context.getSource().sendFeedback(MarkEnum.INFO.appendMessage("Al hacer click especifica en el comando cuanto quieres cambiar?"), false);
+                        context.getSource().sendFeedback(MarkEnum.WARNING.appendMessage("Los items se dropearán al suelo! Verifica que estés en un sitio seguro.", Formatting.GOLD), false);
                         return 1;
                     }
                     if (isInvalid(context, player)) {

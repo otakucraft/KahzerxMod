@@ -9,6 +9,7 @@ public enum MarkEnum {
     TICK("✔", Formatting.GREEN),
     CROSS("✘", Formatting.DARK_RED),
     INFO("ⓘ", Formatting.GOLD),
+    WARNING("⚠", Formatting.GOLD),
     RIP("☠", Formatting.DARK_RED),
     SUN("☀", Formatting.GOLD),
     QUESTION("?", Formatting.YELLOW),
