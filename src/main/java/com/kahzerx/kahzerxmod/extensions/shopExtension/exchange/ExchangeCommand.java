@@ -56,7 +56,7 @@ public class ExchangeCommand {
                                             int actualCount = exchanges.getFromItem(foundItem);
                                             if (actualCount >= sentCount) {
                                                 int moneyEQ = Exchange.getValue(foundItem) * sentCount;
-                                                if (extension.getAccounts().get(player).getCoins() <= moneyEQ) {
+                                                if (extension.getAccounts().get(player).getCoins() < moneyEQ) {
                                                     context.getSource().sendFeedback(MarkEnum.CROSS.appendMessage("No tienes suficientes otakucoins!"), false);
                                                     return 1;
                                                 }
