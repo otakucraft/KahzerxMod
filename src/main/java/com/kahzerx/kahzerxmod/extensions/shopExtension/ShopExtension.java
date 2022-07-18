@@ -5,8 +5,10 @@ import com.kahzerx.kahzerxmod.extensions.ExtensionSettings;
 import com.kahzerx.kahzerxmod.extensions.GenericExtension;
 import com.kahzerx.kahzerxmod.extensions.permsExtension.PermsExtension;
 import com.kahzerx.kahzerxmod.extensions.shopExtension.bank.BankCommand;
-import com.kahzerx.kahzerxmod.extensions.shopExtension.database.BankDatabase;
+import com.kahzerx.kahzerxmod.extensions.shopExtension.database.ShopDatabase;
 import com.kahzerx.kahzerxmod.extensions.shopExtension.exchange.ExchangeCommand;
+import com.kahzerx.kahzerxmod.extensions.shopExtension.parcel.ParcelCommand;
+import com.kahzerx.kahzerxmod.extensions.shopExtension.parcel.Parcels;
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.item.Items;
@@ -19,7 +21,8 @@ import java.util.UUID;
 
 public class ShopExtension extends GenericExtension implements Extensions {
     private final HashMap<ServerPlayerEntity, BankInstance> accounts = new HashMap<>();
-    private BankDatabase db = new BankDatabase();
+    private final Parcels parcels = new Parcels();
+    private ShopDatabase db = new ShopDatabase();
     private MinecraftServer server;
     private PermsExtension permsExtension;
 
@@ -37,12 +40,12 @@ public class ShopExtension extends GenericExtension implements Extensions {
     public void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher) {
         new ExchangeCommand().register(dispatcher, this);
         new BankCommand().register(dispatcher, this);
+        new ParcelCommand().register(dispatcher, this);
     }
 
     @Override
     public void onServerRun(MinecraftServer minecraftServer) {
         this.server = minecraftServer;
-
     }
 
     @Override
@@ -72,9 +75,6 @@ public class ShopExtension extends GenericExtension implements Extensions {
     @Override
     public void onAutoSave(MinecraftServer server) {
         int tick = server.getTicks();
-        if (tick % 72000 == 0) {
-
-        }
     }
 
     @Override
@@ -94,9 +94,10 @@ public class ShopExtension extends GenericExtension implements Extensions {
 
     @Override
     public void onCreateDatabase(String worldPath) {
-        db = new BankDatabase();
+        db = new ShopDatabase();
         db.initializeConnection(worldPath);
         db.getQuery().onCreateDatabase();
+        parcels.createParcels(this.getDB().getQuery().loadParcels());
     }
 
     public HashMap<ServerPlayerEntity, BankInstance> getAccounts() {
@@ -112,7 +113,7 @@ public class ShopExtension extends GenericExtension implements Extensions {
         return null;
     }
 
-    public BankDatabase getDB() {
+    public ShopDatabase getDB() {
         return db;
     }
 
@@ -125,5 +126,9 @@ public class ShopExtension extends GenericExtension implements Extensions {
 
     public PermsExtension getPermsExtension() {
         return permsExtension;
+    }
+
+    public Parcels getParcels() {
+        return parcels;
     }
 }

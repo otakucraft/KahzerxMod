@@ -59,7 +59,7 @@ public class KahzerxServer {
         for (Extensions ex : extensions) {
             LiteralArgumentBuilder<ServerCommandSource> extensionSubCommand = literal(ex.extensionSettings().getName());
             extensionSubCommand.
-                    then(literal("enable").
+                    then(literal("true").
                             executes(context -> {
                                 if (ex.extensionSettings().isEnabled()) {
                                     context.getSource().sendFeedback(MarkEnum.CROSS.appendMessage(ex.extensionSettings().getName() + " extension already enabled"), false);
@@ -71,7 +71,7 @@ public class KahzerxServer {
                                 context.getSource().sendFeedback(MarkEnum.TICK.appendMessage(ex.extensionSettings().getName() + " extension enabled"), false);
                                 return 1;
                             })).
-                    then(literal("disable").
+                    then(literal("false").
                             executes(context -> {
                                 if (!ex.extensionSettings().isEnabled()) {
                                     context.getSource().sendFeedback(MarkEnum.CROSS.appendMessage(ex.extensionSettings().getName() + " extension already disabled"), false);

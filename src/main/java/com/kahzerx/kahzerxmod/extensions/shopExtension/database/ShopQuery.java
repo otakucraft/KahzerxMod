@@ -2,18 +2,17 @@ package com.kahzerx.kahzerxmod.extensions.shopExtension.database;
 
 import com.google.common.collect.Sets;
 import com.kahzerx.kahzerxmod.extensions.shopExtension.BankInstance;
+import com.kahzerx.kahzerxmod.extensions.shopExtension.parcel.Parcel;
 import net.minecraft.item.Item;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.math.BlockPos;
 
 import java.sql.*;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
-public record BankQuery(Connection connection) {
+public record ShopQuery(Connection connection) {
     public void onCreateDatabase() {
         try {
             Statement stmt = connection.createStatement();
@@ -43,10 +42,133 @@ public record BankQuery(Connection connection) {
                     "`amount` INTEGER NOT NULL DEFAULT 0," +
                     "`date` DATETIME NOT NULL);";
             stmt.executeUpdate(createTransferredCoins);
+
+            String createParcels = "CREATE TABLE IF NOT EXISTS `parcels`(" +
+                    "`id` INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "`owner` VARCHAR(50)," +
+                    "`dim` INTEGER," +
+                    "`corner1x` INTEGER," +
+                    "`corner1y` INTEGER," +
+                    "`corner1z` INTEGER," +
+                    "`corner2x` INTEGER," +
+                    "`corner2y` INTEGER," +
+                    "`corner2z` INTEGER," +
+                    "`name` VARCHAR(120)," +
+                    "`price` INTEGER," +
+                    "`payout` DATETIME);";
+            stmt.executeUpdate(createParcels);
             stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void giveParcel(Parcel parcel, String uuid, Timestamp timestamp) {
+        try {
+            String query = "UPDATE parcels SET owner = ?, payout = ? WHERE dim = ? AND corner1x = ? AND corner1y = ? AND corner1z = ? AND corner2x = ? AND corner2y = ? AND corner2z = ? AND owner = ?;";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, uuid);
+            ps.setTimestamp(2, timestamp);
+            ps.setInt(3, parcel.getDim());
+            ps.setInt(4, parcel.getCorner1().getX());
+            ps.setInt(5, parcel.getCorner1().getY());
+            ps.setInt(6, parcel.getCorner1().getZ());
+            ps.setInt(7, parcel.getCorner2().getX());
+            ps.setInt(8, parcel.getCorner2().getY());
+            ps.setInt(9, parcel.getCorner2().getZ());
+            ps.setString(10, parcel.getOwnerUUID());
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException s) {
+            s.printStackTrace();
+        }
+    }
+
+    public void registerParcel(Parcel parcel) {
+        try {
+            String query = "INSERT INTO parcels(owner, dim, corner1x, corner1y, corner1z, corner2x, corner2y, corner2z, name, price, payout) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, parcel.getOwnerUUID());
+            ps.setInt(2, parcel.getDim());
+            ps.setInt(3, parcel.getCorner1().getX());
+            ps.setInt(4, parcel.getCorner1().getY());
+            ps.setInt(5, parcel.getCorner1().getZ());
+            ps.setInt(6, parcel.getCorner2().getX());
+            ps.setInt(7, parcel.getCorner2().getY());
+            ps.setInt(8, parcel.getCorner2().getZ());
+            ps.setString(9, parcel.getName());
+            ps.setInt(10, parcel.getPrice());
+            ps.setTimestamp(11, parcel.getNextPayout());
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException s) {
+            s.printStackTrace();
+        }
+    }
+
+    public void updatePrice(Parcel parcel, int price) {
+        try {
+            String query = "UPDATE parcels SET price = ? WHERE dim = ? AND corner1x = ? AND corner1y = ? AND corner1z = ? AND corner2x = ? AND corner2y = ? AND corner2z = ? AND owner = ?;";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setInt(1, price);
+            ps.setInt(2, parcel.getDim());
+            ps.setInt(3, parcel.getCorner1().getX());
+            ps.setInt(4, parcel.getCorner1().getY());
+            ps.setInt(5, parcel.getCorner1().getZ());
+            ps.setInt(6, parcel.getCorner2().getX());
+            ps.setInt(7, parcel.getCorner2().getY());
+            ps.setInt(8, parcel.getCorner2().getZ());
+            ps.setString(9, parcel.getOwnerUUID());
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException s) {
+            s.printStackTrace();
+        }
+    }
+
+    public void updateName(Parcel parcel, String name) {
+        try {
+            String query = "UPDATE parcels SET name = ? WHERE dim = ? AND corner1x = ? AND corner1y = ? AND corner1z = ? AND corner2x = ? AND corner2y = ? AND corner2z = ? AND owner = ?;";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, name);
+            ps.setInt(2, parcel.getDim());
+            ps.setInt(3, parcel.getCorner1().getX());
+            ps.setInt(4, parcel.getCorner1().getY());
+            ps.setInt(5, parcel.getCorner1().getZ());
+            ps.setInt(6, parcel.getCorner2().getX());
+            ps.setInt(7, parcel.getCorner2().getY());
+            ps.setInt(8, parcel.getCorner2().getZ());
+            ps.setString(9, parcel.getOwnerUUID());
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException s) {
+            s.printStackTrace();
+        }
+    }
+
+    public List<Parcel> loadParcels() {
+        List<Parcel> parcels = new ArrayList<>();
+        try {
+            String query = "SELECT * FROM parcels";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Parcel parcel = new Parcel(
+                        rs.getString("owner"),
+                        new BlockPos(rs.getInt("corner1x"), rs.getInt("corner1y"), rs.getInt("corner1z")),
+                        new BlockPos(rs.getInt("corner2x"), rs.getInt("corner2y"), rs.getInt("corner2z")),
+                        rs.getString("name"),
+                        rs.getInt("price"),
+                        rs.getInt("dim"),
+                        rs.getTimestamp("payout"));
+                parcels.add(parcel);
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException s) {
+            s.printStackTrace();
+        }
+        return parcels;
     }
 
     public void logExchange(ServerPlayerEntity player, Item item, int amount, HashMap<ServerPlayerEntity, BankInstance> accounts) {

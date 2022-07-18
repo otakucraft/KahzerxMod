@@ -5,9 +5,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class BankDatabase {
+public class ShopDatabase {
     private Connection connection = null;
-    private BankQuery query = null;
+    private ShopQuery query = null;
 
     public void initializeConnection(String dirName) {
         try {
@@ -23,7 +23,7 @@ public class BankDatabase {
                     DATABASE_DIR,
                     DATABASE_NAME
             ));
-            query = new BankQuery(connection);
+            query = new ShopQuery(connection);
 
             connection.createStatement().executeUpdate("PRAGMA foreign_keys=ON");
             connection.createStatement().executeUpdate("PRAGMA secure_delete=ON");
@@ -56,7 +56,7 @@ public class BankDatabase {
         return connection;
     }
 
-    public BankQuery getQuery() {
+    public ShopQuery getQuery() {
         return query;
     }
 }
