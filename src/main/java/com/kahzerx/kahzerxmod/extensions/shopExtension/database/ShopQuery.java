@@ -65,7 +65,7 @@ public record ShopQuery(Connection connection) {
 
     public void giveParcel(Parcel parcel, String uuid, Timestamp timestamp) {
         try {
-            String query = "UPDATE parcels SET owner = ?, payout = ? WHERE dim = ? AND corner1x = ? AND corner1y = ? AND corner1z = ? AND corner2x = ? AND corner2y = ? AND corner2z = ? AND owner = ?;";
+            String query = "UPDATE parcels SET owner = ?, payout = ? WHERE dim = ? AND corner1x = ? AND corner1y = ? AND corner1z = ? AND corner2x = ? AND corner2y = ? AND corner2z = ?;";
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setString(1, uuid);
             ps.setTimestamp(2, timestamp);
@@ -76,7 +76,25 @@ public record ShopQuery(Connection connection) {
             ps.setInt(7, parcel.getCorner2().getX());
             ps.setInt(8, parcel.getCorner2().getY());
             ps.setInt(9, parcel.getCorner2().getZ());
-            ps.setString(10, parcel.getOwnerUUID());
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException s) {
+            s.printStackTrace();
+        }
+    }
+
+    public void removeParcel(Parcel parcel) {
+        try {
+            String query = "DELETE FROM parcels WHERE dim = ? AND corner1x = ? AND corner1y = ? AND corner1z = ? AND corner2x = ? AND corner2y = ? AND corner2z = ? AND owner = ?;";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setInt(1, parcel.getDim());
+            ps.setInt(2, parcel.getCorner1().getX());
+            ps.setInt(3, parcel.getCorner1().getY());
+            ps.setInt(4, parcel.getCorner1().getZ());
+            ps.setInt(5, parcel.getCorner2().getX());
+            ps.setInt(6, parcel.getCorner2().getY());
+            ps.setInt(7, parcel.getCorner2().getZ());
+            ps.setString(8, parcel.getOwnerUUID());
             ps.executeUpdate();
             ps.close();
         } catch (SQLException s) {
@@ -111,26 +129,6 @@ public record ShopQuery(Connection connection) {
             String query = "UPDATE parcels SET price = ? WHERE dim = ? AND corner1x = ? AND corner1y = ? AND corner1z = ? AND corner2x = ? AND corner2y = ? AND corner2z = ? AND owner = ?;";
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setInt(1, price);
-            ps.setInt(2, parcel.getDim());
-            ps.setInt(3, parcel.getCorner1().getX());
-            ps.setInt(4, parcel.getCorner1().getY());
-            ps.setInt(5, parcel.getCorner1().getZ());
-            ps.setInt(6, parcel.getCorner2().getX());
-            ps.setInt(7, parcel.getCorner2().getY());
-            ps.setInt(8, parcel.getCorner2().getZ());
-            ps.setString(9, parcel.getOwnerUUID());
-            ps.executeUpdate();
-            ps.close();
-        } catch (SQLException s) {
-            s.printStackTrace();
-        }
-    }
-
-    public void updateName(Parcel parcel, String name) {
-        try {
-            String query = "UPDATE parcels SET name = ? WHERE dim = ? AND corner1x = ? AND corner1y = ? AND corner1z = ? AND corner2x = ? AND corner2y = ? AND corner2z = ? AND owner = ?;";
-            PreparedStatement ps = connection.prepareStatement(query);
-            ps.setString(1, name);
             ps.setInt(2, parcel.getDim());
             ps.setInt(3, parcel.getCorner1().getX());
             ps.setInt(4, parcel.getCorner1().getY());

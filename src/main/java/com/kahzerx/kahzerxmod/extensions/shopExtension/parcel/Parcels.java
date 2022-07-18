@@ -20,6 +20,10 @@ public class Parcels {
         parcels.add(p);
     }
 
+    public void remove(Parcel p) {
+        parcels.remove(p);
+    }
+
     public List<Parcel> getParcels() {
         return parcels;
     }

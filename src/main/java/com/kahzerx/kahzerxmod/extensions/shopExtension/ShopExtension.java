@@ -8,6 +8,7 @@ import com.kahzerx.kahzerxmod.extensions.shopExtension.bank.BankCommand;
 import com.kahzerx.kahzerxmod.extensions.shopExtension.database.ShopDatabase;
 import com.kahzerx.kahzerxmod.extensions.shopExtension.exchange.ExchangeCommand;
 import com.kahzerx.kahzerxmod.extensions.shopExtension.parcel.ParcelCommand;
+import com.kahzerx.kahzerxmod.extensions.shopExtension.parcel.ParcelsCommand;
 import com.kahzerx.kahzerxmod.extensions.shopExtension.parcel.Parcels;
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.CommandDispatcher;
@@ -24,7 +25,7 @@ public class ShopExtension extends GenericExtension implements Extensions {
     private final Parcels parcels = new Parcels();
     private ShopDatabase db = new ShopDatabase();
     private MinecraftServer server;
-    private PermsExtension permsExtension;
+    private final PermsExtension permsExtension;
 
     public ShopExtension(ExtensionSettings settings, PermsExtension permsExtension) {
         super(settings);
@@ -40,6 +41,7 @@ public class ShopExtension extends GenericExtension implements Extensions {
     public void onRegisterCommands(CommandDispatcher<ServerCommandSource> dispatcher) {
         new ExchangeCommand().register(dispatcher, this);
         new BankCommand().register(dispatcher, this);
+        new ParcelsCommand().register(dispatcher, this);
         new ParcelCommand().register(dispatcher, this);
     }
 
