@@ -12,7 +12,6 @@ import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.exceptions.HierarchyException;
-import net.dv8tion.jda.api.requests.RestAction;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.Whitelist;
 import net.minecraft.server.WhitelistEntry;
@@ -26,8 +25,8 @@ import org.json.simple.parser.ParseException;
 import java.awt.*;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 public class DiscordWhitelistSyncThread extends TimerTask {
     private static final Logger LOGGER = LogManager.getLogger();
@@ -64,7 +63,10 @@ public class DiscordWhitelistSyncThread extends TimerTask {
     }
 
     private void database2WhitelistSync() {
-        ArrayList<Long> discordIDs = discordWhitelistExtension.getDiscordIDs();
+        ArrayList<Long> discordIDsPre = discordWhitelistExtension.getDiscordIDs();
+        ArrayList<Long> finalDiscordIDs = discordWhitelistExtension.getDiscordIDs();
+        ArrayList<Long> discordIDs = new ArrayList<>();
+        List<Member> memberList = new ArrayList<>();
         List<Long> validRoles = discordWhitelistSyncExtension.extensionSettings().getValidRoles();
         if (validRoles.isEmpty()) {
             return;
@@ -73,28 +75,37 @@ public class DiscordWhitelistSyncThread extends TimerTask {
         if (guild == null) {
             return;
         }
-        for (long discordID : discordIDs) {
-            if (discordWhitelistExtension.isDiscordBanned(discordID)) {
-                continue;
-            }
-            if (discordID == 69420L) {
-                continue;
-            }
-            RestAction<Member> restMember = guild.retrieveMemberById(discordID);
-            Member member = null;
-            try {
-                member = restMember.complete();
-            } catch (ErrorResponseException responseException) {
-                if (responseException.isServerError() || (400 < responseException.getErrorCode() && responseException.getErrorCode() < 500)) {
-                    responseException.printStackTrace();
+        try {
+            for (long id : discordIDsPre) {
+                if (discordWhitelistExtension.isDiscordBanned(id) || id == 69420L) {
+                    finalDiscordIDs.remove(id);
                     continue;
                 }
-                LOGGER.error("Unable to find Member, removing from whitelist...");
+                discordIDs.add(id);
+                if (discordIDs.size() > 80) {
+                    memberList.addAll(guild.retrieveMembersByIds(discordIDs).get());
+                    discordIDs.clear();
+                    try {
+                        Thread.sleep(1000L);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
             }
-            if (member == null) {
-                onSyncAction(discordWhitelistExtension.getWhitelistedPlayers(discordID), discordID, guild);
-                continue;
+            if (discordIDs.size() > 0) {
+                memberList.addAll(guild.retrieveMembersByIds(discordIDs).get());
+                discordIDs.clear();
             }
+        } catch (ErrorResponseException responseException) {
+            if (responseException.isServerError() || (400 < responseException.getErrorCode() && responseException.getErrorCode() < 500)) {
+                responseException.printStackTrace();
+                return;
+            }
+            LOGGER.error("Unable to find Member, removing from whitelist...");
+            return;
+        }
+
+        for (Member member : memberList) {
             List<Role> roles = member.getRoles();
             boolean hasValidRole = false;
             for (Role role : roles) {
@@ -104,6 +115,7 @@ public class DiscordWhitelistSyncThread extends TimerTask {
                 }
             }
             if (hasValidRole) {
+                finalDiscordIDs.remove(member.getIdLong());
                 continue;
             }
             Role role = guild.getRoleById(discordWhitelistExtension.extensionSettings().getDiscordRole());
@@ -114,7 +126,11 @@ public class DiscordWhitelistSyncThread extends TimerTask {
                     exception.printStackTrace();
                 }
             }
-            onSyncAction(discordWhitelistExtension.getWhitelistedPlayers(discordID), discordID, guild);
+            onSyncAction(discordWhitelistExtension.getWhitelistedPlayers(member.getIdLong()), member.getIdLong(), guild);
+        }
+
+        for (long id : finalDiscordIDs) {
+            onSyncAction(discordWhitelistExtension.getWhitelistedPlayers(id), id, guild);
         }
     }
 
