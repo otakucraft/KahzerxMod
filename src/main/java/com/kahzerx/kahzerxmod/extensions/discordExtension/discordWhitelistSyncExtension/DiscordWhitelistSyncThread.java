@@ -95,6 +95,11 @@ public class DiscordWhitelistSyncThread extends TimerTask {
             if (discordIDs.size() > 0) {
                 memberList.addAll(guild.retrieveMembersByIds(discordIDs).get());
                 discordIDs.clear();
+                try {
+                    Thread.sleep(1000L);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
         } catch (ErrorResponseException responseException) {
             if (responseException.isServerError() || (400 < responseException.getErrorCode() && responseException.getErrorCode() < 500)) {
