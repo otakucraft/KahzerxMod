@@ -59,7 +59,7 @@ public class ParcelPayoutCheckThread extends TimerTask {
                 continue;
             }
             Timestamp timestamp = parcel.getNextPayout();
-            if (timestamp.after(Timestamp.valueOf(LocalDateTime.now()))) {
+            if (timestamp.before(Timestamp.valueOf(LocalDateTime.now()))) {
                 int price = parcel.getPrice();
                 int playerBalance = extension.getDB().getQuery().getBalance(uuid);
                 ServerPlayerEntity player = server.getPlayerManager().getPlayer(UUID.fromString(uuid));
