@@ -91,7 +91,7 @@ public class Parcel {
     public MutableText formatted(ShopExtension extension) {
         int centerX = (corner1.getX() + corner2.getX()) / 2;
         int centerZ = (corner1.getZ() + corner2.getZ()) / 2;
-        MutableText t = MarkEnum.INFO.appendMessage(String.format("coords: §7%d %d§r owner: §8%s§r", centerX, centerZ, ownerUUID != null ? extension.getDB().getQuery().getPlayerName(ownerUUID) : "None"));
+        MutableText t = MarkEnum.INFO.appendMessage(String.format("coords: §7%d %d§r owner: §7%s§r", centerX, centerZ, ownerUUID != null ? extension.getDB().getQuery().getPlayerName(ownerUUID) : "None"));
         MutableText hover = Text.literal(String.format("Dimension: %s\nPrice: %d\nPayout: %s\nCorner1: %d %d %d\nCorner2: %d %d %d\nClick to visualize!", DimUtils.getWorldString(dim), price, nextPayout != null ? nextPayout.toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) : "None", corner1.getX(), corner1.getY(), corner1.getZ(), corner2.getX(), corner2.getY(), corner2.getZ()));
         t.styled(style -> style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hover)).withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, String.format("/parcel draw %d %d %d %d %d %d", corner1.getX(), corner1.getY(), corner1.getZ(), corner2.getX(), corner2.getY(), corner2.getZ()))));
         return t;
