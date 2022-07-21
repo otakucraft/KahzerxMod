@@ -13,14 +13,16 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.LiteralText;
 
+import java.util.Timer;
+
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 
 public class DiscordWhitelistSyncExtension extends GenericExtension implements Extensions {
     private final DiscordExtension discordExtension;
     private final DiscordWhitelistExtension discordWhitelistExtension;
-    private DiscordWhitelistSyncThread thread = null;
-    private MinecraftServer server;
+    private Timer timer;
+
     public DiscordWhitelistSyncExtension(ExtensionSettings settings, DiscordExtension discordExtension, DiscordWhitelistExtension discordWhitelistExtension) {
         super(settings);
         this.discordExtension = discordExtension;
@@ -28,45 +30,20 @@ public class DiscordWhitelistSyncExtension extends GenericExtension implements E
     }
 
     @Override
-    public void onServerRun(MinecraftServer minecraftServer) {
-        this.server = minecraftServer;
-    }
-
-    @Override
-    public void onAutoSave() {
-        if (!this.getSettings().isEnabled()) {
-            return;
+    public void onServerStarted(MinecraftServer minecraftServer) {
+        if (this.timer != null) {
+            this.timer.cancel();
+            this.timer.purge();
         }
-        if (!discordExtension.getSettings().isEnabled()) {
-            return;
-        }
-        if (!discordWhitelistExtension.getSettings().isEnabled()) {
-            return;
-        }
-        this.thread = new DiscordWhitelistSyncThread("WHITELIST_SYNC", this.server, this.discordWhitelistExtension, this);
-        this.thread.start();
+        this.timer = new Timer("WHITELIST_SYNC");
+        this.timer.schedule(new DiscordWhitelistSyncThread(minecraftServer, this.discordExtension, this.discordWhitelistExtension, this), 1_000, 60 * 60 * 1_000);
     }
 
     @Override
     public void onServerStop() {
-        if (!this.getSettings().isEnabled()) {
-            return;
-        }
-        if (!discordExtension.getSettings().isEnabled()) {
-            return;
-        }
-        if (!discordWhitelistExtension.getSettings().isEnabled()) {
-            return;
-        }
-        if (this.thread == null) {
-            return;
-        }
-        if (this.thread.isAlive()) {
-            try {
-                this.thread.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        if (this.timer != null) {
+            this.timer.cancel();
+            this.timer.purge();
         }
     }
 
