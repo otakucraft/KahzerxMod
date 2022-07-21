@@ -39,6 +39,10 @@ public class DiscordAdminToolsExtension extends GenericExtension implements Exte
         this.discordWhitelistExtension = discordWhitelistExtension;
     }
 
+    public DiscordExtension getDiscordExtension() {
+        return discordExtension;
+    }
+
     @Override
     public void onServerRun(MinecraftServer minecraftServer) {
         if (!this.getSettings().isEnabled()) {

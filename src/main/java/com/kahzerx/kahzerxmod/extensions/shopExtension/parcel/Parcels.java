@@ -20,7 +20,7 @@ public class Parcels {
         parcels.add(p);
     }
 
-    public void remove(Parcel p) {
+    public void removeParcel(Parcel p) {
         parcels.remove(p);
     }
 
@@ -30,6 +30,16 @@ public class Parcels {
 
     public boolean isPosInParcel(int dim, BlockPos pos) {
         return getParcel(dim, pos) != null;
+    }
+
+    public List<Parcel> getOwnedParcels() {
+        List<Parcel> p = new ArrayList<>();
+        for (Parcel parcel : this.parcels) {
+            if (parcel.getOwnerUUID() != null) {
+                p.add(parcel);
+            }
+        }
+        return p;
     }
 
     public Parcel getParcel(int dim, BlockPos pos) {

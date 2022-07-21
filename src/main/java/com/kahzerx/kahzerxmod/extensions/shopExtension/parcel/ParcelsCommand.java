@@ -141,7 +141,7 @@ public class ParcelsCommand {
                                 BlockPos playerPos = player.getBlockPos();
                                 if (extension.getParcels().isPosInParcel(dim, playerPos)) {
                                     Parcel actualParcel = extension.getParcels().getParcel(dim, playerPos);
-                                    extension.getParcels().remove(actualParcel);
+                                    extension.getParcels().removeParcel(actualParcel);
                                     extension.getDB().getQuery().removeParcel(actualParcel);
                                     context.getSource().sendFeedback(MarkEnum.TICK.appendMessage("Parcela eliminada!"), false);
                                 } else {

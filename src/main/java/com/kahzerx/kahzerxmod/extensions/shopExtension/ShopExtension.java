@@ -8,8 +8,9 @@ import com.kahzerx.kahzerxmod.extensions.shopExtension.bank.BankCommand;
 import com.kahzerx.kahzerxmod.extensions.shopExtension.database.ShopDatabase;
 import com.kahzerx.kahzerxmod.extensions.shopExtension.exchange.ExchangeCommand;
 import com.kahzerx.kahzerxmod.extensions.shopExtension.parcel.ParcelCommand;
-import com.kahzerx.kahzerxmod.extensions.shopExtension.parcel.ParcelsCommand;
+import com.kahzerx.kahzerxmod.extensions.shopExtension.parcel.ParcelPayoutCheckThread;
 import com.kahzerx.kahzerxmod.extensions.shopExtension.parcel.Parcels;
+import com.kahzerx.kahzerxmod.extensions.shopExtension.parcel.ParcelsCommand;
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.item.Items;
@@ -18,6 +19,7 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.util.HashMap;
+import java.util.Timer;
 import java.util.UUID;
 
 public class ShopExtension extends GenericExtension implements Extensions {
@@ -26,6 +28,7 @@ public class ShopExtension extends GenericExtension implements Extensions {
     private ShopDatabase db = new ShopDatabase();
     private MinecraftServer server;
     private final PermsExtension permsExtension;
+    private Timer timer;
 
     public ShopExtension(ExtensionSettings settings, PermsExtension permsExtension) {
         super(settings);
@@ -53,6 +56,20 @@ public class ShopExtension extends GenericExtension implements Extensions {
     @Override
     public void onServerStarted(MinecraftServer minecraftServer) {
         this.initBankInstance();
+        if (this.timer != null) {
+            this.timer.cancel();
+            this.timer.purge();
+        }
+        this.timer = new Timer("PAYOUT_CHECKER");
+        this.timer.schedule(new ParcelPayoutCheckThread(this, minecraftServer), 60 * 1_000, 60 * 60 * 1_000);
+    }
+
+    @Override
+    public void onServerStop() {
+        if (this.timer != null) {
+            this.timer.cancel();
+            this.timer.purge();
+        }
     }
 
     @Override
@@ -72,11 +89,6 @@ public class ShopExtension extends GenericExtension implements Extensions {
     @Override
     public void onPlayerLeft(ServerPlayerEntity player) {
         accounts.remove(player);
-    }
-
-    @Override
-    public void onAutoSave(MinecraftServer server) {
-        int tick = server.getTicks();
     }
 
     @Override

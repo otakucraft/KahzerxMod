@@ -141,10 +141,6 @@ public class ExtensionManager {
         KahzerxServer.extensions.add(new AchusExtension(new ExtensionSettings("achus", isEnabled(found, "achus"), "Achus!!")));
         KahzerxServer.extensions.add(new SitExtension(new ExtensionSettings("sit", isEnabled(found, "sit"), "To sit anywhere.")));
         KahzerxServer.extensions.add(new FarmlandMyceliumExtension(new ExtensionSettings("farmlandMycelium", isEnabled(found, "farmlandMycelium"), "Hoe can be used to farm mycelium.")));
-        ShopExtension shopExtension = new ShopExtension(new ExtensionSettings("shop", isEnabled(found, "shop"), "Enables currency system along with shop commands and helpers."), permsExtension);
-        KahzerxServer.extensions.add(shopExtension);
-        ProfileExtension profileExtension = new ProfileExtension(new ExtensionSettings("profile", isEnabled(found, "profile"), "Enables the /profile command."), shopExtension);
-        KahzerxServer.extensions.add(profileExtension);
 
         KahzerxServer.extensions.add(new OpOnWhitelistExtension(new ExtensionSettings("opOnWhitelist", isEnabled(found, "opOnWhitelist"), "Auto ops and deops on whitelist add and remove.")));
         KahzerxServer.extensions.add(new BedTimeExtension(new ExtensionSettings("bedTime", isEnabled(found, "bedTime"), "Notifies when a player goes to sleep.")));
@@ -249,7 +245,7 @@ public class ExtensionManager {
                 }
             }
         }
-        KahzerxServer.extensions.add(new DiscordAdminToolsExtension(
+        DiscordAdminToolsExtension discordAdminToolsExtension = new DiscordAdminToolsExtension(
                 new DiscordAdminToolsSettings(
                         "discordAdminTools",
                         isEnabled(found, "discordAdminTools") && (discordExtension.extensionSettings().isEnabled()) && (discordWhitelistExtension.extensionSettings().isEnabled()),
@@ -258,7 +254,8 @@ public class ExtensionManager {
                         feedback
                 ),
                 discordExtension,
-                discordWhitelistExtension));
+                discordWhitelistExtension);
+        KahzerxServer.extensions.add(discordAdminToolsExtension);
 
         List<Long> validRoles = new ArrayList<>();
         long notifyChannelID = 0L;
@@ -290,5 +287,10 @@ public class ExtensionManager {
                 ),
                 discordExtension,
                 discordWhitelistExtension));
+
+        ShopExtension shopExtension = new ShopExtension(new ExtensionSettings("shop", isEnabled(found, "shop"), "Enables currency system along with shop commands and helpers."), permsExtension);
+        KahzerxServer.extensions.add(shopExtension);
+        ProfileExtension profileExtension = new ProfileExtension(new ExtensionSettings("profile", isEnabled(found, "profile"), "Enables the /profile command."), shopExtension);
+        KahzerxServer.extensions.add(profileExtension);
     }
 }
