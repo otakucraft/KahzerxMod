@@ -35,7 +35,7 @@ public abstract class PlayerMixin extends PlayerEntity {
 
     @Inject(method = "getPlayerListName", at = @At("HEAD"), cancellable = true)
     private void onGet(CallbackInfoReturnable<Text> cir) {
-        MutableText name = (MutableText) this.getDisplayName();
+        MutableText name = Text.literal (" ").append(this.getDisplayName());
         if (PrankExtension.isExtensionEnabled && PrankExtension.playerLevel.containsKey(this.getUuidAsString()) && PrankExtension.playerLevel.get(this.getUuidAsString()) != PrankLevel.LEVEL0) {
             name.append(PrankExtension.playerLevel.get(this.getUuidAsString()).getFormatting() + " " + PrankExtension.playerLevel.get(this.getUuidAsString()).getIdentifier());
         }
