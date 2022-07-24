@@ -14,6 +14,8 @@
     "discordWhitelistExtension.PlayerManagerWLMixin$PlayerNotWhitelisted",
     "endermanNoGriefExtension.EndermanEntityMixin",
     "farmlandMyceliumExtension.HoeItemMixin",
+    "fbiExtension.MessageCommandMixin",
+    "fbiExtension.PlayerManagerMixin",
     "helperKickExtension.KickCommandExtension",
     "itemFormattedExtension.AnvilScreenHandlerMixin",
     "kloneExtension.NetworkHandlerMixin",

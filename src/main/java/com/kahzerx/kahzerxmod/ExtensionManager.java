@@ -28,6 +28,7 @@ import com.kahzerx.kahzerxmod.extensions.discordExtension.discordWhitelistSyncEx
 import com.kahzerx.kahzerxmod.extensions.discordExtension.discordWhitelistSyncExtension.DiscordWhitelistSyncSettings;
 import com.kahzerx.kahzerxmod.extensions.endermanNoGriefExtension.EndermanNoGriefExtension;
 import com.kahzerx.kahzerxmod.extensions.farmlandMyceliumExtension.FarmlandMyceliumExtension;
+import com.kahzerx.kahzerxmod.extensions.fbiExtension.FBIExtension;
 import com.kahzerx.kahzerxmod.extensions.fckPrivacyExtension.FckPrivacyExtension;
 import com.kahzerx.kahzerxmod.extensions.hatExtension.HatExtension;
 import com.kahzerx.kahzerxmod.extensions.helperKickExtension.HelperKickExtension;
@@ -141,6 +142,7 @@ public class ExtensionManager {
         KahzerxServer.extensions.add(new AchusExtension(new ExtensionSettings("achus", isEnabled(found, "achus"), "Achus!!")));
         KahzerxServer.extensions.add(new SitExtension(new ExtensionSettings("sit", isEnabled(found, "sit"), "To sit anywhere.")));
         KahzerxServer.extensions.add(new FarmlandMyceliumExtension(new ExtensionSettings("farmlandMycelium", isEnabled(found, "farmlandMycelium"), "Hoe can be used to farm mycelium.")));
+        KahzerxServer.extensions.add(new FBIExtension(new ExtensionSettings("fbi", isEnabled(found, "fbi"), "Allows ops and mods to be in the server without players noticing.")));
 
         KahzerxServer.extensions.add(new OpOnWhitelistExtension(new ExtensionSettings("opOnWhitelist", isEnabled(found, "opOnWhitelist"), "Auto ops and deops on whitelist add and remove.")));
         KahzerxServer.extensions.add(new BedTimeExtension(new ExtensionSettings("bedTime", isEnabled(found, "bedTime"), "Notifies when a player goes to sleep.")));
