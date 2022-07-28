@@ -1,10 +1,8 @@
 package com.kahzerx.kahzerxmod;
 
 import com.kahzerx.kahzerxmod.database.ServerDatabase;
-import com.kahzerx.kahzerxmod.klone.KlonePlayerEntity;
 import com.kahzerx.kahzerxmod.utils.FileUtils;
 import com.kahzerx.kahzerxmod.utils.MarkEnum;
-import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.command.CommandRegistryAccess;
@@ -23,7 +21,6 @@ import net.minecraft.world.World;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 import static net.minecraft.server.command.CommandManager.literal;
 

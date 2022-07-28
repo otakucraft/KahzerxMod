@@ -88,7 +88,7 @@ public class PlayerEventsMixins {
     public static class PlayerAdvancement {
         @Shadow private ServerPlayerEntity owner;
 
-        @Inject(method = "grantCriterion", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/PlayerManager;broadcast(Lnet/minecraft/text/Text;Lnet/minecraft/util/registry/RegistryKey;)V"))
+        @Inject(method = "grantCriterion", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/PlayerManager;broadcast(Lnet/minecraft/text/Text;Z)V"))
         private void onAdvancement(Advancement advancement, String criterionName, CallbackInfoReturnable<Boolean> cir) {
             Text text = Text.translatable("chat.type.advancement." + Objects.requireNonNull(advancement.getDisplay()).getFrame().getId(), owner.getDisplayName(), advancement.toHoverableText());
             KahzerxServer.onAdvancement(text.getString().replace("_", "\\_"));

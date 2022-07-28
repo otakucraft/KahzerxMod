@@ -9,7 +9,6 @@ import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.block.enums.Instrument;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.network.message.MessageType;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
@@ -51,9 +50,9 @@ public class HereExtension extends GenericExtension implements Extensions {
                     DimUtils.formatCoords(x / 8, y, z / 8)
             ));
             if (toPlayer != null) {
-                toPlayer.sendMessage(msg, MessageType.SYSTEM);
+                toPlayer.sendMessage(msg, false);
             } else {
-                src.getServer().getPlayerManager().broadcast(msg, MessageType.SYSTEM);
+                src.getServer().getPlayerManager().broadcast(msg, false);
             }
         } else if (player.getWorld().getRegistryKey().getValue().equals(World.NETHER.getValue())) {
             msg = Text.literal(String.format(
@@ -65,9 +64,9 @@ public class HereExtension extends GenericExtension implements Extensions {
                     DimUtils.formatCoords(x *  8, y, z * 8)
             ));
             if (toPlayer != null) {
-                toPlayer.sendMessage(msg, MessageType.SYSTEM);
+                toPlayer.sendMessage(msg, false);
             } else {
-                src.getServer().getPlayerManager().broadcast(msg, MessageType.SYSTEM);
+                src.getServer().getPlayerManager().broadcast(msg, false);
             }
         } else if (player.getWorld().getRegistryKey().getValue().equals(World.END.getValue())) {
             msg = Text.literal(String.format(
@@ -77,9 +76,9 @@ public class HereExtension extends GenericExtension implements Extensions {
                     DimUtils.formatCoords(x, y, z)
             ));
             if (toPlayer != null) {
-                toPlayer.sendMessage(msg, MessageType.SYSTEM);
+                toPlayer.sendMessage(msg, false);
             } else {
-                src.getServer().getPlayerManager().broadcast(msg, MessageType.SYSTEM);
+                src.getServer().getPlayerManager().broadcast(msg, false);
             }
         }
         player.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 200, 0, false, false));

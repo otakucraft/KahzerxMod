@@ -2,7 +2,6 @@ package com.kahzerx.kahzerxmod.extensions.discordExtension.utils;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.minecraft.network.message.MessageType;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.text.ClickEvent;
 import net.minecraft.text.HoverEvent;
@@ -150,9 +149,9 @@ public class DiscordChatUtils {
         }
         if (server.getPlayerManager() != null) {
             if (hasUrl) {
-                server.getPlayerManager().broadcast(finalMsg.append(msg.substring(prev)), MessageType.SYSTEM);
+                server.getPlayerManager().broadcast(finalMsg.append(msg.substring(prev)), false);
             } else {
-                server.getPlayerManager().broadcast(finalMsg.append(Text.literal(msg)), MessageType.SYSTEM);
+                server.getPlayerManager().broadcast(finalMsg.append(Text.literal(msg)), false);
             }
         } else {
             LOGGER.info(String.format("Server may not be initialized yet...\nError sending %s%n", msg));

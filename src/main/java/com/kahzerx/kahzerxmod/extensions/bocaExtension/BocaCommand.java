@@ -1,7 +1,6 @@
 package com.kahzerx.kahzerxmod.extensions.bocaExtension;
 
 import com.mojang.brigadier.CommandDispatcher;
-import net.minecraft.network.message.MessageType;
 import net.minecraft.network.packet.s2c.play.TitleS2CPacket;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -26,7 +25,7 @@ public class BocaCommand {
                 executes(context -> {
                     context.getSource().getServer().getPlayerManager().broadcast(Text.literal(
                             "§9❤§r §l§9BO§eQUI§9TA§r §9❤§r"
-                    ), MessageType.SYSTEM);
+                    ), false);
                     return 1;
                 }));
     }

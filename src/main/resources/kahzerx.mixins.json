@@ -38,7 +38,6 @@
     "server.ServerEventsMixin",
     "slabExtension.SlabBlockExtension",
     "solExtension.FireworkRocketEntityMixin",
-    "VillagerFix.ZombieVillagerMixin",
     "villagersFollowEmeraldExtension.VillagerEntityMixin"
   ],
   "client": [],

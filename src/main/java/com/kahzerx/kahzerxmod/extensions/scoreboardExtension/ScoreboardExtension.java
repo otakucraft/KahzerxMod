@@ -12,7 +12,6 @@ import net.minecraft.command.argument.ItemStackArgument;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
-import net.minecraft.network.message.MessageType;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.scoreboard.ScoreboardCriterion;
 import net.minecraft.scoreboard.ScoreboardObjective;
@@ -102,7 +101,7 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
         } else {
             scoreboard.setObjectiveSlot(1, null);
             assert entity != null;
-            source.getServer().getPlayerManager().broadcast(MarkEnum.TICK.appendMessage(entity.getEntityName() + " removed the scoreboard."), MessageType.SYSTEM);
+            source.getServer().getPlayerManager().broadcast(MarkEnum.TICK.appendMessage(entity.getEntityName() + " removed the scoreboard."), false);
         }
         return 1;
     }
@@ -125,13 +124,13 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
     public void startCustomSB(String name, String sbName, String command, ServerCommandSource source, Identifier id, boolean persistent) {
         Scoreboard scoreboard = source.getServer().getScoreboard();
         if (scoreboard.getNullableObjective(name) == null) {
-            source.getServer().getCommandManager().execute(source.getServer().getCommandSource(), command);
+            source.getServer().getCommandManager().execute(source.getServer().getCommandManager().getDispatcher().parse(command, source.getServer().getCommandSource()), command);
             ScoreboardObjective scoreboardObjective = scoreboard.getNullableObjective(name);
             initCustom(source, scoreboardObjective, id);
             scoreboardObjective.setDisplayName(Text.literal(sbName).styled(style -> style.withColor(Formatting.GOLD)));
         }
         ScoreboardObjective scoreboardObjective = scoreboard.getNullableObjective(name);
-        source.getServer().getPlayerManager().broadcast(display(scoreboard, scoreboardObjective, source.getServer().getTicks(), source.getEntity(), persistent), MessageType.SYSTEM);
+        source.getServer().getPlayerManager().broadcast(display(scoreboard, scoreboardObjective, source.getServer().getTicks(), source.getEntity(), persistent), false);
     }
 
     public Text display(Scoreboard scoreboard, ScoreboardObjective scoreboardObjective, int tick, Entity entity, boolean persistent) {
@@ -156,7 +155,7 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
         Scoreboard scoreboard = source.getServer().getScoreboard();
         Optional<EntityType<?>> optEntity = EntityType.get(id.toString());
         if (optEntity.isEmpty()) {
-            source.getServer().getPlayerManager().broadcast(MarkEnum.CROSS.appendMessage("Error on get entity!"), MessageType.SYSTEM);
+            source.getServer().getPlayerManager().broadcast(MarkEnum.CROSS.appendMessage("Error on get entity!"), false);
             return;
         }
         EntityType<?> entityType = optEntity.get();
@@ -184,7 +183,7 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
                 scoreboard.removeObjective(newScoreboardObjective);
                 text = MarkEnum.CROSS.appendMessage("Error on init scoreboard");
                 assert entity != null;
-                source.getServer().getPlayerManager().broadcast(text, MessageType.SYSTEM);
+                source.getServer().getPlayerManager().broadcast(text, false);
 
                 return;
             }
@@ -198,7 +197,7 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
             assert scoreboardObjective != null;
             text = MarkEnum.TICK.appendText(Text.literal(Formatting.WHITE + entity.getEntityName() + " has selected " + Formatting.GOLD + "[" + scoreboardObjective.getDisplayName().getString() + "]"));
         }
-        source.getServer().getPlayerManager().broadcast(text, MessageType.SYSTEM);
+        source.getServer().getPlayerManager().broadcast(text, false);
     }
 
     public void showSideBar(ServerCommandSource source, ItemStackArgument item, String type, boolean persistent) {
@@ -231,7 +230,7 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
                 scoreboard.removeObjective(newScoreboardObjective);
                 text = MarkEnum.CROSS.appendMessage("Error.");
                 assert entity != null;
-                source.getServer().getPlayerManager().broadcast(text, MessageType.SYSTEM);
+                source.getServer().getPlayerManager().broadcast(text, false);
 
                 return;
             }
@@ -245,7 +244,7 @@ public class ScoreboardExtension extends GenericExtension implements Extensions 
             assert scoreboardObjective != null;
             text = MarkEnum.TICK.appendText(Text.literal(Formatting.WHITE + entity.getEntityName() + " has selected " + Formatting.GOLD + "[" + scoreboardObjective.getDisplayName().getString() + "]"));
         }
-        source.getServer().getPlayerManager().broadcast(text, MessageType.SYSTEM);
+        source.getServer().getPlayerManager().broadcast(text, false);
     }
 
     public void initCustom(ServerCommandSource source, ScoreboardObjective scoreboardObjective, Identifier id) {

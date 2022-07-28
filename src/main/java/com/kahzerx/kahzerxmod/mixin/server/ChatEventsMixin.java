@@ -22,7 +22,7 @@ public class ChatEventsMixin {
 
     @Inject(method = "onChatMessage", at = @At("RETURN"))
     private void onChatMessage(ChatMessageC2SPacket packet, CallbackInfo ci) {
-        KahzerxServer.onChatMessage(player, packet.getChatMessage());
+        KahzerxServer.onChatMessage(player, packet.chatMessage());
     }
 
     @Inject(method = "onCommandExecution", at = @At("HEAD"))

@@ -1,6 +1,7 @@
 package com.kahzerx.kahzerxmod.klone;
 
 import com.mojang.authlib.GameProfile;
+import net.minecraft.class_7648;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.HungerManager;
 import net.minecraft.entity.player.PlayerEntity;
@@ -15,7 +16,6 @@ import net.minecraft.server.ServerTask;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.HoverEvent;
-import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.GameRules;
@@ -98,15 +98,12 @@ public class KlonePlayerEntity extends ServerPlayerEntity {
         this.hungerManager = new HungerManager();
         Text text = this.getDamageTracker().getDeathMessage();
         if (this.world.getGameRules().getBoolean(GameRules.SHOW_DEATH_MESSAGES)) {
-            this.networkHandler.sendPacket(new DeathMessageS2CPacket(this.getDamageTracker(), text), future -> {
-                if (!future.isSuccess()) {
-                    int i = 256;
-                    String string = text.asTruncatedString(256);
-                    MutableText text2 = Text.translatable("death.attack.message_too_long", Text.literal(string).formatted(Formatting.YELLOW));
-                    MutableText text3 = Text.translatable("death.attack.even_more_magic", this.getDisplayName()).styled(style -> style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, text2)));
-                    this.networkHandler.sendPacket(new DeathMessageS2CPacket(this.getDamageTracker(), text3));
-                }
-            });
+            this.networkHandler.sendPacket(new DeathMessageS2CPacket(this.getDamageTracker(), text), class_7648.method_45085(() -> {
+                String string = text.asTruncatedString(256);
+                Text text2 = Text.translatable("death.attack.message_too_long", new Object[]{Text.literal(string).formatted(Formatting.YELLOW)});
+                Text text3 = Text.translatable("death.attack.even_more_magic", new Object[]{this.getDisplayName()}).styled((style) -> style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, text2)));
+                return new DeathMessageS2CPacket(this.getDamageTracker(), text3);
+            }));
         }
         this.kill(text);
     }
