@@ -29,6 +29,7 @@ public class ShopExtension extends GenericExtension implements Extensions {
     private MinecraftServer server;
     private final PermsExtension permsExtension;
     private Timer timer;
+    public static boolean isExtensionEnabled = false;
 
     public ShopExtension(ExtensionSettings settings, PermsExtension permsExtension) {
         super(settings);
@@ -51,6 +52,7 @@ public class ShopExtension extends GenericExtension implements Extensions {
     @Override
     public void onServerRun(MinecraftServer minecraftServer) {
         this.server = minecraftServer;
+        isExtensionEnabled = this.getSettings().isEnabled();
     }
 
     @Override
@@ -95,6 +97,7 @@ public class ShopExtension extends GenericExtension implements Extensions {
     public void onExtensionDisabled() {
         Extensions.super.onExtensionDisabled();
         accounts.clear();
+        isExtensionEnabled = false;
     }
 
     @Override
@@ -104,6 +107,7 @@ public class ShopExtension extends GenericExtension implements Extensions {
             this.onPlayerJoined(player);
         }
         this.initBankInstance();
+        isExtensionEnabled = true;
     }
 
     @Override

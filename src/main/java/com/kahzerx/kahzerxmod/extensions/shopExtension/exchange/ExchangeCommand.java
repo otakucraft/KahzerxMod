@@ -19,11 +19,14 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 
 public class ExchangeCommand {
+    private static final Logger LOGGER = LogManager.getLogger();
     public void register(CommandDispatcher<ServerCommandSource> dispatcher, ShopExtension extension) {
         dispatcher.register(literal("exchange").
                 requires(server -> extension.extensionSettings().isEnabled()).
@@ -64,6 +67,8 @@ public class ExchangeCommand {
                                                 extension.getDB().getQuery().logExchange(player, foundItem, sentCount * -1, extension.getAccounts());
 
                                                 ItemScatterer.spawn(player.getWorld(), player.getX(), player.getY(), player.getZ(), new ItemStack(foundItem, sentCount));
+                                                LOGGER.info(String.format("Spawning %s %d @ %f %f %f in %s...", foundItem.getName().getString(), sentCount, player.getX(), player.getY(), player.getZ(), player.getWorld().getRegistryKey().getValue().getPath()));
+
                                                 context.getSource().sendFeedback(MarkEnum.TICK.appendMessage("Cambio realizado!"), false);
                                             } else {
                                                 context.getSource().sendFeedback(MarkEnum.CROSS.appendMessage("Demasiados items!"), false);

@@ -23,7 +23,7 @@ import java.util.*;
 public class SolExtension extends GenericExtension implements Extensions {
     private final String SOL_UUID = "91f6c774-013c-4fd2-865d-745fbf1e5524";
     private int solJoined = 0;
-    private final String[] B64 = new String[]{"dXd1", "dGUgYW1v", "b2xhIHF0IHV3dQ==", "YmVzdCB3YWlmdQ==", "wqo=", "dGUgcXVpZXJv", "cXQ=", "bWF2YWxlZWVlcmlv", "PDM="};
+    private final String[] B64 = new String[]{"dXd1", "dGUgYW1v", "b2xhIHF0IHV3dQ==", "YmVzdCB3YWlmdQ==", "wqo=", "dGUgcXVpZXJv", "cXQ=", "bWF2YWxlZWVlcmlv", "PDM=", "bWFtYWd1ZWVldmEh", "YW1vciBkZSBtaSB2aWRhIDwz", "cHJpbmNlc2l0YQ==", "bWkgcGVuZGVqYSA8Mw==", "dXd1d3U=", "aG90IGFm", "ZXN0YXMgZGVtYXNpYWRvIGJ1ZW5h"};
 
     private static final List<ItemStack> fws = new ArrayList<>();
     private static final ItemStack SAKURA_TREE;
