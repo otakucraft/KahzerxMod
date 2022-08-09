@@ -172,7 +172,7 @@ public class ExchangeCommand {
                                     false
                             );
                             for (Item item : Exchange.getValidExchanges().keySet()) {
-                                context.getSource().sendFeedback(getFormattedGetBack(item, Exchange.getValue(item), false).append(MarkEnum.OTAKU_COIN.getFormattedIdentifier()), false);
+                                context.getSource().sendFeedback(getFormattedGetBack(item, Exchange.getValue(item), false).append(Text.literal(" ")).append(MarkEnum.OTAKU_COIN.getFormattedIdentifier()), false);
                             }
                             return 1;
                         })));
