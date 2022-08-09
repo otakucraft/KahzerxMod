@@ -25,6 +25,7 @@
     "noReports.DedicatedServerMixin",
     "noReports.PlayerEntityMixin",
     "noReports.PlayerManagerMixin",
+    "noReports.ServerMetadataMixin",
     "noReports.ServerPlayNetworkHandlerMixin",
     "opOnWhitelistExtension.ServerConfigMixin",
     "playerDropsSkullExtension.PlayerEntityMixin",
