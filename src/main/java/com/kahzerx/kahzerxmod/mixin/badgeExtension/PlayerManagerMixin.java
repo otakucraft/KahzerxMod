@@ -29,9 +29,10 @@ public class PlayerManagerMixin {
     @Redirect(method = "broadcast(Lnet/minecraft/network/message/SignedMessage;Ljava/util/function/Predicate;Lnet/minecraft/server/network/ServerPlayerEntity;Lnet/minecraft/network/message/MessageSourceProfile;Lnet/minecraft/network/message/MessageType$Parameters;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;sendChatMessage(Lnet/minecraft/network/message/SentMessage;ZLnet/minecraft/network/message/MessageType$Parameters;)V"))
     private void onBroadcast(ServerPlayerEntity instance, SentMessage message, boolean bl, MessageType.Parameters parameters, SignedMessage signedMessage, Predicate<ServerPlayerEntity> shouldSendFiltered, @Nullable ServerPlayerEntity sender, MessageSourceProfile messageSourceProfile, MessageType.Parameters parameters2) {
         if (BadgeExtension.isExtensionEnabled && sender != null) {
-            MutableText t = Text.literal(" ");
+            MutableText t = Text.literal("");
             List<BadgeInstance> badges = BadgeExtension.playerBadges.get(sender.getUuid().toString());
             if (badges.size() != 0) {
+                t = Text.literal(" ");
                 MutableText hover = Text.literal("");
                 hover.append(Text.literal("Badges:").styled(style -> style.withColor(Formatting.WHITE)));
                 for (BadgeInstance badgeInstance : badges) {
